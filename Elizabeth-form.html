@@ -98,7 +98,25 @@
     <div class="results-container" id="resultsContainer">
         <div class="results-header"><h2><span lang="en">Your Health Analysis Results</span><span lang="zh-Hant">您的健康分析結果</span></h2><p><span lang="en">Based on your assessment, we've identified the following patterns</span><span lang="zh-Hant">根據您的評估，我們識別出以下模式</span></p></div>
         <div id="resultsContent"></div>
-        <div id="mailerlite-form-placeholder"><h3><span lang="en">Get Your Free Body Type Guide!</span><span lang="zh-Hant">獲取免費體質指南！</span></h3><p><span lang="en">Enter your details below to receive the full guide with tips for your constitution.</span><span lang="zh-Hant">在下方輸入您的資料，即可收到包含針對您體質建議的完整指南。</span></p><p style="text-align: center; font-style: italic; color: #999;">[Your MailerLite Form Will Appear Here]</p></div>
+        <div id="mailerlite-form-placeholder">
+            <h3><span lang="en">Get Your Free Body Type Guide!</span><span lang="zh-Hant">獲取免費體質指南！</span></h3>
+            <p><span lang="en">Enter your details below to receive the full guide with tips for your constitution.</span><span lang="zh-Hant">在下方輸入您的資料，即可收到包含針對您體質建議的完整指南。</span></p>
+
+            <form id="pdf-request-form">
+                <div style="margin-bottom: 15px;">
+                    <label for="user-name" style="display: block; margin-bottom: 5px;"><span lang="en">Name:</span><span lang="zh-Hant">姓名：</span></label>
+                    <input type="text" id="user-name" name="name" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="user-email" style="display: block; margin-bottom: 5px;"><span lang="en">Email:</span><span lang="zh-Hant">電郵：</span></label>
+                    <input type="email" id="user-email" name="email" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <button type="submit" id="submit-pdf-request" style="background-color: var(--btn-bg); color: var(--btn-text); border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-size: 1em; display: block; margin: 0 auto;">
+                    <span lang="en">Send Guide</span><span lang="zh-Hant">發送指南</span>
+                </button>
+                <p id="form-message" style="text-align: center; margin-top: 15px; font-size: 0.9em; min-height: 1.2em;"></p>
+            </form>
+        </div>
         <p class="disclaimer"><span lang="en">Disclaimer: This test is for informational purposes only and does not constitute medical advice. Consult a qualified healthcare professional for diagnosis and treatment.</span><span lang="zh-Hant">免責聲明：此測試僅供參考，不能替代專業醫療建議。如有健康問題，請諮詢合格的醫療專業人員。</span></p>
     </div>
     <script>
@@ -243,6 +261,61 @@
         prevBtn.addEventListener("click",()=>{if(currentPage>1){currentPage--; renderPage(currentPage);}});
         nextBtn.addEventListener("click",()=>{if(validatePage(currentPage) && currentPage < TOTAL_PAGES){currentPage++; renderPage(currentPage);}});
         submitBtn.addEventListener("click",()=>{if(validatePage(currentPage)){const scores=calculateScores(); const resultData=determineConstitution(scores); displayResults(resultData);}});
+
+        // --- Add this new code block ---
+        const pdfRequestForm = document.getElementById('pdf-request-form');
+        const formMessage = document.getElementById('form-message');
+        const submitPdfRequestBtn = document.getElementById('submit-pdf-request');
+
+        if (pdfRequestForm) {
+            pdfRequestForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default page reload
+                submitPdfRequestBtn.disabled = true; // Disable button while sending
+                formMessage.textContent = currentLang === 'en' ? 'Sending...' : '發送中...';
+                formMessage.style.color = 'var(--muted-color)';
+
+                const nameInput = document.getElementById('user-name');
+                const emailInput = document.getElementById('user-email');
+
+                const formData = {
+                    name: nameInput.value,
+                    email: emailInput.value,
+                    // Include pre-quiz answers for stats
+                    age: preQuizAnswers.age || 'Not provided',
+                    gender: preQuizAnswers.gender || 'Not provided',
+                    location: preQuizAnswers.location || 'Not provided'
+                };
+
+                try {
+                    const response = await fetch('/api/process-submission', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        formMessage.textContent = currentLang === 'en' ? 'Success! Please check your email (and spam folder).' : '成功！請檢查您的電子郵件（包括垃圾郵件文件夾）。';
+                        formMessage.style.color = 'green';
+                        pdfRequestForm.reset(); // Clear the form
+                    } else {
+                        console.error('Submission error:', result.error);
+                        formMessage.textContent = currentLang === 'en' ? 'Error sending email. Please try again later.' : '發送郵件時出錯。請稍後再試。';
+                        formMessage.style.color = 'var(--error-color)';
+                        submitPdfRequestBtn.disabled = false; // Re-enable button on error
+                    }
+                } catch (error) {
+                    console.error('Network or fetch error:', error);
+                    formMessage.textContent = currentLang === 'en' ? 'Network error. Please check connection and try again.' : '網絡錯誤。請檢查連接並重試。';
+                    formMessage.style.color = 'var(--error-color)';
+                    submitPdfRequestBtn.disabled = false; // Re-enable button on error
+                }
+            });
+        }
+
     });
     </script>
 </body>
