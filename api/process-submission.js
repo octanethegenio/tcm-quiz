@@ -58,8 +58,8 @@ export default async function handler(req, res) {
         <p>Simply click the links to view or download the PDF.</p>
         <p>Both English and Chinese versions are included for your convenience:</p>
         <ul>
-          <li>English Guide: <a href="${pdfLinkEn}">English_TCMBodyType_Elizabeth</a></li> {/* Corrected href */}
-          <li>中文小手冊： <a href="${pdfLinkZh}">Chinese_TCMBodyType_Elizabeth</a></li> {/* Corrected href */}
+          <li>English Guide: <a href="${pdfLinkEn}">English_TCMBodyType_Elizabeth</a></li>
+          <li>中文小手冊： <a href="${pdfLinkZh}">Chinese_TCMBodyType_Elizabeth</a></li>
         </ul>
         <p>If you know someone who’d like to discover their body type too, feel free to share this link: <a href="http://elizabethyau.com/bodytype">elizabethyau.com/bodytype</a></p>
         <p>Wishing you good health, happiness, and a radiant glow from the inside out!</p>
