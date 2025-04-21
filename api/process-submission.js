@@ -1,23 +1,18 @@
-// api/process-submission.js
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-// Initialize MailerSend client with API Key from environment variables
 const mailerSend = new MailerSend({
   apiKey: process.env.EMAIL_API_KEY,
 });
 
-// The main function Vercel will run
 export default async function handler(req, res) {
-  // Only allow POST requests
+
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   }
 
   try {
-    // Get data from the frontend request body
     const { name, email, age, gender, location } = req.body;
 
-    // Basic validation
     if (!name || !email) {
       return res.status(400).json({ success: false, error: 'Name and Email are required' });
     }
@@ -30,28 +25,25 @@ export default async function handler(req, res) {
     // await saveStatsToDatabase({ age, gender, location, timestamp: new Date() });
     // --- End of TODO ---
 
-    // Get PDF links and From address from environment variables
     const pdfLinkEn = process.env.PDF_URL_EN;
     const pdfLinkZh = process.env.PDF_URL_ZH;
-    const fromEmailAddress = process.env.FROM_EMAIL; // e.g., "elizabeth@elizabethyau.com"
-    const fromName = "Elizabeth Yau"; // Or pull from env var if needed
+    const fromEmailAddress = process.env.FROM_EMAIL;
+    const fromName = "Elizabeth Yau";
 
-    // Check if necessary env vars are set
     if (!pdfLinkEn || !pdfLinkZh || !fromEmailAddress || !process.env.EMAIL_API_KEY) {
          console.error("Missing required environment variables.");
          return res.status(500).json({ success: false, error: 'Server configuration error.' });
     }
 
-    // Prepare email parameters for MailerSend
     const sentFrom = new Sender(fromEmailAddress, fromName);
-    const recipients = [new Recipient(email, name)]; // Send to the user who submitted
+    const recipients = [new Recipient(email, name)];
 
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
       .setSubject('Your TCM Body Type Report Is Here!')
       .setText(`Hello there,\n\nThanks for filling out the Traditional Chinese Medicine (TCM) body type questionnaire.\n\nYour full report is available via the links below. It covers all nine body types – just find yours and have a read.\n\nBoth English and Chinese versions are included for your convenience:\n\nEnglish Guide: ${pdfLinkEn}\n中文小手冊： ${pdfLinkZh}\n\nIf you know someone who’d like to discover their body type too, feel free to share this link: elizabethyau.com/bodytype\n\nWishing you good health, happiness, and a radiant glow from the inside out!\n\nWarmest wishes,\n\nElizabeth Yau\nRegistered Traditional Chinese Medicine Practitioner\nBased in Hong Kong`)
-      // Replace the existing .setHtml(...) line in your file with this corrected version:
+      
       .setHtml(`<p>Hello there,</p>
         <p>Thanks for filling out the Traditional Chinese Medicine (TCM) body type questionnaire.</p>
         <p>Your full report is available via the links below. It covers all nine body types – just find yours and have a read.</p>
@@ -66,16 +58,12 @@ export default async function handler(req, res) {
         <p>Warmest wishes,</p>
         <p><strong>Elizabeth Yau</strong><br>Registered Traditional Chinese Medicine Practitioner<br>Based in Hong Kong</p>`);
 
-    // Send the email using MailerSend SDK
     await mailerSend.email.send(emailParams);
 
-    // Send success response back to the frontend
     res.status(200).json({ success: true });
 
   } catch (error) {
-    // Log the detailed error on the server
     console.error('Error processing submission:', error?.response?.body || error?.message || error);
-    // Send generic error response back to the frontend
     res.status(500).json({ success: false, error: 'Failed to send email' });
   }
 }

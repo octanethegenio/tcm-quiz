@@ -1,321 +1,2590 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>TCM Body Constitution Test</title><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Noto+Sans+TC:wght@400&family=Roboto:wght@400&display=swap" rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TCM Body Constitution Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Noto+Sans+TC:wght@400&family=Roboto:wght@400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      :root { --primary-font: "Roboto", sans-serif; --heading-font: "EB Garamond", serif; --chinese-font: "Noto Sans TC", "Roboto", sans-serif; --bg-color: #fbf8f3; --container-bg: #fff; --text-color: #3a3a3a; --heading-color: #333; --muted-color: #555; --border-color: #eee; --btn-bg: #333; --btn-hover: #555; --btn-text: #fff; --radio-accent: #555; --progress-bg: #ededed; --progress-fill: #333; --error-color: red; --card-bg: #fff; --card-border: #eee; --input-border: #ccc; --severity-moderate: #e7ded4; --severity-moderate-high: #d3c8bc; --severity-high: #ffb8b8; --score-bar-fill: #e7ded4; }
-      .welcome-modal-overlay, .pre-quiz-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(58, 58, 58, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s 0.3s; }
-      .welcome-modal-overlay.visible, .pre-quiz-modal-overlay.visible { opacity: 1; visibility: visible; transition: opacity 0.3s ease; }
-      .welcome-modal-content, .pre-quiz-modal-content { background-color: var(--container-bg); padding: 30px 35px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); max-width: 550px; width: 80%; text-align: left; position: relative; transform: scale(0.9); transition: transform 0.3s ease; }
-      .welcome-modal-overlay.visible .welcome-modal-content, .pre-quiz-modal-overlay.visible .pre-quiz-modal-content { transform: scale(1); }
-      .welcome-modal-content .lang-switcher { text-align: right; margin-bottom: 10px; }
-      .welcome-modal-content h2, .pre-quiz-modal-content h2 { font-family: var(--heading-font); font-size: 1.8em; margin: 0 0 15px 0; color: var(--heading-color); font-weight: 700; }
-      .welcome-modal-content p, .pre-quiz-modal-content p { font-size: 1em; line-height: 1.6; color: var(--text-color); margin-bottom: 15px; }
-      .welcome-modal-content ul { list-style: "• "; padding-left: 25px; margin: 10px 0 25px 0; font-size: 0.95em; color: var(--text-color); }
-      .welcome-modal-content li { margin-bottom: 8px; }
-      .welcome-modal-close-btn { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.8em; color: var(--muted-color); cursor: pointer; line-height: 1; padding: 0; }
-      .welcome-modal-close-btn:hover { color: var(--heading-color); }
-      .welcome-modal-start-btn, .pre-quiz-continue-btn { display: block; width: fit-content; margin: 20px auto 0 auto; background-color: var(--btn-bg); color: var(--btn-text); border: none; padding: 10px 35px; border-radius: 50px; cursor: pointer; font-size: 1em; font-family: var(--primary-font); transition: background-color 0.3s ease; letter-spacing: 0.5px; }
-      .welcome-modal-start-btn:hover, .pre-quiz-continue-btn:hover { background-color: var(--btn-hover); }
-      .pre-quiz-modal-content .question-item { margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
-      .pre-quiz-modal-content .question-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-      .pre-quiz-modal-content .question-text { display: block; margin-bottom: 8px; font-weight: bold; font-size: 1em; color: var(--text-color); }
-      .pre-quiz-modal-content .options { display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-start; margin-left: 5px; }
-      .pre-quiz-modal-content .options label { display: flex; align-items: center; cursor: pointer; font-size: 0.95em; }
-      .pre-quiz-modal-content .options input[type="radio"] { margin-right: 6px; width: 15px; height: 15px; accent-color: var(--radio-accent); }
-      .pre-quiz-modal-content input[type="number"], .pre-quiz-modal-content input[type="text"] { width: 100%; padding: 8px 10px; border: 1px solid var(--input-border); border-radius: 4px; font-size: 0.95em; box-sizing: border-box; max-width: 200px; }
-      .pre-quiz-error-message { color: var(--error-color); font-size: 0.9em; text-align: center; margin-top: 15px; display: none; }
-      @media (max-width: 600px) { .welcome-modal-content, .pre-quiz-modal-content { padding: 25px 25px; } .welcome-modal-content h2, .pre-quiz-modal-content h2 { font-size: 1.5em; } .welcome-modal-content p, .pre-quiz-modal-content p { font-size: 0.95em; } .welcome-modal-content ul { font-size: 0.9em; padding-left: 20px; } .welcome-modal-start-btn, .pre-quiz-continue-btn { padding: 9px 30px; font-size: 0.95em; } .pre-quiz-modal-content .options { gap: 10px; } .pre-quiz-modal-content input[type="number"], .pre-quiz-modal-content input[type="text"] { max-width: 100%; } }
-      html[lang="zh-Hant"] body { font-family: var(--chinese-font); } html[lang="zh-Hant"] .quiz-header h1, html[lang="zh-Hant"] .q-grid th { font-family: var(--heading-font), var(--chinese-font); } html[lang="zh-Hant"] .nav-btn, html[lang="zh-Hant"] .welcome-modal-start-btn, html[lang="zh-Hant"] .pre-quiz-continue-btn { font-family: var(--chinese-font); } html[lang="zh-Hant"] .welcome-modal-content h2, html[lang="zh-Hant"] .welcome-modal-content p, html[lang="zh-Hant"] .welcome-modal-content li, html[lang="zh-Hant"] .pre-quiz-modal-content h2, html[lang="zh-Hant"] .pre-quiz-modal-content p, html[lang="zh-Hant"] .pre-quiz-modal-content .question-text, html[lang="zh-Hant"] .pre-quiz-modal-content label, html[lang="zh-Hant"] .pre-quiz-modal-content input::placeholder { font-family: var(--chinese-font); }
-      [lang="en"] [lang="zh-Hant"], [lang="zh-Hant"] [lang="en"] { display: none; }
-      body { font-family: var(--primary-font); line-height: 1.6; margin: 0; padding: 15px; background-color: var(--bg-color); color: var(--text-color); }
-      .quiz-container, .results-container { max-width: 850px; margin: 15px auto; background-color: var(--container-bg); padding: 20px 25px 30px 25px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
-      .quiz-container { display: none; } .results-container { display: none; padding-top: 30px; }
-      .results-header { text-align: center; margin-bottom: 30px; } .results-header h2 { font-family: var(--heading-font); font-size: 2.1em; margin-bottom: 5px; color: var(--heading-color); } .results-header p { font-size: 1em; color: var(--muted-color); margin-top: 0; }
-      .results-container ul { list-style: none; padding: 0; } .results-container li { background-color: #f9f9f9; border: 1px solid var(--border-color); padding: 15px; margin-bottom: 15px; border-radius: 4px; }
-      .results-container li strong { font-family: var(--heading-font); font-size: 1.2em; color: var(--heading-color); display: block; margin-bottom: 5px; } .results-container li span.score { font-weight: bold; color: var(--radio-accent); } .results-container .res-desc { margin-top: 8px; font-size: 0.95em; color: var(--muted-color); } .results-container .bal-res { text-align: center; font-size: 1.1em; padding: 20px; border: 1px solid var(--card-border); border-radius: 8px; background-color: #f9f9f9; }
-      .lang-switcher { text-align: right; margin-bottom: 15px; font-size: 0.9em; } .lang-btn { background: none; border: none; color: var(--muted-color); cursor: pointer; padding: 5px; text-decoration: underline; } .lang-btn.active { font-weight: bold; color: var(--text-color); text-decoration: none; }
-      .quiz-header h1 { font-family: var(--heading-font); text-align: center; margin-bottom: 15px; color: var(--heading-color); font-weight: 400; font-size: 2.3em; }
-      .sticky-header-content { position: sticky; top: 0; background-color: var(--container-bg); z-index: 10; padding: 10px 25px 15px 25px; margin: 0 -25px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; }
-      .progress-section { margin-bottom: 15px; } .step-indicator { text-align: left; margin-bottom: 5px; color: var(--muted-color); font-size: 0.9em; } .progress-bar-container { width: 100%; background-color: var(--progress-bg); border-radius: 5px; height: 10px; overflow: hidden; } .progress-bar-fill { width: 0%; height: 100%; background-color: var(--progress-fill); border-radius: 5px; transition: width 0.3s ease-in-out; }
-      .instructions { text-align: center; margin-bottom: 0; color: var(--muted-color); font-size: 0.9em; background-color: #f8f8f8; padding: 10px; border-radius: 4px; }
-      .quiz-page { display: none; animation: fadeIn 0.4s ease-in-out; } .quiz-page.active { display: block; } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-      .q-grid { width: 100%; border-collapse: collapse; margin-top: 15px; } .q-grid th, .q-grid td { border: 1px solid var(--border-color); padding: 10px 12px; text-align: left; vertical-align: middle; } .q-grid th { font-family: var(--heading-font); background-color: var(--container-bg); font-weight: 700; text-align: center; font-size: 1em; color: #444; } .q-grid td:first-child { width: 55%; font-size: 0.95em; } .q-grid td:not(:first-child) { text-align: center; } .q-grid input[type="radio"] { margin: 0; cursor: pointer; width: 16px; height: 16px; accent-color: var(--radio-accent); vertical-align: middle; } .mobile-label { display: none; font-size: 0.85em; color: var(--muted-color); margin-left: 4px; vertical-align: middle; }
-      .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; flex-wrap: wrap; } .nav-btn { background-color: var(--btn-bg); color: var(--btn-text); border: none; padding: 8px 28px; border-radius: 50px; cursor: pointer; font-size: 0.9em; font-family: var(--primary-font); transition: background-color 0.3s ease; letter-spacing: 0.5px; flex-shrink: 0; } .nav-btn:hover { background-color: var(--btn-hover); } .nav-btn:disabled { background-color: #ccc; cursor: not-allowed; } #prevBtn, #nextBtn, #submitBtn { display: none; }
-      .error-message { color: var(--error-color); font-size: 0.85em; text-align: center; margin: 0 10px; flex-grow: 1; visibility: hidden; opacity: 0; transition: visibility 0s 0.3s, opacity 0.3s linear; height: 1.2em; } .error-message.visible { visibility: visible; opacity: 1; transition: opacity 0.3s linear; }
-      .end-message { margin-top: 20px; text-align: center; display: none; }
-      .primary-pattern-card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 25px; margin-bottom: 35px; } .primary-pattern-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; flex-wrap: wrap; } .pattern-info { flex-grow: 1; } .pattern-info .label { font-size: 0.85em; color: var(--muted-color); margin-bottom: 2px; display: block; } .pattern-info .pattern-name { font-family: var(--heading-font); font-size: 1.9em; font-weight: 700; color: var(--heading-color); margin: 0; }
-      .severity-label { font-size: 0.85em; font-weight: bold; padding: 4px 12px; border-radius: 15px; color: var(--heading-color); white-space: nowrap; margin-left: 10px; margin-top: 5px; flex-shrink: 0; } .severity-moderate { background-color: var(--severity-moderate); } .severity-moderate-high { background-color: var(--severity-moderate-high); } .severity-high { background-color: var(--severity-high); }
-      .score-section { margin-bottom: 25px; } .score-bar-container { width: 100%; background-color: var(--progress-bg); border-radius: 5px; height: 12px; overflow: hidden; position: relative; } .score-bar-fill { height: 100%; background-color: var(--score-bar-fill); border-radius: 5px; transition: width 0.5s ease-in-out; width: 0%; } .score-value { font-size: 1em; font-weight: bold; color: var(--heading-color); text-align: right; margin-bottom: 5px; font-family: var(--heading-font); }
-      .primary-pattern-content { display: flex; align-items: flex-start; gap: 25px; margin-top: 20px; } .image-placeholder { flex: 0 0 48%; height: auto; background-color: #f0f0f0; border: 1px solid var(--border-color); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--muted-color); font-size: 0.9em; text-align: center; margin-bottom: 0; min-height: 100px; } .image-placeholder img.type-image { max-width: 100%; height: auto; width: 100%; object-fit: contain; border-radius: 4px; display: block; } .key-symptoms { flex: 1 1 auto; width: auto; } .key-symptoms h4 { font-family: var(--heading-font); font-size: 1.2em; margin: 0 0 10px 0; color: var(--heading-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; } .key-symptoms ul { list-style: disc; padding-left: 20px; margin: 0; font-size: 0.95em; color: var(--text-color); } .key-symptoms ul li { background: none; border: none; padding: 3px 0; margin: 0; }
-      .other-patterns-section { margin-top: 30px; } .other-patterns-section h3 { font-family: var(--heading-font); font-size: 1.5em; text-align: left; margin-bottom: 5px; color: var(--heading-color); } .other-patterns-section p { font-size: 0.95em; color: var(--muted-color); margin: 0 0 20px 0; }
-      .secondary-pattern-card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 15px 20px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; } .secondary-pattern-info { flex-grow: 1; } .secondary-pattern-info .pattern-name { font-family: var(--heading-font); font-size: 1.2em; font-weight: 700; color: var(--heading-color); margin: 0 0 8px 0; } .secondary-score-section { width: 150px; flex-shrink: 0; } .secondary-score-section .score-bar-container { height: 8px; margin-bottom: 3px; } .secondary-score-section .score-value { font-size: 0.9em; position: static; transform: none; text-align: right; color: var(--muted-color); font-weight: normal; font-family: var(--heading-font); } .secondary-pattern-card .severity-label { margin-left: 0; margin-top: 0; }
-      #mailerlite-form-placeholder { margin-top: 30px; padding: 25px; background-color: #f8f8f8; border: 1px solid var(--border-color); border-radius: 8px; text-align: left; } #mailerlite-form-placeholder h3 { font-family: var(--heading-font); font-size: 1.4em; margin: 0 0 10px 0; color: var(--heading-color); text-align: center; } #mailerlite-form-placeholder p { font-size: 0.95em; color: var(--muted-color); margin-bottom: 20px; text-align: center; }
-      .disclaimer { margin-top: 25px; font-size: 0.85em; text-align: center; color: var(--muted-color); }
-      @media (max-width: 768px) { .sticky-header-content { margin: 0 -15px; padding: 10px 15px 15px 15px; } .quiz-container, .results-container { padding: 15px 15px 25px 15px; } .results-header h2 { font-size: 1.8em; } .quiz-header h1 { font-size: 1.8em; } .instructions { font-size: 0.9em; } .q-grid thead { display: none; } .q-grid, .q-grid tbody, .q-grid tr, .q-grid td { display: block; width: 100% !important; text-align: left !important; border: none; } .q-grid tr { border: 1px solid var(--border-color); margin-bottom: 20px; padding: 12px; border-radius: 4px; } .q-grid td { padding: 5px 0; } .q-grid td:first-child { font-weight: bold; margin-bottom: 10px; } .q-grid td:not(:first-child) { padding: 8px 0; border-top: 1px dashed var(--border-color); } .q-grid tr td:nth-child(2) { border-top: none; } .q-grid input[type="radio"] { width: 18px; height: 18px; margin-right: 8px; } .mobile-label { display: inline; } .nav-buttons { margin-top: 25px; gap: 10px; } .nav-btn { padding: 8px 20px; font-size: 0.85em; } .error-message { order: 3; width: 100%; margin: 5px 0 0 0; height: auto; } #prevBtn { order: 1; } #nextBtn, #submitBtn { order: 2; } .primary-pattern-card { padding: 15px; } .primary-pattern-header { gap: 5px; } .pattern-info .pattern-name { font-size: 1.6em; } .severity-label { font-size: 0.8em; padding: 3px 10px; } .primary-pattern-content { flex-direction: column; gap: 15px; } .image-placeholder { flex-basis: auto; width: 100%; margin-bottom: 15px; } .key-symptoms { width: 100%; } .other-patterns-section h3 { font-size: 1.3em; } .secondary-pattern-card { padding: 12px 15px; gap: 10px; } .secondary-pattern-info .pattern-name { font-size: 1.1em; margin-bottom: 5px; } .secondary-score-section { width: 120px; } #mailerlite-form-placeholder { padding: 20px; } #mailerlite-form-placeholder h3 { font-size: 1.3em; } }
-      @media (max-width: 400px) { .nav-buttons { justify-content: center; } .pattern-info .pattern-name { font-size: 1.4em; } .severity-label { font-size: 0.75em; padding: 2px 8px; } .secondary-pattern-card { flex-direction: column; align-items: flex-start; } .secondary-score-section { width: 100%; } .secondary-pattern-card .severity-label { align-self: flex-start; } .pre-quiz-modal-content .question-text { font-size: 0.95em; } .pre-quiz-modal-content .options label { font-size: 0.9em; } }
+      :root {
+        --primary-font: "Roboto", sans-serif;
+        --heading-font: "EB Garamond", serif;
+        --chinese-font: "Noto Sans TC", "Roboto", sans-serif;
+        --bg-color: #fbf8f3;
+        --container-bg: #fff;
+        --text-color: #3a3a3a;
+        --heading-color: #333;
+        --muted-color: #555;
+        --border-color: #eee;
+        --btn-bg: #333;
+        --btn-hover: #555;
+        --btn-text: #fff;
+        --radio-accent: #555;
+        --progress-bg: #ededed;
+        --progress-fill: #333;
+        --error-color: red;
+        --card-bg: #fff;
+        --card-border: #eee;
+        --input-border: #ccc;
+        --severity-moderate: #e7ded4;
+        --severity-moderate-high: #d3c8bc;
+        --severity-high: #ffb8b8;
+        --score-bar-fill: #e7ded4;
+      }
+      .welcome-modal-overlay,
+      .pre-quiz-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(58, 58, 58, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0s 0.3s;
+      }
+      .welcome-modal-overlay.visible,
+      .pre-quiz-modal-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease;
+      }
+      .welcome-modal-content,
+      .pre-quiz-modal-content {
+        background-color: var(--container-bg);
+        padding: 30px 35px;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        max-width: 550px;
+        width: 80%;
+        text-align: left;
+        position: relative;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+      .welcome-modal-overlay.visible .welcome-modal-content,
+      .pre-quiz-modal-overlay.visible .pre-quiz-modal-content {
+        transform: scale(1);
+      }
+      .welcome-modal-content .lang-switcher {
+        text-align: right;
+        margin-bottom: 10px;
+      }
+      .welcome-modal-content h2,
+      .pre-quiz-modal-content h2 {
+        font-family: var(--heading-font);
+        font-size: 1.8em;
+        margin: 0 0 15px 0;
+        color: var(--heading-color);
+        font-weight: 700;
+      }
+      .welcome-modal-content p,
+      .pre-quiz-modal-content p {
+        font-size: 1em;
+        line-height: 1.6;
+        color: var(--text-color);
+        margin-bottom: 15px;
+      }
+      .welcome-modal-content ul {
+        list-style: "• ";
+        padding-left: 25px;
+        margin: 10px 0 25px 0;
+        font-size: 0.95em;
+        color: var(--text-color);
+      }
+      .welcome-modal-content li {
+        margin-bottom: 8px;
+      }
+      .welcome-modal-close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 1.8em;
+        color: var(--muted-color);
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+      }
+      .welcome-modal-close-btn:hover {
+        color: var(--heading-color);
+      }
+      .welcome-modal-start-btn,
+      .pre-quiz-continue-btn {
+        display: block;
+        width: fit-content;
+        margin: 20px auto 0 auto;
+        background-color: var(--btn-bg);
+        color: var(--btn-text);
+        border: none;
+        padding: 10px 35px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1em;
+        font-family: var(--primary-font);
+        transition: background-color 0.3s ease;
+        letter-spacing: 0.5px;
+      }
+      .welcome-modal-start-btn:hover,
+      .pre-quiz-continue-btn:hover {
+        background-color: var(--btn-hover);
+      }
+      .pre-quiz-modal-content .question-item {
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .pre-quiz-modal-content .question-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .pre-quiz-modal-content .question-text {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        font-size: 1em;
+        color: var(--text-color);
+      }
+      .pre-quiz-modal-content .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: flex-start;
+        margin-left: 5px;
+      }
+      .pre-quiz-modal-content .options label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 0.95em;
+      }
+      .pre-quiz-modal-content .options input[type="radio"] {
+        margin-right: 6px;
+        width: 15px;
+        height: 15px;
+        accent-color: var(--radio-accent);
+      }
+      .pre-quiz-modal-content input[type="number"],
+      .pre-quiz-modal-content input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--input-border);
+        border-radius: 4px;
+        font-size: 0.95em;
+        box-sizing: border-box;
+        max-width: 200px;
+      }
+      .pre-quiz-error-message {
+        color: var(--error-color);
+        font-size: 0.9em;
+        text-align: center;
+        margin-top: 15px;
+        display: none;
+      }
+      @media (max-width: 600px) {
+        .welcome-modal-content,
+        .pre-quiz-modal-content {
+          padding: 25px 25px;
+        }
+        .welcome-modal-content h2,
+        .pre-quiz-modal-content h2 {
+          font-size: 1.5em;
+        }
+        .welcome-modal-content p,
+        .pre-quiz-modal-content p {
+          font-size: 0.95em;
+        }
+        .welcome-modal-content ul {
+          font-size: 0.9em;
+          padding-left: 20px;
+        }
+        .welcome-modal-start-btn,
+        .pre-quiz-continue-btn {
+          padding: 9px 30px;
+          font-size: 0.95em;
+        }
+        .pre-quiz-modal-content .options {
+          gap: 10px;
+        }
+        .pre-quiz-modal-content input[type="number"],
+        .pre-quiz-modal-content input[type="text"] {
+          max-width: 100%;
+        }
+      }
+      html[lang="zh-Hant"] body {
+        font-family: var(--chinese-font);
+      }
+      html[lang="zh-Hant"] .quiz-header h1,
+      html[lang="zh-Hant"] .q-grid th {
+        font-family: var(--heading-font), var(--chinese-font);
+      }
+      html[lang="zh-Hant"] .nav-btn,
+      html[lang="zh-Hant"] .welcome-modal-start-btn,
+      html[lang="zh-Hant"] .pre-quiz-continue-btn {
+        font-family: var(--chinese-font);
+      }
+      html[lang="zh-Hant"] .welcome-modal-content h2,
+      html[lang="zh-Hant"] .welcome-modal-content p,
+      html[lang="zh-Hant"] .welcome-modal-content li,
+      html[lang="zh-Hant"] .pre-quiz-modal-content h2,
+      html[lang="zh-Hant"] .pre-quiz-modal-content p,
+      html[lang="zh-Hant"] .pre-quiz-modal-content .question-text,
+      html[lang="zh-Hant"] .pre-quiz-modal-content label,
+      html[lang="zh-Hant"] .pre-quiz-modal-content input::placeholder {
+        font-family: var(--chinese-font);
+      }
+      [lang="en"] [lang="zh-Hant"],
+      [lang="zh-Hant"] [lang="en"] {
+        display: none;
+      }
+      body {
+        font-family: var(--primary-font);
+        line-height: 1.6;
+        margin: 0;
+        padding: 15px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      .quiz-container,
+      .results-container {
+        max-width: 850px;
+        margin: 15px auto;
+        background-color: var(--container-bg);
+        padding: 20px 25px 30px 25px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      .quiz-container {
+        display: none;
+      }
+      .results-container {
+        display: none;
+        padding-top: 30px;
+      }
+      .results-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .results-header h2 {
+        font-family: var(--heading-font);
+        font-size: 2.1em;
+        margin-bottom: 5px;
+        color: var(--heading-color);
+      }
+      .results-header p {
+        font-size: 1em;
+        color: var(--muted-color);
+        margin-top: 0;
+      }
+      .results-container ul {
+        list-style: none;
+        padding: 0;
+      }
+      .results-container li {
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+      }
+      .results-container li strong {
+        font-family: var(--heading-font);
+        font-size: 1.2em;
+        color: var(--heading-color);
+        display: block;
+        margin-bottom: 5px;
+      }
+      .results-container li span.score {
+        font-weight: bold;
+        color: var(--radio-accent);
+      }
+      .results-container .res-desc {
+        margin-top: 8px;
+        font-size: 0.95em;
+        color: var(--muted-color);
+      }
+      .results-container .bal-res {
+        text-align: center;
+        font-size: 1.1em;
+        padding: 20px;
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      .lang-switcher {
+        text-align: right;
+        margin-bottom: 15px;
+        font-size: 0.9em;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        color: var(--muted-color);
+        cursor: pointer;
+        padding: 5px;
+        text-decoration: underline;
+      }
+      .lang-btn.active {
+        font-weight: bold;
+        color: var(--text-color);
+        text-decoration: none;
+      }
+      .quiz-header h1 {
+        font-family: var(--heading-font);
+        text-align: center;
+        margin-bottom: 15px;
+        color: var(--heading-color);
+        font-weight: 400;
+        font-size: 2.3em;
+      }
+      .sticky-header-content {
+        position: sticky;
+        top: 0;
+        background-color: var(--container-bg);
+        z-index: 10;
+        padding: 10px 25px 15px 25px;
+        margin: 0 -25px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 15px;
+      }
+      .progress-section {
+        margin-bottom: 15px;
+      }
+      .step-indicator {
+        text-align: left;
+        margin-bottom: 5px;
+        color: var(--muted-color);
+        font-size: 0.9em;
+      }
+      .progress-bar-container {
+        width: 100%;
+        background-color: var(--progress-bg);
+        border-radius: 5px;
+        height: 10px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        width: 0%;
+        height: 100%;
+        background-color: var(--progress-fill);
+        border-radius: 5px;
+        transition: width 0.3s ease-in-out;
+      }
+      .instructions {
+        text-align: center;
+        margin-bottom: 0;
+        color: var(--muted-color);
+        font-size: 0.9em;
+        background-color: #f8f8f8;
+        padding: 10px;
+        border-radius: 4px;
+      }
+      .quiz-page {
+        display: none;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+      .quiz-page.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .q-grid {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      .q-grid th,
+      .q-grid td {
+        border: 1px solid var(--border-color);
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: middle;
+      }
+      .q-grid th {
+        font-family: var(--heading-font);
+        background-color: var(--container-bg);
+        font-weight: 700;
+        text-align: center;
+        font-size: 1em;
+        color: #444;
+      }
+      .q-grid td:first-child {
+        width: 55%;
+        font-size: 0.95em;
+      }
+      .q-grid td:not(:first-child) {
+        text-align: center;
+      }
+      .q-grid input[type="radio"] {
+        margin: 0;
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        accent-color: var(--radio-accent);
+        vertical-align: middle;
+      }
+      .mobile-label {
+        display: none;
+        font-size: 0.85em;
+        color: var(--muted-color);
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+      .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+      }
+      .nav-btn {
+        background-color: var(--btn-bg);
+        color: var(--btn-text);
+        border: none;
+        padding: 8px 28px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 0.9em;
+        font-family: var(--primary-font);
+        transition: background-color 0.3s ease;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+      }
+      .nav-btn:hover {
+        background-color: var(--btn-hover);
+      }
+      .nav-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      #prevBtn,
+      #nextBtn,
+      #submitBtn {
+        display: none;
+      }
+      .error-message {
+        color: var(--error-color);
+        font-size: 0.85em;
+        text-align: center;
+        margin: 0 10px;
+        flex-grow: 1;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 0.3s, opacity 0.3s linear;
+        height: 1.2em;
+      }
+      .error-message.visible {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s linear;
+      }
+      .end-message {
+        margin-top: 20px;
+        text-align: center;
+        display: none;
+      }
+      .primary-pattern-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 35px;
+      }
+      .primary-pattern-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+      .pattern-info {
+        flex-grow: 1;
+      }
+      .pattern-info .label {
+        font-size: 0.85em;
+        color: var(--muted-color);
+        margin-bottom: 2px;
+        display: block;
+      }
+      .pattern-info .pattern-name {
+        font-family: var(--heading-font);
+        font-size: 1.9em;
+        font-weight: 700;
+        color: var(--heading-color);
+        margin: 0;
+      }
+      .severity-label {
+        font-size: 0.85em;
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 15px;
+        color: var(--heading-color);
+        white-space: nowrap;
+        margin-left: 10px;
+        margin-top: 5px;
+        flex-shrink: 0;
+      }
+      .severity-moderate {
+        background-color: var(--severity-moderate);
+      }
+      .severity-moderate-high {
+        background-color: var(--severity-moderate-high);
+      }
+      .severity-high {
+        background-color: var(--severity-high);
+      }
+      .score-section {
+        margin-bottom: 25px;
+      }
+      .score-bar-container {
+        width: 100%;
+        background-color: var(--progress-bg);
+        border-radius: 5px;
+        height: 12px;
+        overflow: hidden;
+        position: relative;
+      }
+      .score-bar-fill {
+        height: 100%;
+        background-color: var(--score-bar-fill);
+        border-radius: 5px;
+        transition: width 0.5s ease-in-out;
+        width: 0%;
+      }
+      .score-value {
+        font-size: 1em;
+        font-weight: bold;
+        color: var(--heading-color);
+        text-align: right;
+        margin-bottom: 5px;
+        font-family: var(--heading-font);
+      }
+      .primary-pattern-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 25px;
+        margin-top: 20px;
+      }
+      .image-placeholder {
+        flex: 0 0 48%;
+        height: auto;
+        background-color: #f0f0f0;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted-color);
+        font-size: 0.9em;
+        text-align: center;
+        margin-bottom: 0;
+        min-height: 100px;
+      }
+      .image-placeholder img.type-image {
+        max-width: 100%;
+        height: auto;
+        width: 100%;
+        object-fit: contain;
+        border-radius: 4px;
+        display: block;
+      }
+      .key-symptoms {
+        flex: 1 1 auto;
+        width: auto;
+      }
+      .key-symptoms h4 {
+        font-family: var(--heading-font);
+        font-size: 1.2em;
+        margin: 0 0 10px 0;
+        color: var(--heading-color);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 5px;
+      }
+      .key-symptoms ul {
+        list-style: disc;
+        padding-left: 20px;
+        margin: 0;
+        font-size: 0.95em;
+        color: var(--text-color);
+      }
+      .key-symptoms ul li {
+        background: none;
+        border: none;
+        padding: 3px 0;
+        margin: 0;
+      }
+      .other-patterns-section {
+        margin-top: 30px;
+      }
+      .other-patterns-section h3 {
+        font-family: var(--heading-font);
+        font-size: 1.5em;
+        text-align: left;
+        margin-bottom: 5px;
+        color: var(--heading-color);
+      }
+      .other-patterns-section p {
+        font-size: 0.95em;
+        color: var(--muted-color);
+        margin: 0 0 20px 0;
+      }
+      .secondary-pattern-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .secondary-pattern-info {
+        flex-grow: 1;
+      }
+      .secondary-pattern-info .pattern-name {
+        font-family: var(--heading-font);
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--heading-color);
+        margin: 0 0 8px 0;
+      }
+      .secondary-score-section {
+        width: 150px;
+        flex-shrink: 0;
+      }
+      .secondary-score-section .score-bar-container {
+        height: 8px;
+        margin-bottom: 3px;
+      }
+      .secondary-score-section .score-value {
+        font-size: 0.9em;
+        position: static;
+        transform: none;
+        text-align: right;
+        color: var(--muted-color);
+        font-weight: normal;
+        font-family: var(--heading-font);
+      }
+      .secondary-pattern-card .severity-label {
+        margin-left: 0;
+        margin-top: 0;
+      }
+      #mailerlite-form-placeholder {
+        margin-top: 30px;
+        padding: 25px;
+        background-color: #f8f8f8;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        text-align: left;
+      }
+      #mailerlite-form-placeholder h3 {
+        font-family: var(--heading-font);
+        font-size: 1.4em;
+        margin: 0 0 10px 0;
+        color: var(--heading-color);
+        text-align: center;
+      }
+      #mailerlite-form-placeholder p {
+        font-size: 0.95em;
+        color: var(--muted-color);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .disclaimer {
+        margin-top: 25px;
+        font-size: 0.85em;
+        text-align: center;
+        color: var(--muted-color);
+      }
+      @media (max-width: 768px) {
+        .sticky-header-content {
+          margin: 0 -15px;
+          padding: 10px 15px 15px 15px;
+        }
+        .quiz-container,
+        .results-container {
+          padding: 15px 15px 25px 15px;
+        }
+        .results-header h2 {
+          font-size: 1.8em;
+        }
+        .quiz-header h1 {
+          font-size: 1.8em;
+        }
+        .instructions {
+          font-size: 0.9em;
+        }
+        .q-grid thead {
+          display: none;
+        }
+        .q-grid,
+        .q-grid tbody,
+        .q-grid tr,
+        .q-grid td {
+          display: block;
+          width: 100% !important;
+          text-align: left !important;
+          border: none;
+        }
+        .q-grid tr {
+          border: 1px solid var(--border-color);
+          margin-bottom: 20px;
+          padding: 12px;
+          border-radius: 4px;
+        }
+        .q-grid td {
+          padding: 5px 0;
+        }
+        .q-grid td:first-child {
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+        .q-grid td:not(:first-child) {
+          padding: 8px 0;
+          border-top: 1px dashed var(--border-color);
+        }
+        .q-grid tr td:nth-child(2) {
+          border-top: none;
+        }
+        .q-grid input[type="radio"] {
+          width: 18px;
+          height: 18px;
+          margin-right: 8px;
+        }
+        .mobile-label {
+          display: inline;
+        }
+        .nav-buttons {
+          margin-top: 25px;
+          gap: 10px;
+        }
+        .nav-btn {
+          padding: 8px 20px;
+          font-size: 0.85em;
+        }
+        .error-message {
+          order: 3;
+          width: 100%;
+          margin: 5px 0 0 0;
+          height: auto;
+        }
+        #prevBtn {
+          order: 1;
+        }
+        #nextBtn,
+        #submitBtn {
+          order: 2;
+        }
+        .primary-pattern-card {
+          padding: 15px;
+        }
+        .primary-pattern-header {
+          gap: 5px;
+        }
+        .pattern-info .pattern-name {
+          font-size: 1.6em;
+        }
+        .severity-label {
+          font-size: 0.8em;
+          padding: 3px 10px;
+        }
+        .primary-pattern-content {
+          flex-direction: column;
+          gap: 15px;
+        }
+        .image-placeholder {
+          flex-basis: auto;
+          width: 100%;
+          margin-bottom: 15px;
+        }
+        .key-symptoms {
+          width: 100%;
+        }
+        .other-patterns-section h3 {
+          font-size: 1.3em;
+        }
+        .secondary-pattern-card {
+          padding: 12px 15px;
+          gap: 10px;
+        }
+        .secondary-pattern-info .pattern-name {
+          font-size: 1.1em;
+          margin-bottom: 5px;
+        }
+        .secondary-score-section {
+          width: 120px;
+        }
+        #mailerlite-form-placeholder {
+          padding: 20px;
+        }
+        #mailerlite-form-placeholder h3 {
+          font-size: 1.3em;
+        }
+      }
+      @media (max-width: 400px) {
+        .nav-buttons {
+          justify-content: center;
+        }
+        .pattern-info .pattern-name {
+          font-size: 1.4em;
+        }
+        .severity-label {
+          font-size: 0.75em;
+          padding: 2px 8px;
+        }
+        .secondary-pattern-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .secondary-score-section {
+          width: 100%;
+        }
+        .secondary-pattern-card .severity-label {
+          align-self: flex-start;
+        }
+        .pre-quiz-modal-content .question-text {
+          font-size: 0.95em;
+        }
+        .pre-quiz-modal-content .options label {
+          font-size: 0.9em;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="welcome-modal-overlay" id="welcomeModalOverlay">
-        <div class="welcome-modal-content">
-            <div class="lang-switcher"><button class="lang-btn active" id="langEnBtnWelcome">English</button> | <button class="lang-btn" id="langZhBtnWelcome">繁體中文</button></div>
-            <div lang="en"><h2>Welcome!</h2><p>This self-assessment helps identify your body constitution — an important foundation for holistic health in TCM.</p><ul><li>Takes 5-10 minutes to complete</li><li>Simply choose what best describes you!</li></ul><button class="welcome-modal-start-btn" id="startQuizBtnEn">Start Quiz</button></div>
-            <div lang="zh-Hant"><h2>歡迎！</h2><p>這份自我評估問卷可幫助您了解自己的體質，這是中醫養生保健的重要基礎。</p><ul><li>需時約5-10分鐘完成</li><li>只需選擇最符合您狀況的描述！</li></ul><button class="welcome-modal-start-btn" id="startQuizBtnZh">開始測試</button></div>
+      <div class="welcome-modal-content">
+        <div class="lang-switcher">
+          <button class="lang-btn active" id="langEnBtnWelcome">English</button>
+          | <button class="lang-btn" id="langZhBtnWelcome">繁體中文</button>
         </div>
+        <div lang="en">
+          <h2>Welcome!</h2>
+          <p>
+            This self-assessment helps identify your body constitution — an
+            important foundation for holistic health in TCM.
+          </p>
+          <ul>
+            <li>Takes 5-10 minutes to complete</li>
+            <li>Simply choose what best describes you!</li>
+          </ul>
+          <button class="welcome-modal-start-btn" id="startQuizBtnEn">
+            Start Quiz
+          </button>
+        </div>
+        <div lang="zh-Hant">
+          <h2>歡迎！</h2>
+          <p>
+            這份自我評估問卷可幫助您了解自己的體質，這是中醫養生保健的重要基礎。
+          </p>
+          <ul>
+            <li>需時約5-10分鐘完成</li>
+            <li>只需選擇最符合您狀況的描述！</li>
+          </ul>
+          <button class="welcome-modal-start-btn" id="startQuizBtnZh">
+            開始測試
+          </button>
+        </div>
+      </div>
     </div>
     <div class="pre-quiz-modal-overlay" id="preQuizModalOverlay">
-        <div class="pre-quiz-modal-content">
-            <h2><span lang="en">A Few Quick Questions</span><span lang="zh-Hant">幾個簡單問題</span></h2><p><span lang="en">Please provide some basic info.</span><span lang="zh-Hant">請提供一些基本資訊。</span></p>
-            <form id="preQuizForm">
-                <div class="question-item"><label class="question-text" for="pq-age"><span lang="en">1. Age</span><span lang="zh-Hant">1. 年齡</span></label><input type="number" id="pq-age" name="pq-age" required min="1" placeholder="e.g., 35" /></div>
-                <div class="question-item"><span class="question-text">2. <span lang="en">Gender</span><span lang="zh-Hant">2. 性別</span></span><div class="options"><label><input type="radio" name="pq-gender" value="Male" required /><span lang="en">Male</span><span lang="zh-Hant">男性</span></label><label><input type="radio" name="pq-gender" value="Female" /><span lang="en">Female</span><span lang="zh-Hant">女性</span></label><label><input type="radio" name="pq-gender" value="Prefer not to say" /><span lang="en">Prefer not to say</span><span lang="zh-Hant">不願透露</span></label></div></div>
-                <div class="question-item">
-                    <label class="question-text" for="pq-location">3. <span lang="en">Location (City/Country)</span><span lang="zh-Hant">3. 地區 (城市/國家)</span></label>
-                    <div id="location-container"></div>
-                </div>
-                <div class="pre-quiz-error-message" id="preQuizErrorMsg"><span lang="en">Please fill in all fields.</span><span lang="zh-Hant">請填寫所有欄位。</span></div>
-                <button type="button" class="pre-quiz-continue-btn" id="continueToMainQuizBtn"><span lang="en">Continue</span><span lang="zh-Hant">繼續</span></button>
-            </form>
-        </div>
+      <div class="pre-quiz-modal-content">
+        <h2>
+          <span lang="en">A Few Quick Questions</span
+          ><span lang="zh-Hant">幾個簡單問題</span>
+        </h2>
+        <p>
+          <span lang="en">Please provide some basic info.</span
+          ><span lang="zh-Hant">請提供一些基本資訊。</span>
+        </p>
+        <form id="preQuizForm">
+          <div class="question-item">
+            <label class="question-text" for="pq-age"
+              ><span lang="en">1. Age</span
+              ><span lang="zh-Hant">1. 年齡</span></label
+            ><input
+              type="number"
+              id="pq-age"
+              name="pq-age"
+              required
+              min="1"
+              placeholder="e.g., 35"
+            />
+          </div>
+          <div class="question-item">
+            <span class="question-text"
+              >2. <span lang="en">Gender</span
+              ><span lang="zh-Hant">2. 性別</span></span
+            >
+            <div class="options">
+              <label
+                ><input
+                  type="radio"
+                  name="pq-gender"
+                  value="Male"
+                  required
+                /><span lang="en">Male</span
+                ><span lang="zh-Hant">男性</span></label
+              ><label
+                ><input type="radio" name="pq-gender" value="Female" /><span
+                  lang="en"
+                  >Female</span
+                ><span lang="zh-Hant">女性</span></label
+              ><label
+                ><input
+                  type="radio"
+                  name="pq-gender"
+                  value="Prefer not to say"
+                /><span lang="en">Prefer not to say</span
+                ><span lang="zh-Hant">不願透露</span></label
+              >
+            </div>
+          </div>
+          <div class="question-item">
+            <label class="question-text" for="pq-location"
+              >3. <span lang="en">Location (City/Country)</span
+              ><span lang="zh-Hant">3. 地區 (城市/國家)</span></label
+            >
+            <div id="location-container"></div>
+          </div>
+          <div class="pre-quiz-error-message" id="preQuizErrorMsg">
+            <span lang="en">Please fill in all fields.</span
+            ><span lang="zh-Hant">請填寫所有欄位。</span>
+          </div>
+          <button
+            type="button"
+            class="pre-quiz-continue-btn"
+            id="continueToMainQuizBtn"
+          >
+            <span lang="en">Continue</span><span lang="zh-Hant">繼續</span>
+          </button>
+        </form>
+      </div>
     </div>
     <div class="quiz-container" id="quizContainer">
-        <div class="quiz-header"><h1><span lang="en">TCM Body Constitution Test</span><span lang="zh-Hant">中醫體質測試</span></h1></div>
-        <div class="sticky-header-content">
-            <div class="progress-section"><p class="step-indicator" id="stepIndicator"></p><div class="progress-bar-container"><div class="progress-bar-fill" id="progressBar"></div></div></div>
-            <p class="instructions"><span lang="en">This is a self-assessment based on your past 12 months.<br />There are no right or wrong answers. If unsure, select the option closest to your situation.<br />Please answer each question carefully in order to see your final result.</span><span lang="zh-Hant">此為根據您過去12個月情況的自我評估。<br />答案沒有對錯之分。如不確定，請選擇最接近您情況的選項。<br />請仔細回答每個問題，以便查看您的最終結果。</span></p>
+      <div class="quiz-header">
+        <h1>
+          <span lang="en">TCM Body Constitution Test</span
+          ><span lang="zh-Hant">中醫體質測試</span>
+        </h1>
+      </div>
+      <div class="sticky-header-content">
+        <div class="progress-section">
+          <p class="step-indicator" id="stepIndicator"></p>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
         </div>
-        <form id="quizForm">
-            <div class="quiz-page active" id="page1"><table class="q-grid"><thead><tr><th><span lang="en">Question</span><span lang="zh-Hant">問題</span></th><th><span lang="en">Never</span><span lang="zh-Hant">沒有</span></th><th><span lang="en">Seldom</span><span lang="zh-Hant">很少</span></th><th><span lang="en">Sometimes</span><span lang="zh-Hant">有時</span></th><th><span lang="en">Often</span><span lang="zh-Hant">經常</span></th><th><span lang="en">Always</span><span lang="zh-Hant">總是</span></th></tr></thead><tbody></tbody></table><p class="end-message"><span lang="en">End of test.</span><span lang="zh-Hant">測驗結束。</span></p></div>
-            <div class="quiz-page" id="page2"><table class="q-grid"><thead><tr><th><span lang="en">Question</span><span lang="zh-Hant">問題</span></th><th><span lang="en">Never</span><span lang="zh-Hant">沒有</span></th><th><span lang="en">Seldom</span><span lang="zh-Hant">很少</span></th><th><span lang="en">Sometimes</span><span lang="zh-Hant">有時</span></th><th><span lang="en">Often</span><span lang="zh-Hant">經常</span></th><th><span lang="en">Always</span><span lang="zh-Hant">總是</span></th></tr></thead><tbody></tbody></table><p class="end-message"><span lang="en">End of test.</span><span lang="zh-Hant">測驗結束。</span></p></div>
-            <div class="quiz-page" id="page3"><table class="q-grid"><thead><tr><th><span lang="en">Question</span><span lang="zh-Hant">問題</span></th><th><span lang="en">Never</span><span lang="zh-Hant">沒有</span></th><th><span lang="en">Seldom</span><span lang="zh-Hant">很少</span></th><th><span lang="en">Sometimes</span><span lang="zh-Hant">有時</span></th><th><span lang="en">Often</span><span lang="zh-Hant">經常</span></th><th><span lang="en">Always</span><span lang="zh-Hant">總是</span></th></tr></thead><tbody></tbody></table><p class="end-message"><span lang="en">End of test.</span><span lang="zh-Hant">測驗結束。</span></p></div>
-            <div class="quiz-page" id="page4"><table class="q-grid"><thead><tr><th><span lang="en">Question</span><span lang="zh-Hant">問題</span></th><th><span lang="en">Never</span><span lang="zh-Hant">沒有</span></th><th><span lang="en">Seldom</span><span lang="zh-Hant">很少</span></th><th><span lang="en">Sometimes</span><span lang="zh-Hant">有時</span></th><th><span lang="en">Often</span><span lang="zh-Hant">經常</span></th><th><span lang="en">Always</span><span lang="zh-Hant">總是</span></th></tr></thead><tbody></tbody></table><p class="end-message"><span lang="en">End of test.</span><span lang="zh-Hant">測驗結束。</span></p></div>
-            <div class="quiz-page" id="page5"><table class="q-grid"><thead><tr><th><span lang="en">Question</span><span lang="zh-Hant">問題</span></th><th><span lang="en">Never</span><span lang="zh-Hant">沒有</span></th><th><span lang="en">Seldom</span><span lang="zh-Hant">很少</span></th><th><span lang="en">Sometimes</span><span lang="zh-Hant">有時</span></th><th><span lang="en">Often</span><span lang="zh-Hant">經常</span></th><th><span lang="en">Always</span><span lang="zh-Hant">總是</span></th></tr></thead><tbody></tbody></table><p class="end-message"><span lang="en">End of test.</span><span lang="zh-Hant">測驗結束。</span></p></div>
-            <div class="quiz-page" id="page6"><table class="q-grid"><thead><tr><th><span lang="en">Question</span><span lang="zh-Hant">問題</span></th><th><span lang="en">Never</span><span lang="zh-Hant">沒有</span></th><th><span lang="en">Seldom</span><span lang="zh-Hant">很少</span></th><th><span lang="en">Sometimes</span><span lang="zh-Hant">有時</span></th><th><span lang="en">Often</span><span lang="zh-Hant">經常</span></th><th><span lang="en">Always</span><span lang="zh-Hant">總是</span></th></tr></thead><tbody></tbody></table><p class="end-message"><span lang="en">You have reached the end of the test. Click Submit to view your results.</span><span lang="zh-Hant">您已完成所有問題。請點擊「提交」查看結果。</span></p></div>
-            <div class="nav-buttons"><button type="button" id="prevBtn" class="nav-btn"><span lang="en">Previous</span><span lang="zh-Hant">上一頁</span></button><div class="error-message" id="errorMsg"></div><button type="button" id="nextBtn" class="nav-btn"><span lang="en">Next</span><span lang="zh-Hant">下一頁</span></button><button type="button" id="submitBtn" class="nav-btn"><span lang="en">Submit</span><span lang="zh-Hant">提交</span></button></div>
-        </form>
+        <p class="instructions">
+          <span lang="en"
+            >This is a self-assessment based on your past 12 months.<br />There
+            are no right or wrong answers. If unsure, select the option closest
+            to your situation.<br />Please answer each question carefully in
+            order to see your final result.</span
+          ><span lang="zh-Hant"
+            >此為根據您過去12個月情況的自我評估。<br />答案沒有對錯之分。如不確定，請選擇最接近您情況的選項。<br />請仔細回答每個問題，以便查看您的最終結果。</span
+          >
+        </p>
+      </div>
+      <form id="quizForm">
+        <div class="quiz-page active" id="page1">
+          <table class="q-grid">
+            <thead>
+              <tr>
+                <th>
+                  <span lang="en">Question</span
+                  ><span lang="zh-Hant">問題</span>
+                </th>
+                <th>
+                  <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
+                </th>
+                <th>
+                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                </th>
+                <th>
+                  <span lang="en">Sometimes</span
+                  ><span lang="zh-Hant">有時</span>
+                </th>
+                <th>
+                  <span lang="en">Often</span><span lang="zh-Hant">經常</span>
+                </th>
+                <th>
+                  <span lang="en">Always</span><span lang="zh-Hant">總是</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="end-message">
+            <span lang="en">End of test.</span
+            ><span lang="zh-Hant">測驗結束。</span>
+          </p>
+        </div>
+        <div class="quiz-page" id="page2">
+          <table class="q-grid">
+            <thead>
+              <tr>
+                <th>
+                  <span lang="en">Question</span
+                  ><span lang="zh-Hant">問題</span>
+                </th>
+                <th>
+                  <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
+                </th>
+                <th>
+                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                </th>
+                <th>
+                  <span lang="en">Sometimes</span
+                  ><span lang="zh-Hant">有時</span>
+                </th>
+                <th>
+                  <span lang="en">Often</span><span lang="zh-Hant">經常</span>
+                </th>
+                <th>
+                  <span lang="en">Always</span><span lang="zh-Hant">總是</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="end-message">
+            <span lang="en">End of test.</span
+            ><span lang="zh-Hant">測驗結束。</span>
+          </p>
+        </div>
+        <div class="quiz-page" id="page3">
+          <table class="q-grid">
+            <thead>
+              <tr>
+                <th>
+                  <span lang="en">Question</span
+                  ><span lang="zh-Hant">問題</span>
+                </th>
+                <th>
+                  <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
+                </th>
+                <th>
+                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                </th>
+                <th>
+                  <span lang="en">Sometimes</span
+                  ><span lang="zh-Hant">有時</span>
+                </th>
+                <th>
+                  <span lang="en">Often</span><span lang="zh-Hant">經常</span>
+                </th>
+                <th>
+                  <span lang="en">Always</span><span lang="zh-Hant">總是</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="end-message">
+            <span lang="en">End of test.</span
+            ><span lang="zh-Hant">測驗結束。</span>
+          </p>
+        </div>
+        <div class="quiz-page" id="page4">
+          <table class="q-grid">
+            <thead>
+              <tr>
+                <th>
+                  <span lang="en">Question</span
+                  ><span lang="zh-Hant">問題</span>
+                </th>
+                <th>
+                  <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
+                </th>
+                <th>
+                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                </th>
+                <th>
+                  <span lang="en">Sometimes</span
+                  ><span lang="zh-Hant">有時</span>
+                </th>
+                <th>
+                  <span lang="en">Often</span><span lang="zh-Hant">經常</span>
+                </th>
+                <th>
+                  <span lang="en">Always</span><span lang="zh-Hant">總是</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="end-message">
+            <span lang="en">End of test.</span
+            ><span lang="zh-Hant">測驗結束。</span>
+          </p>
+        </div>
+        <div class="quiz-page" id="page5">
+          <table class="q-grid">
+            <thead>
+              <tr>
+                <th>
+                  <span lang="en">Question</span
+                  ><span lang="zh-Hant">問題</span>
+                </th>
+                <th>
+                  <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
+                </th>
+                <th>
+                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                </th>
+                <th>
+                  <span lang="en">Sometimes</span
+                  ><span lang="zh-Hant">有時</span>
+                </th>
+                <th>
+                  <span lang="en">Often</span><span lang="zh-Hant">經常</span>
+                </th>
+                <th>
+                  <span lang="en">Always</span><span lang="zh-Hant">總是</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="end-message">
+            <span lang="en">End of test.</span
+            ><span lang="zh-Hant">測驗結束。</span>
+          </p>
+        </div>
+        <div class="quiz-page" id="page6">
+          <table class="q-grid">
+            <thead>
+              <tr>
+                <th>
+                  <span lang="en">Question</span
+                  ><span lang="zh-Hant">問題</span>
+                </th>
+                <th>
+                  <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
+                </th>
+                <th>
+                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                </th>
+                <th>
+                  <span lang="en">Sometimes</span
+                  ><span lang="zh-Hant">有時</span>
+                </th>
+                <th>
+                  <span lang="en">Often</span><span lang="zh-Hant">經常</span>
+                </th>
+                <th>
+                  <span lang="en">Always</span><span lang="zh-Hant">總是</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="end-message">
+            <span lang="en"
+              >You have reached the end of the test. Click Submit to view your
+              results.</span
+            ><span lang="zh-Hant"
+              >您已完成所有問題。請點擊「提交」查看結果。</span
+            >
+          </p>
+        </div>
+        <div class="nav-buttons">
+          <button type="button" id="prevBtn" class="nav-btn">
+            <span lang="en">Previous</span><span lang="zh-Hant">上一頁</span>
+          </button>
+          <div class="error-message" id="errorMsg"></div>
+          <button type="button" id="nextBtn" class="nav-btn">
+            <span lang="en">Next</span
+            ><span lang="zh-Hant">下一頁</span></button
+          ><button type="button" id="submitBtn" class="nav-btn">
+            <span lang="en">Submit</span><span lang="zh-Hant">提交</span>
+          </button>
+        </div>
+      </form>
     </div>
     <div class="results-container" id="resultsContainer">
-        <div class="results-header"><h2><span lang="en">Your Health Analysis Results</span><span lang="zh-Hant">您的健康分析結果</span></h2><p><span lang="en">Based on your assessment, we've identified the following patterns</span><span lang="zh-Hant">根據您的評估，我們識別出以下模式</span></p></div>
-        <div id="resultsContent"></div>
-        <div id="mailerlite-form-placeholder">
-            <h3><span lang="en">Get Your Free Body Type Guide!</span><span lang="zh-Hant">獲取免費體質指南！</span></h3>
-            <p><span lang="en">Enter your details below to receive the full guide with tips for your constitution.</span><span lang="zh-Hant">在下方輸入您的資料，即可收到包含針對您體質建議的完整指南。</span></p>
+      <div class="results-header">
+        <h2>
+          <span lang="en">Your Health Analysis Results</span
+          ><span lang="zh-Hant">您的健康分析結果</span>
+        </h2>
+        <p>
+          <span lang="en"
+            >Based on your assessment, we've identified the following
+            patterns</span
+          ><span lang="zh-Hant">根據您的評估，我們識別出以下模式</span>
+        </p>
+      </div>
+      <div id="resultsContent"></div>
+      <div id="mailerlite-form-placeholder">
+        <h3>
+          <span lang="en">Get Your Free Body Type Guide!</span
+          ><span lang="zh-Hant">獲取免費體質指南！</span>
+        </h3>
+        <p>
+          <span lang="en"
+            >Enter your details below to receive the full guide with tips for
+            your constitution.</span
+          ><span lang="zh-Hant"
+            >在下方輸入您的資料，即可收到包含針對您體質建議的完整指南。</span
+          >
+        </p>
 
-            <form id="pdf-request-form">
-                <div style="margin-bottom: 15px;">
-                    <label for="user-name" style="display: block; margin-bottom: 5px;"><span lang="en">Name:</span><span lang="zh-Hant">姓名：</span></label>
-                    <input type="text" id="user-name" name="name" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label for="user-email" style="display: block; margin-bottom: 5px;"><span lang="en">Email:</span><span lang="zh-Hant">電郵：</span></label>
-                    <input type="email" id="user-email" name="email" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                </div>
-                <button type="submit" id="submit-pdf-request" style="background-color: var(--btn-bg); color: var(--btn-text); border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-size: 1em; display: block; margin: 0 auto;">
-                    <span lang="en">Send Guide</span><span lang="zh-Hant">發送指南</span>
-                </button>
-                <p id="form-message" style="text-align: center; margin-top: 15px; font-size: 0.9em; min-height: 1.2em;"></p>
-            </form>
-        </div>
+        <form id="pdf-request-form">
+          <div style="margin-bottom: 15px">
+            <label for="user-name" style="display: block; margin-bottom: 5px"
+              ><span lang="en">Name:</span
+              ><span lang="zh-Hant">姓名：</span></label
+            >
+            <input
+              type="text"
+              id="user-name"
+              name="name"
+              required
+              style="
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+          <div style="margin-bottom: 15px">
+            <label for="user-email" style="display: block; margin-bottom: 5px"
+              ><span lang="en">Email:</span
+              ><span lang="zh-Hant">電郵：</span></label
+            >
+            <input
+              type="email"
+              id="user-email"
+              name="email"
+              required
+              style="
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+              "
+            />
+          </div>
+          <button
+            type="submit"
+            id="submit-pdf-request"
+            style="
+              background-color: var(--btn-bg);
+              color: var(--btn-text);
+              border: none;
+              padding: 10px 25px;
+              border-radius: 50px;
+              cursor: pointer;
+              font-size: 1em;
+              display: block;
+              margin: 0 auto;
+            "
+          >
+            <span lang="en">Send Guide</span
+            ><span lang="zh-Hant">發送指南</span>
+          </button>
+          <p
+            id="form-message"
+            style="
+              text-align: center;
+              margin-top: 15px;
+              font-size: 0.9em;
+              min-height: 1.2em;
+            "
+          ></p>
+        </form>
+      </div>
     </div>
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const docElement=document.documentElement, quizContainer=document.getElementById("quizContainer"), resultsContainer=document.getElementById("resultsContainer"), resultsContent=document.getElementById("resultsContent"), quizPages=document.querySelectorAll(".quiz-page"), stepIndicator=document.getElementById("stepIndicator"), progressBar=document.getElementById("progressBar"), prevBtn=document.getElementById("prevBtn"), nextBtn=document.getElementById("nextBtn"), submitBtn=document.getElementById("submitBtn"), quizForm=document.getElementById("quizForm"), langEnBtnWelcome=document.getElementById("langEnBtnWelcome"), langZhBtnWelcome=document.getElementById("langZhBtnWelcome"), errorMsg=document.getElementById("errorMsg"), welcomeModalOverlay=document.getElementById("welcomeModalOverlay"), startQuizBtnEn=document.getElementById("startQuizBtnEn"), startQuizBtnZh=document.getElementById("startQuizBtnZh"), preQuizModalOverlay=document.getElementById("preQuizModalOverlay"), preQuizForm=document.getElementById("preQuizForm"), continueToMainQuizBtn=document.getElementById("continueToMainQuizBtn"), preQuizErrorMsg=document.getElementById("preQuizErrorMsg"), mailerlitePlaceholder=document.getElementById("mailerlite-form-placeholder");
-        let currentPage=1, currentLang="en", errorTimeout=null, userAnswers={}, preQuizAnswers={}, currentResults=null;
-        const scoreMap={Never:1, Seldom:2, Sometimes:3, Often:4, Always:5};
-        const imageUrls = {
-            balanced: { en: "/images/balanced.jpeg", zh: "/images/balanced_cn.jpeg" },
-            qi_deficiency: { en: "/images/qi_deficiency.jpeg", zh: "/images/qi_deficiency_cn.jpeg" },
-            yang_deficiency: { en: "/images/yang_deficiency.jpeg", zh: "/images/yang_deficiency_cn.jpeg" },
-            yin_deficiency: { en: "/images/yin_deficiency.jpeg", zh: "/images/yin_deficiency_cn.jpeg" },
-            phlegm_dampness: { en: "/images/phlegm_dampness.jpeg", zh: "/images/phlegm_dampness_cn.jpeg" },
-            damp_heat: { en: "/images/damp_heat.jpeg", zh: "/images/damp_heat_cn.jpeg" },
-            blood_stasis: { en: "/images/blood_stasis.jpeg", zh: "/images/blood_stasis_cn.jpeg" },
-            qi_stagnation: { en: "/images/qi_stagnation.jpeg", zh: "/images/qi_stagnation_cn.jpeg" },
-            special: { en: "/images/special.jpeg", zh: "/images/special_cn.jpeg" }
+      document.addEventListener("DOMContentLoaded", () => {
+        const docElement = document.documentElement,
+          quizContainer = document.getElementById("quizContainer"),
+          resultsContainer = document.getElementById("resultsContainer"),
+          resultsContent = document.getElementById("resultsContent"),
+          quizPages = document.querySelectorAll(".quiz-page"),
+          stepIndicator = document.getElementById("stepIndicator"),
+          progressBar = document.getElementById("progressBar"),
+          prevBtn = document.getElementById("prevBtn"),
+          nextBtn = document.getElementById("nextBtn"),
+          submitBtn = document.getElementById("submitBtn"),
+          quizForm = document.getElementById("quizForm"),
+          langEnBtnWelcome = document.getElementById("langEnBtnWelcome"),
+          langZhBtnWelcome = document.getElementById("langZhBtnWelcome"),
+          errorMsg = document.getElementById("errorMsg"),
+          welcomeModalOverlay = document.getElementById("welcomeModalOverlay"),
+          startQuizBtnEn = document.getElementById("startQuizBtnEn"),
+          startQuizBtnZh = document.getElementById("startQuizBtnZh"),
+          preQuizModalOverlay = document.getElementById("preQuizModalOverlay"),
+          preQuizForm = document.getElementById("preQuizForm"),
+          continueToMainQuizBtn = document.getElementById(
+            "continueToMainQuizBtn"
+          ),
+          preQuizErrorMsg = document.getElementById("preQuizErrorMsg"),
+          mailerlitePlaceholder = document.getElementById(
+            "mailerlite-form-placeholder"
+          );
+        let currentPage = 1,
+          currentLang = "en",
+          errorTimeout = null,
+          userAnswers = {},
+          preQuizAnswers = {},
+          currentResults = null;
+        const scoreMap = {
+          Never: 1,
+          Seldom: 2,
+          Sometimes: 3,
+          Often: 4,
+          Always: 5,
         };
-        const questions=[{id:"q1",en:"Do you easily feel fatigued?",zh:"您容易疲乏嗎？",type:"balanced",rev:!0},{id:"q2",en:"Is your voice weak or low?",zh:"您說話聲音低弱無力嗎？",type:"balanced",rev:!0},{id:"q3",en:"Do you feel depressed or downhearted?",zh:"您感到悶悶不樂、情緒低沉嗎？",type:"balanced",rev:!0},{id:"q4",en:"Are you less tolerant of cold (e.g., winter cold, air conditioning, or fans in summer) than most people?",zh:"您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空調、電扇等）嗎？",type:"balanced",rev:!0},{id:"q5",en:"Do you have trouble sleeping?",zh:"您容易失眠嗎？",type:"balanced",rev:!0},{id:"q6",en:"Do you easily forget things?",zh:"您容易忘事（健忘）嗎？",type:"balanced",rev:!0},{id:"q7",en:"Do you feel energetic?",zh:"您精力充沛嗎？",type:"balanced",rev:!1},{id:"q8",en:"Can you adapt to changes in the natural and social environment?",zh:"您能適應外界自然和社會環境的變化嗎？",type:"balanced",rev:!1},{id:"q9",en:"Do you easily feel fatigued?",zh:"您容易疲乏嗎？",type:"qi_deficiency",rev:!1},{id:"q10",en:"Do you easily feel short of breath (e.g., breathlessness or difficulty catching your breath)?",zh:"您容易氣短（呼吸短促，接不上氣）嗎？",type:"qi_deficiency",rev:!1},{id:"q11",en:"Do you easily feel palpitations?",zh:"您容易心慌嗎？",type:"qi_deficiency",rev:!1},{id:"q12",en:"Do you easily feel dizzy or lightheaded when standing up?",zh:"您容易頭暈或站起時暈眩嗎？",type:"qi_deficiency",rev:!1},{id:"q13",en:"Do you catch colds more easily than others?",zh:"您比別人容易患感冒嗎？",type:"qi_deficiency",rev:!1},{id:"q14",en:"Do you prefer quiet and dislike talking?",zh:"您喜歡安靜、懶得說話嗎？",type:"qi_deficiency",rev:!1},{id:"q15",en:"Is your voice weak or low?",zh:"您說話聲音低弱無力嗎？",type:"qi_deficiency",rev:!1},{id:"q16",en:"Do you easily sweat with slight physical activity?",zh:"您活動量稍大就容易出虛汗嗎？",type:"qi_deficiency",rev:!1},{id:"q17",en:"Do your hands and feet feel cold?",zh:"您手腳發涼嗎？",type:"yang_deficiency",rev:!1},{id:"q18",en:"Do you feel cold in your stomach, back, or knees?",zh:"您胃脘部、背部或腰膝部怕冷嗎？",type:"yang_deficiency",rev:!1},{id:"q19",en:"Do you feel cold and wear more clothes than others?",zh:"您感到怕冷、衣服比別人穿得多嗎？",type:"yang_deficiency",rev:!1},{id:"q20",en:"Are you less tolerant of cold (e.g., winter cold, air conditioning, or fans in summer) than most people?",zh:"您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空調、電扇等）嗎？",type:"yang_deficiency",rev:!1},{id:"q21",en:"Do you catch colds more easily than others?",zh:"您比別人容易患感冒嗎？",type:"yang_deficiency",rev:!1},{id:"q22",en:"Do you feel uncomfortable or avoid eating/drinking cold things?",zh:"您吃（喝）涼的東西會感到不舒服或者怕吃（喝）涼東西嗎？",type:"yang_deficiency",rev:!1},{id:"q23",en:"Do you easily get diarrhea after catching a cold or eating/drinking cold things?",zh:"您受涼或吃（喝）涼的東西後，容易腹瀉（拉肚子）嗎？",type:"yang_deficiency",rev:!1},{id:"q24",en:"Do your palms and soles feel hot?",zh:"您感到手腳心發熱嗎？",type:"yin_deficiency",rev:!1},{id:"q25",en:"Do you feel heat in your body or face?",zh:"您感覺身體、臉上發熱嗎？",type:"yin_deficiency",rev:!1},{id:"q26",en:"Is your skin or lips dry?",zh:"您皮膚或口唇乾嗎？",type:"yin_deficiency",rev:!1},{id:"q27",en:"Are your lips redder than most people's?",zh:"您口唇的顏色比一般人紅嗎？",type:"yin_deficiency",rev:!1},{id:"q28",en:"Do you easily get constipated or have dry stools?",zh:"您容易便秘或大便乾燥嗎？",type:"yin_deficiency",rev:!1},{id:"q29",en:"Do you have flushed cheeks or a reddish complexion?",zh:"您面部兩顴潮紅或偏紅嗎？",type:"yin_deficiency",rev:!1},{id:"q30",en:"Do your eyes feel dry?",zh:"您感到眼睛乾澀嗎？",type:"yin_deficiency",rev:!1},{id:"q31",en:"Do you feel thirsty and always want to drink water?",zh:"您感到口乾咽燥、總想喝水嗎？",type:"yin_deficiency",rev:!1},{id:"q32",en:"Do you feel depressed or downhearted?",zh:"您感到悶悶不樂、情緒低沉嗎？",type:"qi_stagnation",rev:!1},{id:"q33",en:"Do you easily feel nervous or anxious?",zh:"您容易精神緊張、焦慮不安嗎？",type:"qi_stagnation",rev:!1},{id:"q34",en:"Are you sentimental or emotionally fragile?",zh:"您多愁善感、感情脆弱嗎？",type:"qi_stagnation",rev:!1},{id:"q35",en:"Do you easily feel scared or startled?",zh:"您容易感到害怕或受到驚嚇嗎？",type:"qi_stagnation",rev:!1},{id:"q36",en:"Do you feel pain in your ribs or breasts?",zh:"您脅肋部或乳房脹痛嗎？",type:"qi_stagnation",rev:!1},{id:"q37",en:"Do you sigh for no reason?",zh:"您無緣無故嘆氣嗎？",type:"qi_stagnation",rev:!1},{id:"q38",en:"Do you feel a lump in your throat that you can't swallow or spit out?",zh:"您咽喉部有異物感，且吐之不出、咽之不下嗎？",type:"qi_stagnation",rev:!1},{id:"q39",en:"Do you feel chest tightness or abdominal bloating?",zh:"您感到胸悶或腹部脹滿嗎？",type:"phlegm_dampness",rev:!1},{id:"q40",en:"Do you feel heavy or sluggish in your body?",zh:"您感到身體沉重不輕鬆或不爽快嗎？",type:"phlegm_dampness",rev:!1},{id:"q41",en:"Is your abdomen soft and flabby?",zh:"您腹部肥滿鬆軟嗎？",type:"phlegm_dampness",rev:!1},{id:"q42",en:"Do you have excessive oil secretion on your forehead?",zh:"您有額部油脂分泌多的現象嗎？",type:"phlegm_dampness",rev:!1},{id:"q43",en:"Are your upper eyelids more swollen than others'?",zh:"您上眼瞼比別人腫（上眼瞼有輕微隆起現象）嗎？",type:"phlegm_dampness",rev:!1},{id:"q44",en:"Do you feel a sticky sensation in your mouth?",zh:"您嘴裡有黏黏的感覺嗎？",type:"phlegm_dampness",rev:!1},{id:"q45",en:"Do you have excessive phlegm, especially in your throat?",zh:"您平時痰多，特別咽喉部總感到有痰堵著嗎？",type:"phlegm_dampness",rev:!1},{id:"q46",en:"Do you have a thick or greasy tongue coating?",zh:"您舌苔厚膩或者有舌苔厚厚的感覺嗎？",type:"phlegm_dampness",rev:!1},{id:"q47",en:"Does your face or nose feel oily or shiny?",zh:"您面部或鼻部有油膩感或者油亮發光嗎？",type:"damp_heat",rev:!1},{id:"q48",en:"Do you easily get acne or boils?",zh:"您容易生痤瘡或瘡癤嗎？",type:"damp_heat",rev:!1},{id:"q49",en:"Do you feel a bitter taste or bad breath?",zh:"您感到口苦或嘴裡有異味嗎？",type:"damp_heat",rev:!1},{id:"q50",en:"Do you have sticky stools or a feeling of incomplete bowel movements?",zh:"您大便黏滯不爽、有解不盡的感覺嗎？",type:"damp_heat",rev:!1},{id:"q51",en:"Do you feel a burning sensation during urination or have dark urine?",zh:"您小便時尿道有發熱感、尿色濃（深）嗎？",type:"damp_heat",rev:!1},{id:"q52",en:"For males: Is your scrotum area damp? For females: Do you have yellow vaginal discharge?",zh:"男生：您的陰囊部位潮濕嗎？ 女生：您帶下色黃（白帶顏色發黃）嗎？",type:"damp_heat",rev:!1},{id:"q53",en:"Do you develop unexplained bruises (subcutaneous bleeding) on your skin?",zh:"您的皮膚在不知不覺中會出現青紫瘀斑（皮下出血）嗎？",type:"blood_stasis",rev:!1},{id:"q54",en:"Do you have fine red lines on your cheeks?",zh:"您兩顴部有細微紅絲嗎？",type:"blood_stasis",rev:!1},{id:"q55",en:"Do you experience pain in any part of your body?",zh:"您身體上哪裡疼痛嗎？",type:"blood_stasis",rev:!1},{id:"q56",en:"Is your complexion dull or prone to brown spots?",zh:"您面色晦黯或容易出現褐斑嗎？",type:"blood_stasis",rev:!1},{id:"q57",en:"Do you easily get dark circles under your eyes?",zh:"您容易有黑眼圈嗎？",type:"blood_stasis",rev:!1},{id:"q58",en:"Do you easily forget things?",zh:"您容易忘事（健忘）嗎？",type:"blood_stasis",rev:!1},{id:"q59",en:"Are your lips dark in color?",zh:"您口唇顏色偏黯嗎？",type:"blood_stasis",rev:!1},{id:"q60",en:"Do you sneeze even when you don't have a cold?",zh:"您沒有感冒時也會打噴嚏嗎？",type:"special",rev:!1},{id:"q61",en:"Do you have a stuffy or runny nose even when you don't have a cold?",zh:"您沒有感冒時也會鼻塞、流鼻涕嗎？",type:"special",rev:!1},{id:"q62",en:"Do you cough or wheeze due to seasonal changes, temperature changes, or odors?",zh:"您有因季節變化、溫度變化或異味等原因而咳喘的現象嗎？",type:"special",rev:!1},{id:"q63",en:"Are you prone to allergies (to drugs, food, smells, pollen, or during seasonal changes)?",zh:"您容易過敏（對藥物、食物、氣味、花粉或在季節交替、氣候變化時）嗎？",type:"special",rev:!1},{id:"q64",en:"Do you easily get hives (urticaria)?",zh:"您的皮膚容易起蕁麻疹（風團、風疹塊、風疙瘩）嗎？",type:"special",rev:!1},{id:"q65",en:"Have you developed purpura (purple-red spots or patches) due to allergies?",zh:"您的皮膚因過敏出現過紫癜（紫紅色瘀點、瘀斑）嗎？",type:"special",rev:!1},{id:"q66",en:"Does your skin turn red and develop scratch marks easily?",zh:"您的皮膚一抓就紅，並出現抓痕嗎？",type:"special",rev:!1}];
-        const constitutionTypes={balanced:{n_en:"Balanced",n_zh:"平和質",qs:8,min:8,max:40,d_en:"Generally healthy and well-adapted.",d_zh:"體態適中、面色紅潤、精力充沛，是健康的體質。",details:null},qi_deficiency:{n_en:"Qi Deficiency",n_zh:"氣虛質",qs:8,min:8,max:40,d_en:"Tendency towards fatigue, shortness of breath, weak voice, and sweating easily.",d_zh:"易疲乏、氣短、聲音低弱、易出汗。",details:{symptoms_en:["Pale complexion","Soft or weak voice","Difficulty concentrating","Shortness of breath","Poor digestion","Weak immunity"],symptoms_zh:["面色蒼白","聲音低弱","注意力不集中","氣短","消化不良","免疫力弱"]}},yang_deficiency:{n_en:"Yang Deficiency",n_zh:"陽虛質",qs:7,min:7,max:35,d_en:"Aversion to cold, cold limbs, preference for warmth, lack of energy.",d_zh:"怕冷、手腳冰涼、喜溫暖、精神不振。",details:{symptoms_en:["Aversion to cold","Cold limbs","Preference for warmth","Lack of energy","Loose stools","Pale tongue"],symptoms_zh:["怕冷","手腳冰涼","喜溫暖","精神不振","大便稀溏","舌淡"]}},yin_deficiency:{n_en:"Yin Deficiency",n_zh:"陰虛質",qs:8,min:8,max:40,d_en:"Feeling of heat, dry mouth/throat/skin, night sweats, hot palms/soles.",d_zh:"感到發熱、口乾咽燥、皮膚乾燥、手足心熱、易盜汗。",details:{symptoms_en:["Feeling of heat in the afternoon/evening","Dry mouth and throat","Dry skin","Night sweats","Hot palms and soles","Red tongue with little coating"],symptoms_zh:["午後或傍晚發熱感","口乾咽燥","皮膚乾燥","盜汗","手足心熱","舌紅少苔"]}},phlegm_dampness:{n_en:"Phlegm-Dampness",n_zh:"痰濕質",qs:8,min:8,max:40,d_en:"Feeling of heaviness, chest tightness, sticky mouth, excessive phlegm, often overweight.",d_zh:"體型肥胖、腹部肥滿、胸悶、痰多、口黏膩。",details:{symptoms_en:["Feeling of body heaviness","Chest tightness","Sticky or sweet taste in mouth","Excessive phlegm","Often overweight","Greasy tongue coating"],symptoms_zh:["身體沉重感","胸悶","口中黏膩或發甜","痰多","常超重","舌苔油膩"]}},damp_heat:{n_en:"Damp-Heat",n_zh:"濕熱質",qs:6,min:6,max:30,d_en:"Oily face/skin, acne, bitter taste, bad breath, sticky stools, yellow urine.",d_zh:"面垢油光、易生痤瘡、口苦口臭、大便黏滯、小便黃赤。",details:{symptoms_en:["Oily face/skin","Acne or boils","Bitter taste in mouth","Bad breath","Sticky stools or incomplete bowel movement","Yellow, scanty urine","Yellow greasy tongue coating"],symptoms_zh:["面部或皮膚油膩","易生痤瘡或癤子","口苦","口臭","大便黏滯不爽","小便黃短","舌苔黃膩"]}},blood_stasis:{n_en:"Blood Stasis",n_zh:"血瘀質",qs:7,min:7,max:35,d_en:"Dull/dark complexion, dark spots, dark lips, easy bruising, body pain.",d_zh:"面色晦黯、易生褐斑、口唇色黯、易瘀青、身體疼痛。",details:{symptoms_en:["Dull or dark complexion","Dark spots on skin","Dark or purplish lips","Easy bruising","Fixed, stabbing pain","Dark circles under eyes","Purple tongue or spots on tongue"],symptoms_zh:["面色晦暗","皮膚有色斑","口唇色暗或紫","易瘀青","固定刺痛","黑眼圈","舌質紫暗或有瘀點"]}},qi_stagnation:{n_en:"Qi Stagnation",n_zh:"氣鬱質",qs:7,min:7,max:35,d_en:"Emotional fluctuations, depression, anxiety, sighing, feeling of blockage.",d_zh:"情緒波動、憂鬱、焦慮、常嘆氣、有異物感。",details:{symptoms_en:["Emotional fluctuations (depression, anxiety)","Frequent sighing","Feeling of blockage in chest or throat","Distending pain in chest or ribs","Irregular menstruation (females)","Thin white tongue coating"],symptoms_zh:["情緒波動（憂鬱、焦慮）","經常嘆氣","胸部或喉嚨有堵塞感","胸脅脹痛","月經不調（女性）","舌苔薄白"]}},special:{n_en:"Inherited Special",n_zh:"特稟質",qs:7,min:7,max:35,d_en:"Prone to allergies (pollen, food, drugs), sneezing, runny nose, asthma, hives.",d_zh:"易過敏（花粉、食物、藥物等）、打噴嚏、流鼻涕、哮喘、蕁麻疹。",details:{symptoms_en:["Allergic reactions (pollen, food, drugs)","Frequent sneezing","Runny or stuffy nose","Asthma or wheezing","Hives (urticaria)","Allergic rhinitis or dermatitis"],symptoms_zh:["過敏反應（花粉、食物、藥物）","經常打噴嚏","流鼻涕或鼻塞","哮喘","蕁麻疹","過敏性鼻炎或皮炎"]}}};
-        const QUESTIONS_PER_PAGE=11; const TOTAL_PAGES=Math.ceil(questions.length/QUESTIONS_PER_PAGE);
-        const locationContainer = document.getElementById('location-container');
-        const locationSelect = document.createElement('select');
-        locationSelect.id = 'pq-location';
-        locationSelect.name = 'pq-location';
+        const imageUrls = {
+          balanced: {
+            en: "/images/balanced.jpeg",
+            zh: "/images/balanced_cn.jpeg",
+          },
+          qi_deficiency: {
+            en: "/images/qi_deficiency.jpeg",
+            zh: "/images/qi_deficiency_cn.jpeg",
+          },
+          yang_deficiency: {
+            en: "/images/yang_deficiency.jpeg",
+            zh: "/images/yang_deficiency_cn.jpeg",
+          },
+          yin_deficiency: {
+            en: "/images/yin_deficiency.jpeg",
+            zh: "/images/yin_deficiency_cn.jpeg",
+          },
+          phlegm_dampness: {
+            en: "/images/phlegm_dampness.jpeg",
+            zh: "/images/phlegm_dampness_cn.jpeg",
+          },
+          damp_heat: {
+            en: "/images/damp_heat.jpeg",
+            zh: "/images/damp_heat_cn.jpeg",
+          },
+          blood_stasis: {
+            en: "/images/blood_stasis.jpeg",
+            zh: "/images/blood_stasis_cn.jpeg",
+          },
+          qi_stagnation: {
+            en: "/images/qi_stagnation.jpeg",
+            zh: "/images/qi_stagnation_cn.jpeg",
+          },
+          special: {
+            en: "/images/special.jpeg",
+            zh: "/images/special_cn.jpeg",
+          },
+        };
+        const questions = [
+          {
+            id: "q1",
+            en: "Do you easily feel fatigued?",
+            zh: "您容易疲乏嗎？",
+            type: "balanced",
+            rev: !0,
+          },
+          {
+            id: "q2",
+            en: "Is your voice weak or low?",
+            zh: "您說話聲音低弱無力嗎？",
+            type: "balanced",
+            rev: !0,
+          },
+          {
+            id: "q3",
+            en: "Do you feel depressed or downhearted?",
+            zh: "您感到悶悶不樂、情緒低沉嗎？",
+            type: "balanced",
+            rev: !0,
+          },
+          {
+            id: "q4",
+            en: "Are you less tolerant of cold (e.g., winter cold, air conditioning, or fans in summer) than most people?",
+            zh: "您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空調、電扇等）嗎？",
+            type: "balanced",
+            rev: !0,
+          },
+          {
+            id: "q5",
+            en: "Do you have trouble sleeping?",
+            zh: "您容易失眠嗎？",
+            type: "balanced",
+            rev: !0,
+          },
+          {
+            id: "q6",
+            en: "Do you easily forget things?",
+            zh: "您容易忘事（健忘）嗎？",
+            type: "balanced",
+            rev: !0,
+          },
+          {
+            id: "q7",
+            en: "Do you feel energetic?",
+            zh: "您精力充沛嗎？",
+            type: "balanced",
+            rev: !1,
+          },
+          {
+            id: "q8",
+            en: "Can you adapt to changes in the natural and social environment?",
+            zh: "您能適應外界自然和社會環境的變化嗎？",
+            type: "balanced",
+            rev: !1,
+          },
+          {
+            id: "q9",
+            en: "Do you easily feel fatigued?",
+            zh: "您容易疲乏嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q10",
+            en: "Do you easily feel short of breath (e.g., breathlessness or difficulty catching your breath)?",
+            zh: "您容易氣短（呼吸短促，接不上氣）嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q11",
+            en: "Do you easily feel palpitations?",
+            zh: "您容易心慌嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q12",
+            en: "Do you easily feel dizzy or lightheaded when standing up?",
+            zh: "您容易頭暈或站起時暈眩嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q13",
+            en: "Do you catch colds more easily than others?",
+            zh: "您比別人容易患感冒嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q14",
+            en: "Do you prefer quiet and dislike talking?",
+            zh: "您喜歡安靜、懶得說話嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q15",
+            en: "Is your voice weak or low?",
+            zh: "您說話聲音低弱無力嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q16",
+            en: "Do you easily sweat with slight physical activity?",
+            zh: "您活動量稍大就容易出虛汗嗎？",
+            type: "qi_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q17",
+            en: "Do your hands and feet feel cold?",
+            zh: "您手腳發涼嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q18",
+            en: "Do you feel cold in your stomach, back, or knees?",
+            zh: "您胃脘部、背部或腰膝部怕冷嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q19",
+            en: "Do you feel cold and wear more clothes than others?",
+            zh: "您感到怕冷、衣服比別人穿得多嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q20",
+            en: "Are you less tolerant of cold (e.g., winter cold, air conditioning, or fans in summer) than most people?",
+            zh: "您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空調、電扇等）嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q21",
+            en: "Do you catch colds more easily than others?",
+            zh: "您比別人容易患感冒嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q22",
+            en: "Do you feel uncomfortable or avoid eating/drinking cold things?",
+            zh: "您吃（喝）涼的東西會感到不舒服或者怕吃（喝）涼東西嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q23",
+            en: "Do you easily get diarrhea after catching a cold or eating/drinking cold things?",
+            zh: "您受涼或吃（喝）涼的東西後，容易腹瀉（拉肚子）嗎？",
+            type: "yang_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q24",
+            en: "Do your palms and soles feel hot?",
+            zh: "您感到手腳心發熱嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q25",
+            en: "Do you feel heat in your body or face?",
+            zh: "您感覺身體、臉上發熱嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q26",
+            en: "Is your skin or lips dry?",
+            zh: "您皮膚或口唇乾嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q27",
+            en: "Are your lips redder than most people's?",
+            zh: "您口唇的顏色比一般人紅嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q28",
+            en: "Do you easily get constipated or have dry stools?",
+            zh: "您容易便秘或大便乾燥嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q29",
+            en: "Do you have flushed cheeks or a reddish complexion?",
+            zh: "您面部兩顴潮紅或偏紅嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q30",
+            en: "Do your eyes feel dry?",
+            zh: "您感到眼睛乾澀嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q31",
+            en: "Do you feel thirsty and always want to drink water?",
+            zh: "您感到口乾咽燥、總想喝水嗎？",
+            type: "yin_deficiency",
+            rev: !1,
+          },
+          {
+            id: "q32",
+            en: "Do you feel depressed or downhearted?",
+            zh: "您感到悶悶不樂、情緒低沉嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q33",
+            en: "Do you easily feel nervous or anxious?",
+            zh: "您容易精神緊張、焦慮不安嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q34",
+            en: "Are you sentimental or emotionally fragile?",
+            zh: "您多愁善感、感情脆弱嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q35",
+            en: "Do you easily feel scared or startled?",
+            zh: "您容易感到害怕或受到驚嚇嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q36",
+            en: "Do you feel pain in your ribs or breasts?",
+            zh: "您脅肋部或乳房脹痛嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q37",
+            en: "Do you sigh for no reason?",
+            zh: "您無緣無故嘆氣嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q38",
+            en: "Do you feel a lump in your throat that you can't swallow or spit out?",
+            zh: "您咽喉部有異物感，且吐之不出、咽之不下嗎？",
+            type: "qi_stagnation",
+            rev: !1,
+          },
+          {
+            id: "q39",
+            en: "Do you feel chest tightness or abdominal bloating?",
+            zh: "您感到胸悶或腹部脹滿嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q40",
+            en: "Do you feel heavy or sluggish in your body?",
+            zh: "您感到身體沉重不輕鬆或不爽快嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q41",
+            en: "Is your abdomen soft and flabby?",
+            zh: "您腹部肥滿鬆軟嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q42",
+            en: "Do you have excessive oil secretion on your forehead?",
+            zh: "您有額部油脂分泌多的現象嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q43",
+            en: "Are your upper eyelids more swollen than others'?",
+            zh: "您上眼瞼比別人腫（上眼瞼有輕微隆起現象）嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q44",
+            en: "Do you feel a sticky sensation in your mouth?",
+            zh: "您嘴裡有黏黏的感覺嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q45",
+            en: "Do you have excessive phlegm, especially in your throat?",
+            zh: "您平時痰多，特別咽喉部總感到有痰堵著嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q46",
+            en: "Do you have a thick or greasy tongue coating?",
+            zh: "您舌苔厚膩或者有舌苔厚厚的感覺嗎？",
+            type: "phlegm_dampness",
+            rev: !1,
+          },
+          {
+            id: "q47",
+            en: "Does your face or nose feel oily or shiny?",
+            zh: "您面部或鼻部有油膩感或者油亮發光嗎？",
+            type: "damp_heat",
+            rev: !1,
+          },
+          {
+            id: "q48",
+            en: "Do you easily get acne or boils?",
+            zh: "您容易生痤瘡或瘡癤嗎？",
+            type: "damp_heat",
+            rev: !1,
+          },
+          {
+            id: "q49",
+            en: "Do you feel a bitter taste or bad breath?",
+            zh: "您感到口苦或嘴裡有異味嗎？",
+            type: "damp_heat",
+            rev: !1,
+          },
+          {
+            id: "q50",
+            en: "Do you have sticky stools or a feeling of incomplete bowel movements?",
+            zh: "您大便黏滯不爽、有解不盡的感覺嗎？",
+            type: "damp_heat",
+            rev: !1,
+          },
+          {
+            id: "q51",
+            en: "Do you feel a burning sensation during urination or have dark urine?",
+            zh: "您小便時尿道有發熱感、尿色濃（深）嗎？",
+            type: "damp_heat",
+            rev: !1,
+          },
+          {
+            id: "q52",
+            en: "For males: Is your scrotum area damp? For females: Do you have yellow vaginal discharge?",
+            zh: "男生：您的陰囊部位潮濕嗎？ 女生：您帶下色黃（白帶顏色發黃）嗎？",
+            type: "damp_heat",
+            rev: !1,
+          },
+          {
+            id: "q53",
+            en: "Do you develop unexplained bruises (subcutaneous bleeding) on your skin?",
+            zh: "您的皮膚在不知不覺中會出現青紫瘀斑（皮下出血）嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q54",
+            en: "Do you have fine red lines on your cheeks?",
+            zh: "您兩顴部有細微紅絲嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q55",
+            en: "Do you experience pain in any part of your body?",
+            zh: "您身體上哪裡疼痛嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q56",
+            en: "Is your complexion dull or prone to brown spots?",
+            zh: "您面色晦黯或容易出現褐斑嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q57",
+            en: "Do you easily get dark circles under your eyes?",
+            zh: "您容易有黑眼圈嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q58",
+            en: "Do you easily forget things?",
+            zh: "您容易忘事（健忘）嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q59",
+            en: "Are your lips dark in color?",
+            zh: "您口唇顏色偏黯嗎？",
+            type: "blood_stasis",
+            rev: !1,
+          },
+          {
+            id: "q60",
+            en: "Do you sneeze even when you don't have a cold?",
+            zh: "您沒有感冒時也會打噴嚏嗎？",
+            type: "special",
+            rev: !1,
+          },
+          {
+            id: "q61",
+            en: "Do you have a stuffy or runny nose even when you don't have a cold?",
+            zh: "您沒有感冒時也會鼻塞、流鼻涕嗎？",
+            type: "special",
+            rev: !1,
+          },
+          {
+            id: "q62",
+            en: "Do you cough or wheeze due to seasonal changes, temperature changes, or odors?",
+            zh: "您有因季節變化、溫度變化或異味等原因而咳喘的現象嗎？",
+            type: "special",
+            rev: !1,
+          },
+          {
+            id: "q63",
+            en: "Are you prone to allergies (to drugs, food, smells, pollen, or during seasonal changes)?",
+            zh: "您容易過敏（對藥物、食物、氣味、花粉或在季節交替、氣候變化時）嗎？",
+            type: "special",
+            rev: !1,
+          },
+          {
+            id: "q64",
+            en: "Do you easily get hives (urticaria)?",
+            zh: "您的皮膚容易起蕁麻疹（風團、風疹塊、風疙瘩）嗎？",
+            type: "special",
+            rev: !1,
+          },
+          {
+            id: "q65",
+            en: "Have you developed purpura (purple-red spots or patches) due to allergies?",
+            zh: "您的皮膚因過敏出現過紫癜（紫紅色瘀點、瘀斑）嗎？",
+            type: "special",
+            rev: !1,
+          },
+          {
+            id: "q66",
+            en: "Does your skin turn red and develop scratch marks easily?",
+            zh: "您的皮膚一抓就紅，並出現抓痕嗎？",
+            type: "special",
+            rev: !1,
+          },
+        ];
+        const constitutionTypes = {
+          balanced: {
+            n_en: "Balanced",
+            n_zh: "平和質",
+            qs: 8,
+            min: 8,
+            max: 40,
+            d_en: "Generally healthy and well-adapted.",
+            d_zh: "體態適中、面色紅潤、精力充沛，是健康的體質。",
+            details: null,
+          },
+          qi_deficiency: {
+            n_en: "Qi Deficiency",
+            n_zh: "氣虛質",
+            qs: 8,
+            min: 8,
+            max: 40,
+            d_en: "Tendency towards fatigue, shortness of breath, weak voice, and sweating easily.",
+            d_zh: "易疲乏、氣短、聲音低弱、易出汗。",
+            details: {
+              symptoms_en: [
+                "Pale complexion",
+                "Soft or weak voice",
+                "Difficulty concentrating",
+                "Shortness of breath",
+                "Poor digestion",
+                "Weak immunity",
+              ],
+              symptoms_zh: [
+                "面色蒼白",
+                "聲音低弱",
+                "注意力不集中",
+                "氣短",
+                "消化不良",
+                "免疫力弱",
+              ],
+            },
+          },
+          yang_deficiency: {
+            n_en: "Yang Deficiency",
+            n_zh: "陽虛質",
+            qs: 7,
+            min: 7,
+            max: 35,
+            d_en: "Aversion to cold, cold limbs, preference for warmth, lack of energy.",
+            d_zh: "怕冷、手腳冰涼、喜溫暖、精神不振。",
+            details: {
+              symptoms_en: [
+                "Aversion to cold",
+                "Cold limbs",
+                "Preference for warmth",
+                "Lack of energy",
+                "Loose stools",
+                "Pale tongue",
+              ],
+              symptoms_zh: [
+                "怕冷",
+                "手腳冰涼",
+                "喜溫暖",
+                "精神不振",
+                "大便稀溏",
+                "舌淡",
+              ],
+            },
+          },
+          yin_deficiency: {
+            n_en: "Yin Deficiency",
+            n_zh: "陰虛質",
+            qs: 8,
+            min: 8,
+            max: 40,
+            d_en: "Feeling of heat, dry mouth/throat/skin, night sweats, hot palms/soles.",
+            d_zh: "感到發熱、口乾咽燥、皮膚乾燥、手足心熱、易盜汗。",
+            details: {
+              symptoms_en: [
+                "Feeling of heat in the afternoon/evening",
+                "Dry mouth and throat",
+                "Dry skin",
+                "Night sweats",
+                "Hot palms and soles",
+                "Red tongue with little coating",
+              ],
+              symptoms_zh: [
+                "午後或傍晚發熱感",
+                "口乾咽燥",
+                "皮膚乾燥",
+                "盜汗",
+                "手足心熱",
+                "舌紅少苔",
+              ],
+            },
+          },
+          phlegm_dampness: {
+            n_en: "Phlegm-Dampness",
+            n_zh: "痰濕質",
+            qs: 8,
+            min: 8,
+            max: 40,
+            d_en: "Feeling of heaviness, chest tightness, sticky mouth, excessive phlegm, often overweight.",
+            d_zh: "體型肥胖、腹部肥滿、胸悶、痰多、口黏膩。",
+            details: {
+              symptoms_en: [
+                "Feeling of body heaviness",
+                "Chest tightness",
+                "Sticky or sweet taste in mouth",
+                "Excessive phlegm",
+                "Often overweight",
+                "Greasy tongue coating",
+              ],
+              symptoms_zh: [
+                "身體沉重感",
+                "胸悶",
+                "口中黏膩或發甜",
+                "痰多",
+                "常超重",
+                "舌苔油膩",
+              ],
+            },
+          },
+          damp_heat: {
+            n_en: "Damp-Heat",
+            n_zh: "濕熱質",
+            qs: 6,
+            min: 6,
+            max: 30,
+            d_en: "Oily face/skin, acne, bitter taste, bad breath, sticky stools, yellow urine.",
+            d_zh: "面垢油光、易生痤瘡、口苦口臭、大便黏滯、小便黃赤。",
+            details: {
+              symptoms_en: [
+                "Oily face/skin",
+                "Acne or boils",
+                "Bitter taste in mouth",
+                "Bad breath",
+                "Sticky stools or incomplete bowel movement",
+                "Yellow, scanty urine",
+                "Yellow greasy tongue coating",
+              ],
+              symptoms_zh: [
+                "面部或皮膚油膩",
+                "易生痤瘡或癤子",
+                "口苦",
+                "口臭",
+                "大便黏滯不爽",
+                "小便黃短",
+                "舌苔黃膩",
+              ],
+            },
+          },
+          blood_stasis: {
+            n_en: "Blood Stasis",
+            n_zh: "血瘀質",
+            qs: 7,
+            min: 7,
+            max: 35,
+            d_en: "Dull/dark complexion, dark spots, dark lips, easy bruising, body pain.",
+            d_zh: "面色晦黯、易生褐斑、口唇色黯、易瘀青、身體疼痛。",
+            details: {
+              symptoms_en: [
+                "Dull or dark complexion",
+                "Dark spots on skin",
+                "Dark or purplish lips",
+                "Easy bruising",
+                "Fixed, stabbing pain",
+                "Dark circles under eyes",
+                "Purple tongue or spots on tongue",
+              ],
+              symptoms_zh: [
+                "面色晦暗",
+                "皮膚有色斑",
+                "口唇色暗或紫",
+                "易瘀青",
+                "固定刺痛",
+                "黑眼圈",
+                "舌質紫暗或有瘀點",
+              ],
+            },
+          },
+          qi_stagnation: {
+            n_en: "Qi Stagnation",
+            n_zh: "氣鬱質",
+            qs: 7,
+            min: 7,
+            max: 35,
+            d_en: "Emotional fluctuations, depression, anxiety, sighing, feeling of blockage.",
+            d_zh: "情緒波動、憂鬱、焦慮、常嘆氣、有異物感。",
+            details: {
+              symptoms_en: [
+                "Emotional fluctuations (depression, anxiety)",
+                "Frequent sighing",
+                "Feeling of blockage in chest or throat",
+                "Distending pain in chest or ribs",
+                "Irregular menstruation (females)",
+                "Thin white tongue coating",
+              ],
+              symptoms_zh: [
+                "情緒波動（憂鬱、焦慮）",
+                "經常嘆氣",
+                "胸部或喉嚨有堵塞感",
+                "胸脅脹痛",
+                "月經不調（女性）",
+                "舌苔薄白",
+              ],
+            },
+          },
+          special: {
+            n_en: "Inherited Special",
+            n_zh: "特稟質",
+            qs: 7,
+            min: 7,
+            max: 35,
+            d_en: "Prone to allergies (pollen, food, drugs), sneezing, runny nose, asthma, hives.",
+            d_zh: "易過敏（花粉、食物、藥物等）、打噴嚏、流鼻涕、哮喘、蕁麻疹。",
+            details: {
+              symptoms_en: [
+                "Allergic reactions (pollen, food, drugs)",
+                "Frequent sneezing",
+                "Runny or stuffy nose",
+                "Asthma or wheezing",
+                "Hives (urticaria)",
+                "Allergic rhinitis or dermatitis",
+              ],
+              symptoms_zh: [
+                "過敏反應（花粉、食物、藥物）",
+                "經常打噴嚏",
+                "流鼻涕或鼻塞",
+                "哮喘",
+                "蕁麻疹",
+                "過敏性鼻炎或皮炎",
+              ],
+            },
+          },
+        };
+        const QUESTIONS_PER_PAGE = 11;
+        const TOTAL_PAGES = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
+        const locationContainer = document.getElementById("location-container");
+        const locationSelect = document.createElement("select");
+        locationSelect.id = "pq-location";
+        locationSelect.name = "pq-location";
         locationSelect.required = true;
-        const defaultOption = document.createElement('option');
+        const defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = "Select Country...";
         defaultOption.disabled = true;
         defaultOption.selected = true;
         locationSelect.appendChild(defaultOption);
-        const countries = ["Hong Kong", "United States", "Canada", "United Kingdom", "Australia", "Singapore", "Other"];
-        countries.forEach(country => {
-            const option = document.createElement('option');
-            option.value = country; option.textContent = country;
-            locationSelect.appendChild(option);
+        const countries = [
+          "Hong Kong",
+          "United States",
+          "Canada",
+          "United Kingdom",
+          "Australia",
+          "Singapore",
+          "Other",
+        ];
+        countries.forEach((country) => {
+          const option = document.createElement("option");
+          option.value = country;
+          option.textContent = country;
+          locationSelect.appendChild(option);
         });
-        locationSelect.style.width = '100%';
-        locationSelect.style.padding = '8px 10px';
-        locationSelect.style.border = '1px solid var(--input-border)';
-        locationSelect.style.borderRadius = '4px';
-        locationSelect.style.fontSize = '0.95em';
-        locationSelect.style.boxSizing = 'border-box';
-        locationSelect.style.maxWidth = '200px';
-        if (locationContainer) { locationContainer.appendChild(locationSelect); }
-        function closeWelcomeModal(){welcomeModalOverlay.classList.remove("visible");}
-        function showPreQuizModal(){preQuizModalOverlay.classList.add("visible");}
-        function hidePreQuizModal(){preQuizModalOverlay.classList.remove("visible");}
-        function startMainQuiz(){quizContainer.style.display="block"; renderPage(1);}
-        function setLanguage(lang){
-            currentLang=lang; docElement.lang=lang==="zh"?"zh-Hant":"en"; document.title=lang==="en"?"TCM Body Constitution Test":"中醫體質測試";
-            const activePage=document.getElementById(`page${currentPage}`); if(activePage&&activePage.classList.contains("active"))renderPage(currentPage);
-            if(mailerlitePlaceholder)mailerlitePlaceholder.style.display=resultsContainer.style.display;
-            langEnBtnWelcome.classList.toggle("active",currentLang==="en"); langZhBtnWelcome.classList.toggle("active",currentLang==="zh");
-            const welcomeLangEn=welcomeModalOverlay.querySelector("#langEnBtnWelcome"); const welcomeLangZh=welcomeModalOverlay.querySelector("#langZhBtnWelcome");
-            if(welcomeLangEn&&welcomeLangZh){welcomeLangEn.classList.toggle("active",currentLang==="en"); welcomeLangZh.classList.toggle("active",currentLang==="zh");}
+        locationSelect.style.width = "100%";
+        locationSelect.style.padding = "8px 10px";
+        locationSelect.style.border = "1px solid var(--input-border)";
+        locationSelect.style.borderRadius = "4px";
+        locationSelect.style.fontSize = "0.95em";
+        locationSelect.style.boxSizing = "border-box";
+        locationSelect.style.maxWidth = "200px";
+        if (locationContainer) {
+          locationContainer.appendChild(locationSelect);
         }
-        function renderPage(pageNumber){
-            quizPages.forEach((page)=>page.classList.remove("active")); const pageElement=document.getElementById(`page${pageNumber}`); if(!pageElement)return;
-            const tableBody=pageElement.querySelector("tbody"); if(!tableBody)return; tableBody.innerHTML="";
-            const startIndex=(pageNumber-1)*QUESTIONS_PER_PAGE; const endIndex=Math.min(startIndex+QUESTIONS_PER_PAGE,questions.length);
-            let questionsHtml=""; for(let i=startIndex;i<endIndex;i++){questionsHtml+=generateQuestionHtml(questions[i],i);} tableBody.innerHTML=questionsHtml;
-            const endMessage=pageElement.querySelector(".end-message"); if(endMessage)endMessage.style.display=pageNumber===TOTAL_PAGES?"block":"none";
-            pageElement.classList.add("active"); updateNavigation(); scrollToQuizTop();
+        function closeWelcomeModal() {
+          welcomeModalOverlay.classList.remove("visible");
         }
-        function generateQuestionHtml(question,index){const qNum=index+1; const checkedValue=userAnswers[question.id]; return `<tr><td><span lang="en">${qNum}. ${question.en}</span><span lang="zh-Hant">${qNum}. ${question.zh}</span></td><td><input type="radio" name="${question.id}" value="Never" required ${checkedValue==="Never"?"checked":""} /><span class="mobile-label" lang="en">Never</span><span class="mobile-label" lang="zh-Hant">沒有</span></td><td><input type="radio" name="${question.id}" value="Seldom" ${checkedValue==="Seldom"?"checked":""} /><span class="mobile-label" lang="en">Seldom</span><span class="mobile-label" lang="zh-Hant">很少</span></td><td><input type="radio" name="${question.id}" value="Sometimes" ${checkedValue==="Sometimes"?"checked":""} /><span class="mobile-label" lang="en">Sometimes</span><span class="mobile-label" lang="zh-Hant">有時</span></td><td><input type="radio" name="${question.id}" value="Often" ${checkedValue==="Often"?"checked":""} /><span class="mobile-label" lang="en">Often</span><span class="mobile-label" lang="zh-Hant">經常</span></td><td><input type="radio" name="${question.id}" value="Always" ${checkedValue==="Always"?"checked":""} /><span class="mobile-label" lang="en">Always</span><span class="mobile-label" lang="zh-Hant">總是</span></td></tr>`;}
-        function updateNavigation(){
-            if(!quizContainer||quizContainer.style.display==="none")return;
-            stepIndicator.textContent=currentLang==="en"?`Step ${currentPage} of ${TOTAL_PAGES}`:`第 ${currentPage} 步，共 ${TOTAL_PAGES} 步`; progressBar.style.width=`${(currentPage/TOTAL_PAGES)*100}%`;
-            prevBtn.style.display=currentPage>1?"inline-block":"none"; nextBtn.style.display=currentPage<TOTAL_PAGES?"inline-block":"none"; submitBtn.style.display=currentPage===TOTAL_PAGES?"inline-block":"none";
+        function showPreQuizModal() {
+          preQuizModalOverlay.classList.add("visible");
+        }
+        function hidePreQuizModal() {
+          preQuizModalOverlay.classList.remove("visible");
+        }
+        function startMainQuiz() {
+          quizContainer.style.display = "block";
+          renderPage(1);
+        }
+        function setLanguage(lang) {
+          currentLang = lang;
+          docElement.lang = lang === "zh" ? "zh-Hant" : "en";
+          document.title =
+            lang === "en" ? "TCM Body Constitution Test" : "中醫體質測試";
+          const activePage = document.getElementById(`page${currentPage}`);
+          if (activePage && activePage.classList.contains("active"))
+            renderPage(currentPage);
+          if (mailerlitePlaceholder)
+            mailerlitePlaceholder.style.display =
+              resultsContainer.style.display;
+          langEnBtnWelcome.classList.toggle("active", currentLang === "en");
+          langZhBtnWelcome.classList.toggle("active", currentLang === "zh");
+          const welcomeLangEn =
+            welcomeModalOverlay.querySelector("#langEnBtnWelcome");
+          const welcomeLangZh =
+            welcomeModalOverlay.querySelector("#langZhBtnWelcome");
+          if (welcomeLangEn && welcomeLangZh) {
+            welcomeLangEn.classList.toggle("active", currentLang === "en");
+            welcomeLangZh.classList.toggle("active", currentLang === "zh");
+          }
+        }
+        function renderPage(pageNumber) {
+          quizPages.forEach((page) => page.classList.remove("active"));
+          const pageElement = document.getElementById(`page${pageNumber}`);
+          if (!pageElement) return;
+          const tableBody = pageElement.querySelector("tbody");
+          if (!tableBody) return;
+          tableBody.innerHTML = "";
+          const startIndex = (pageNumber - 1) * QUESTIONS_PER_PAGE;
+          const endIndex = Math.min(
+            startIndex + QUESTIONS_PER_PAGE,
+            questions.length
+          );
+          let questionsHtml = "";
+          for (let i = startIndex; i < endIndex; i++) {
+            questionsHtml += generateQuestionHtml(questions[i], i);
+          }
+          tableBody.innerHTML = questionsHtml;
+          const endMessage = pageElement.querySelector(".end-message");
+          if (endMessage)
+            endMessage.style.display =
+              pageNumber === TOTAL_PAGES ? "block" : "none";
+          pageElement.classList.add("active");
+          updateNavigation();
+          scrollToQuizTop();
+        }
+        function generateQuestionHtml(question, index) {
+          const qNum = index + 1;
+          const checkedValue = userAnswers[question.id];
+          return `<tr><td><span lang="en">${qNum}. ${
+            question.en
+          }</span><span lang="zh-Hant">${qNum}. ${
+            question.zh
+          }</span></td><td><input type="radio" name="${
+            question.id
+          }" value="Never" required ${
+            checkedValue === "Never" ? "checked" : ""
+          } /><span class="mobile-label" lang="en">Never</span><span class="mobile-label" lang="zh-Hant">沒有</span></td><td><input type="radio" name="${
+            question.id
+          }" value="Seldom" ${
+            checkedValue === "Seldom" ? "checked" : ""
+          } /><span class="mobile-label" lang="en">Seldom</span><span class="mobile-label" lang="zh-Hant">很少</span></td><td><input type="radio" name="${
+            question.id
+          }" value="Sometimes" ${
+            checkedValue === "Sometimes" ? "checked" : ""
+          } /><span class="mobile-label" lang="en">Sometimes</span><span class="mobile-label" lang="zh-Hant">有時</span></td><td><input type="radio" name="${
+            question.id
+          }" value="Often" ${
+            checkedValue === "Often" ? "checked" : ""
+          } /><span class="mobile-label" lang="en">Often</span><span class="mobile-label" lang="zh-Hant">經常</span></td><td><input type="radio" name="${
+            question.id
+          }" value="Always" ${
+            checkedValue === "Always" ? "checked" : ""
+          } /><span class="mobile-label" lang="en">Always</span><span class="mobile-label" lang="zh-Hant">總是</span></td></tr>`;
+        }
+        function updateNavigation() {
+          if (!quizContainer || quizContainer.style.display === "none") return;
+          stepIndicator.textContent =
+            currentLang === "en"
+              ? `Step ${currentPage} of ${TOTAL_PAGES}`
+              : `第 ${currentPage} 步，共 ${TOTAL_PAGES} 步`;
+          progressBar.style.width = `${(currentPage / TOTAL_PAGES) * 100}%`;
+          prevBtn.style.display = currentPage > 1 ? "inline-block" : "none";
+          nextBtn.style.display =
+            currentPage < TOTAL_PAGES ? "inline-block" : "none";
+          submitBtn.style.display =
+            currentPage === TOTAL_PAGES ? "inline-block" : "none";
+          errorMsg.classList.remove("visible");
+        }
+        function scrollToQuizTop() {
+          if (quizContainer && quizContainer.style.display !== "none") {
+            try {
+              window.parent.scrollTo({
+                top: quizContainer.offsetTop,
+                behavior: "smooth",
+              });
+            } catch (e) {
+              quizContainer.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }
+        }
+        function scrollToResultsTop() {
+          if (resultsContainer) {
+            try {
+              window.parent.scrollTo({
+                top: resultsContainer.offsetTop,
+                behavior: "smooth",
+              });
+            } catch (e) {
+              resultsContainer.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }
+        }
+        function validatePage(pageNumber) {
+          if (errorTimeout) clearTimeout(errorTimeout);
+          errorTimeout = null;
+          const pageElement = document.getElementById(`page${pageNumber}`);
+          if (!pageElement) return false;
+          const requiredRadios = pageElement.querySelectorAll(
+            'input[type="radio"][required]'
+          );
+          const questionNames = new Set();
+          requiredRadios.forEach((radio) => questionNames.add(radio.name));
+          for (let name of questionNames) {
+            const radioGroup = quizForm.elements[name];
+            if (
+              (radioGroup instanceof RadioNodeList && !radioGroup.value) ||
+              (radioGroup && !radioGroup.value && radioGroup.type === "radio")
+            ) {
+              const errorText =
+                currentLang === "en"
+                  ? "Please answer all questions on this page to proceed."
+                  : "請回答本頁所有問題以繼續。";
+              showError(errorText);
+              if (radioGroup[0]) radioGroup[0].focus();
+              else if (radioGroup) radioGroup.focus();
+              return false;
+            }
+          }
+          errorMsg.classList.remove("visible");
+          return true;
+        }
+        function showError(message) {
+          errorMsg.textContent = message;
+          errorMsg.classList.add("visible");
+          errorTimeout = setTimeout(() => {
             errorMsg.classList.remove("visible");
+            errorTimeout = null;
+          }, 3000);
         }
-        function scrollToQuizTop(){if(quizContainer&&quizContainer.style.display!=="none"){try{window.parent.scrollTo({top:quizContainer.offsetTop,behavior:"smooth"});}catch(e){quizContainer.scrollIntoView({behavior:"smooth",block:"start"});}}}
-        function scrollToResultsTop(){if(resultsContainer){try{window.parent.scrollTo({top:resultsContainer.offsetTop,behavior:"smooth"});}catch(e){resultsContainer.scrollIntoView({behavior:"smooth",block:"start"});}}}
-        function validatePage(pageNumber){
-            if(errorTimeout)clearTimeout(errorTimeout); errorTimeout=null; const pageElement=document.getElementById(`page${pageNumber}`); if(!pageElement)return false;
-            const requiredRadios=pageElement.querySelectorAll('input[type="radio"][required]'); const questionNames=new Set();
-            requiredRadios.forEach((radio)=>questionNames.add(radio.name));
-            for(let name of questionNames){
-                const radioGroup=quizForm.elements[name];
-                if((radioGroup instanceof RadioNodeList&&!radioGroup.value)||(radioGroup&&!radioGroup.value&&radioGroup.type==='radio')){
-                    const errorText=currentLang==="en"?"Please answer all questions on this page to proceed.":"請回答本頁所有問題以繼續。";
-                    showError(errorText); if(radioGroup[0])radioGroup[0].focus(); else if(radioGroup)radioGroup.focus(); return false;
-                }
+        function calculateScores() {
+          const formData = new FormData(quizForm);
+          const formAnswers = Object.fromEntries(formData);
+          let rawScores = {},
+            finalScores = {};
+          Object.keys(constitutionTypes).forEach((type) => {
+            rawScores[type] = 0;
+          });
+          questions.forEach((q) => {
+            const answer = formAnswers[q.id];
+            if (answer && scoreMap[answer]) {
+              const score = q.rev ? 6 - scoreMap[answer] : scoreMap[answer];
+              rawScores[q.type] += score;
+            } else {
             }
-            errorMsg.classList.remove("visible"); return true;
+          });
+          Object.keys(constitutionTypes).forEach((type) => {
+            const typeInfo = constitutionTypes[type];
+            const rawScore = rawScores[type];
+            const minScore = typeInfo.min;
+            const maxScore = typeInfo.max;
+            let percentageScore =
+              maxScore - minScore != 0
+                ? ((rawScore - minScore) / (maxScore - minScore)) * 100
+                : 0;
+            finalScores[type] = Math.max(0, Math.min(100, percentageScore));
+          });
+          return finalScores;
         }
-        function showError(message){errorMsg.textContent=message; errorMsg.classList.add("visible"); errorTimeout=setTimeout(()=>{errorMsg.classList.remove("visible"); errorTimeout=null;},3000);}
-        function calculateScores(){
-            const formData=new FormData(quizForm); const formAnswers=Object.fromEntries(formData); let rawScores={}, finalScores={};
-            Object.keys(constitutionTypes).forEach((type)=>{rawScores[type]=0;});
-            questions.forEach((q)=>{const answer=formAnswers[q.id]; if(answer&&scoreMap[answer]){const score=q.rev?6-scoreMap[answer]:scoreMap[answer]; rawScores[q.type]+=score;}else{}});
-            Object.keys(constitutionTypes).forEach((type)=>{const typeInfo=constitutionTypes[type]; const rawScore=rawScores[type]; const minScore=typeInfo.min; const maxScore=typeInfo.max; let percentageScore=(maxScore-minScore!=0)?((rawScore-minScore)/(maxScore-minScore))*100:0; finalScores[type]=Math.max(0,Math.min(100,percentageScore));});
-            return finalScores;
-        }
-        function determineConstitution(scores){
-            const balancedScore=scores.balanced; let isBalanced=balancedScore>=60; let imbalancedPatterns=[];
-            Object.keys(scores).forEach((type)=>{if(type!=="balanced"){if(scores[type]>=40){imbalancedPatterns.push({type:type,score:scores[type]}); isBalanced=false;}else if(scores[type]>=30){imbalancedPatterns.push({type:type,score:scores[type]});}}});
-            if(balancedScore>=60){let trulyBalanced=true; imbalancedPatterns.forEach(p=>{if(p.score>=40)trulyBalanced=false;}); isBalanced=trulyBalanced;}else{isBalanced=false;}
-            if(isBalanced)return{resType:"balanced",data:[{type:"balanced",score:balancedScore}]};
-            else{imbalancedPatterns.sort((a,b)=>b.score-a.score); return{resType:"imbalanced",data:imbalancedPatterns};}
-        }
-        function getSeverity(score){if(score>=80)return{label_en:"High",label_zh:"高",class:"severity-high"}; if(score>=60)return{label_en:"Moderate-High",label_zh:"中-高",class:"severity-moderate-high"}; if(score>=40)return{label_en:"Moderate",label_zh:"中",class:"severity-moderate"}; return null;}
-        function displayResults(results){
-            currentResults=results; resultsContent.innerHTML=""; const lang=currentLang; const nameKey=lang==="en"?"n_en":"n_zh"; const descKey=lang==="en"?"d_en":"d_zh"; const symptomKey=lang==="en"?"_en":"_zh";
-            if(results.resType==="balanced"){
-                const typeInfo=constitutionTypes.balanced; const score=results.data[0].score; const imageUrl=imageUrls.balanced[lang]||""; const imgTag=imageUrl?`<img src="${imageUrl}" alt="${typeInfo[nameKey]}" class="type-image" />`:"";
-                resultsContent.innerHTML=`<div class="bal-res"><div class="image-placeholder" style="width: 50%; margin: 0 auto 15px auto;">${imgTag}</div><p><strong style="font-size:1.3em;">${typeInfo[nameKey]}</strong><br>(<span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${score.toFixed(1)})</p><p class="res-desc">${typeInfo[descKey]}</p><p><span lang="en">Generally balanced and healthy.</span><span lang="zh-Hant">您的體質總體上是平衡和健康的。</span></p></div>`;
-            }else{
-                const patterns=results.data;
-                if(patterns.length===0){resultsContent.innerHTML=`<p style="text-align:center;"><span lang="en">No dominant pattern identified (all scores below 40). You seem relatively balanced.</span><span lang="zh-Hant">未識別出顯著體質模式（所有分數均低於40）。您似乎相對平衡。</span></p>`;}
-                else{
-                    let resultsHtml=""; const primary=patterns[0]; const primaryInfo=constitutionTypes[primary.type]; const primaryDetails=primaryInfo.details; const primaryImageUrl=(imageUrls[primary.type]||{})[lang]||""; const primarySeverity=getSeverity(primary.score); const severityTag=primarySeverity?`<span class="severity-label ${primarySeverity.class}"><span lang="en">${primarySeverity.label_en}</span><span lang="zh-Hant">${primarySeverity.label_zh}</span></span>`:"";
-                    resultsHtml+=`<div class="primary-pattern-card"><div class="primary-pattern-header"><div class="pattern-info"><span class="label"><span lang="en">Primary Pattern</span><span lang="zh-Hant">主要模式</span></span><h3 class="pattern-name">${primaryInfo[nameKey]}</h3></div> ${severityTag}</div><div class="score-section"><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${primary.score.toFixed(1)}</div><div class="score-bar-container"><div class="score-bar-fill" style="width: ${primary.score.toFixed(1)}%;"></div></div></div><div class="primary-pattern-content"><div class="image-placeholder">${primaryImageUrl?`<img src="${primaryImageUrl}" alt="${primaryInfo[nameKey]}" class="type-image" />`:""}</div><div class="key-symptoms"><h4><span lang="en">Key Symptoms</span><span lang="zh-Hant">關鍵症狀</span></h4> ${primaryDetails&&primaryDetails[`symptoms${symptomKey}`]?`<ul>${primaryDetails[`symptoms${symptomKey}`].map((s)=>`<li>${s}</li>`).join("")}</ul>`:`<p style="font-size:0.9em; color:var(--muted-color);"><span lang="en">Detailed symptoms list not available for this type yet.</span><span lang="zh-Hant">此體質類型的詳細症狀列表尚不可用。</span></p>`}</div></div></div>`;
-                    const secondaryPatterns=patterns.slice(1).filter((p)=>p.score>=30);
-                    if(secondaryPatterns.length>0){
-                        resultsHtml+=`<div class="other-patterns-section"><h3><span lang="en">Other Potential Patterns</span><span lang="zh-Hant">其他潛在模式</span></h3><p><span lang="en">These secondary patterns may also be influencing your health.</span><span lang="zh-Hant">這些次要模式也可能影響您的健康。</span></p>`;
-                        for(let i=0;i<Math.min(secondaryPatterns.length,2);i++){
-                            const secondary=secondaryPatterns[i]; const secondaryInfo=constitutionTypes[secondary.type]; const secondarySeverity=getSeverity(secondary.score); const secondarySeverityTag=secondarySeverity?`<span class="severity-label ${secondarySeverity.class}"><span lang="en">${secondarySeverity.label_en}</span><span lang="zh-Hant">${secondarySeverity.label_zh}</span></span>`:"";
-                            resultsHtml+=`<div class="secondary-pattern-card"><div class="secondary-pattern-info"><h4 class="pattern-name">${secondaryInfo[nameKey]}</h4><div class="secondary-score-section"><div class="score-bar-container"><div class="score-bar-fill" style="width: ${secondary.score.toFixed(1)}%;"></div></div><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${secondary.score.toFixed(1)}</div></div></div> ${secondarySeverityTag}</div>`;
-                        } resultsHtml+=`</div>`;
-                    } resultsContent.innerHTML=resultsHtml;
-                }
+        function determineConstitution(scores) {
+          const balancedScore = scores.balanced;
+          let isBalanced = balancedScore >= 60;
+          let imbalancedPatterns = [];
+          Object.keys(scores).forEach((type) => {
+            if (type !== "balanced") {
+              if (scores[type] >= 40) {
+                imbalancedPatterns.push({ type: type, score: scores[type] });
+                isBalanced = false;
+              } else if (scores[type] >= 30) {
+                imbalancedPatterns.push({ type: type, score: scores[type] });
+              }
             }
-            quizContainer.style.display="none"; resultsContainer.style.display="block"; mailerlitePlaceholder.style.display="block";
-            scrollToResultsTop();
+          });
+          if (balancedScore >= 60) {
+            let trulyBalanced = true;
+            imbalancedPatterns.forEach((p) => {
+              if (p.score >= 40) trulyBalanced = false;
+            });
+            isBalanced = trulyBalanced;
+          } else {
+            isBalanced = false;
+          }
+          if (isBalanced)
+            return {
+              resType: "balanced",
+              data: [{ type: "balanced", score: balancedScore }],
+            };
+          else {
+            imbalancedPatterns.sort((a, b) => b.score - a.score);
+            return { resType: "imbalanced", data: imbalancedPatterns };
+          }
         }
-        welcomeModalOverlay.classList.add("visible"); setLanguage(currentLang);
-        langEnBtnWelcome.addEventListener("click",()=>setLanguage("en"));
-        langZhBtnWelcome.addEventListener("click",()=>setLanguage("zh"));
-        startQuizBtnEn.addEventListener("click",()=>{closeWelcomeModal(); showPreQuizModal();});
-        startQuizBtnZh.addEventListener("click",()=>{closeWelcomeModal(); showPreQuizModal();});
-        continueToMainQuizBtn.addEventListener("click",()=>{
-            preQuizErrorMsg.style.display="none"; const preQuizData=new FormData(preQuizForm);
-            const age=preQuizData.get("pq-age"); const gender=preQuizData.get("pq-gender");
-            const location=preQuizData.get("pq-location");
-            if(age&&gender&&location){preQuizAnswers={age:age,gender:gender,location:location}; hidePreQuizModal(); startMainQuiz();}
-            else{preQuizErrorMsg.style.display="block"; setTimeout(()=>{preQuizErrorMsg.style.display="none";},3000);}
+        function getSeverity(score) {
+          if (score >= 80)
+            return { label_en: "High", label_zh: "高", class: "severity-high" };
+          if (score >= 60)
+            return {
+              label_en: "Moderate-High",
+              label_zh: "中-高",
+              class: "severity-moderate-high",
+            };
+          if (score >= 40)
+            return {
+              label_en: "Moderate",
+              label_zh: "中",
+              class: "severity-moderate",
+            };
+          return null;
+        }
+        function displayResults(results) {
+          currentResults = results;
+          resultsContent.innerHTML = "";
+          const lang = currentLang;
+          const nameKey = lang === "en" ? "n_en" : "n_zh";
+          const descKey = lang === "en" ? "d_en" : "d_zh";
+          const symptomKey = lang === "en" ? "_en" : "_zh";
+          if (results.resType === "balanced") {
+            const typeInfo = constitutionTypes.balanced;
+            const score = results.data[0].score;
+            const imageUrl = imageUrls.balanced[lang] || "";
+            const imgTag = imageUrl
+              ? `<img src="${imageUrl}" alt="${typeInfo[nameKey]}" class="type-image" />`
+              : "";
+            resultsContent.innerHTML = `<div class="bal-res"><div class="image-placeholder" style="width: 50%; margin: 0 auto 15px auto;">${imgTag}</div><p><strong style="font-size:1.3em;">${
+              typeInfo[nameKey]
+            }</strong><br>(<span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${score.toFixed(
+              1
+            )})</p><p class="res-desc">${
+              typeInfo[descKey]
+            }</p><p><span lang="en">Generally balanced and healthy.</span><span lang="zh-Hant">您的體質總體上是平衡和健康的。</span></p></div>`;
+          } else {
+            const patterns = results.data;
+            if (patterns.length === 0) {
+              resultsContent.innerHTML = `<p style="text-align:center;"><span lang="en">No dominant pattern identified (all scores below 40). You seem relatively balanced.</span><span lang="zh-Hant">未識別出顯著體質模式（所有分數均低於40）。您似乎相對平衡。</span></p>`;
+            } else {
+              let resultsHtml = "";
+              const primary = patterns[0];
+              const primaryInfo = constitutionTypes[primary.type];
+              const primaryDetails = primaryInfo.details;
+              const primaryImageUrl =
+                (imageUrls[primary.type] || {})[lang] || "";
+              const primarySeverity = getSeverity(primary.score);
+              const severityTag = primarySeverity
+                ? `<span class="severity-label ${primarySeverity.class}"><span lang="en">${primarySeverity.label_en}</span><span lang="zh-Hant">${primarySeverity.label_zh}</span></span>`
+                : "";
+              resultsHtml += `<div class="primary-pattern-card"><div class="primary-pattern-header"><div class="pattern-info"><span class="label"><span lang="en">Primary Pattern</span><span lang="zh-Hant">主要模式</span></span><h3 class="pattern-name">${
+                primaryInfo[nameKey]
+              }</h3></div> ${severityTag}</div><div class="score-section"><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${primary.score.toFixed(
+                1
+              )}</div><div class="score-bar-container"><div class="score-bar-fill" style="width: ${primary.score.toFixed(
+                1
+              )}%;"></div></div></div><div class="primary-pattern-content"><div class="image-placeholder">${
+                primaryImageUrl
+                  ? `<img src="${primaryImageUrl}" alt="${primaryInfo[nameKey]}" class="type-image" />`
+                  : ""
+              }</div><div class="key-symptoms"><h4><span lang="en">Key Symptoms</span><span lang="zh-Hant">關鍵症狀</span></h4> ${
+                primaryDetails && primaryDetails[`symptoms${symptomKey}`]
+                  ? `<ul>${primaryDetails[`symptoms${symptomKey}`]
+                      .map((s) => `<li>${s}</li>`)
+                      .join("")}</ul>`
+                  : `<p style="font-size:0.9em; color:var(--muted-color);"><span lang="en">Detailed symptoms list not available for this type yet.</span><span lang="zh-Hant">此體質類型的詳細症狀列表尚不可用。</span></p>`
+              }</div></div></div>`;
+              const secondaryPatterns = patterns
+                .slice(1)
+                .filter((p) => p.score >= 30);
+              if (secondaryPatterns.length > 0) {
+                resultsHtml += `<div class="other-patterns-section"><h3><span lang="en">Other Potential Patterns</span><span lang="zh-Hant">其他潛在模式</span></h3><p><span lang="en">These secondary patterns may also be influencing your health.</span><span lang="zh-Hant">這些次要模式也可能影響您的健康。</span></p>`;
+                for (
+                  let i = 0;
+                  i < Math.min(secondaryPatterns.length, 2);
+                  i++
+                ) {
+                  const secondary = secondaryPatterns[i];
+                  const secondaryInfo = constitutionTypes[secondary.type];
+                  const secondarySeverity = getSeverity(secondary.score);
+                  const secondarySeverityTag = secondarySeverity
+                    ? `<span class="severity-label ${secondarySeverity.class}"><span lang="en">${secondarySeverity.label_en}</span><span lang="zh-Hant">${secondarySeverity.label_zh}</span></span>`
+                    : "";
+                  resultsHtml += `<div class="secondary-pattern-card"><div class="secondary-pattern-info"><h4 class="pattern-name">${
+                    secondaryInfo[nameKey]
+                  }</h4><div class="secondary-score-section"><div class="score-bar-container"><div class="score-bar-fill" style="width: ${secondary.score.toFixed(
+                    1
+                  )}%;"></div></div><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${secondary.score.toFixed(
+                    1
+                  )}</div></div></div> ${secondarySeverityTag}</div>`;
+                }
+                resultsHtml += `</div>`;
+              }
+              resultsContent.innerHTML = resultsHtml;
+            }
+          }
+          quizContainer.style.display = "none";
+          resultsContainer.style.display = "block";
+          mailerlitePlaceholder.style.display = "block";
+          scrollToResultsTop();
+        }
+        welcomeModalOverlay.classList.add("visible");
+        setLanguage(currentLang);
+        langEnBtnWelcome.addEventListener("click", () => setLanguage("en"));
+        langZhBtnWelcome.addEventListener("click", () => setLanguage("zh"));
+        startQuizBtnEn.addEventListener("click", () => {
+          closeWelcomeModal();
+          showPreQuizModal();
         });
-        quizForm.addEventListener("change",(event)=>{if(event.target.type==="radio")userAnswers[event.target.name]=event.target.value;});
-        prevBtn.addEventListener("click",()=>{if(currentPage>1){currentPage--; renderPage(currentPage);}});
-        nextBtn.addEventListener("click",()=>{if(validatePage(currentPage) && currentPage < TOTAL_PAGES){currentPage++; renderPage(currentPage);}});
-        submitBtn.addEventListener("click",()=>{if(validatePage(currentPage)){const scores=calculateScores(); const resultData=determineConstitution(scores); displayResults(resultData);}});
+        startQuizBtnZh.addEventListener("click", () => {
+          closeWelcomeModal();
+          showPreQuizModal();
+        });
+        continueToMainQuizBtn.addEventListener("click", () => {
+          preQuizErrorMsg.style.display = "none";
+          const preQuizData = new FormData(preQuizForm);
+          const age = preQuizData.get("pq-age");
+          const gender = preQuizData.get("pq-gender");
+          const location = preQuizData.get("pq-location");
+          if (age && gender && location) {
+            preQuizAnswers = { age: age, gender: gender, location: location };
+            hidePreQuizModal();
+            startMainQuiz();
+          } else {
+            preQuizErrorMsg.style.display = "block";
+            setTimeout(() => {
+              preQuizErrorMsg.style.display = "none";
+            }, 3000);
+          }
+        });
+        quizForm.addEventListener("change", (event) => {
+          if (event.target.type === "radio")
+            userAnswers[event.target.name] = event.target.value;
+        });
+        prevBtn.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+          }
+        });
+        nextBtn.addEventListener("click", () => {
+          if (validatePage(currentPage) && currentPage < TOTAL_PAGES) {
+            currentPage++;
+            renderPage(currentPage);
+          }
+        });
+        submitBtn.addEventListener("click", () => {
+          if (validatePage(currentPage)) {
+            const scores = calculateScores();
+            const resultData = determineConstitution(scores);
+            displayResults(resultData);
+          }
+        });
 
-        // --- Add this new code block ---
-        const pdfRequestForm = document.getElementById('pdf-request-form');
-        const formMessage = document.getElementById('form-message');
-        const submitPdfRequestBtn = document.getElementById('submit-pdf-request');
+        const pdfRequestForm = document.getElementById("pdf-request-form");
+        const formMessage = document.getElementById("form-message");
+        const submitPdfRequestBtn =
+          document.getElementById("submit-pdf-request");
 
         if (pdfRequestForm) {
-            pdfRequestForm.addEventListener('submit', async (event) => {
-                event.preventDefault(); // Prevent default page reload
-                submitPdfRequestBtn.disabled = true; // Disable button while sending
-                formMessage.textContent = currentLang === 'en' ? 'Sending...' : '發送中...';
-                formMessage.style.color = 'var(--muted-color)';
+          pdfRequestForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            submitPdfRequestBtn.disabled = true;
+            formMessage.textContent =
+              currentLang === "en" ? "Sending..." : "發送中...";
+            formMessage.style.color = "var(--muted-color)";
 
-                const nameInput = document.getElementById('user-name');
-                const emailInput = document.getElementById('user-email');
+            const nameInput = document.getElementById("user-name");
+            const emailInput = document.getElementById("user-email");
 
-                const formData = {
-                    name: nameInput.value,
-                    email: emailInput.value,
-                    // Include pre-quiz answers for stats
-                    age: preQuizAnswers.age || 'Not provided',
-                    gender: preQuizAnswers.gender || 'Not provided',
-                    location: preQuizAnswers.location || 'Not provided'
-                };
+            const formData = {
+              name: nameInput.value,
+              email: emailInput.value,
 
-                try {
-                    const response = await fetch('/api/process-submission', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData),
-                    });
+              age: preQuizAnswers.age || "Not provided",
+              gender: preQuizAnswers.gender || "Not provided",
+              location: preQuizAnswers.location || "Not provided",
+            };
 
-                    const result = await response.json();
+            try {
+              const response = await fetch("/api/process-submission", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+              });
 
-                    if (response.ok && result.success) {
-                        formMessage.textContent = currentLang === 'en' ? 'Success! Please check your email (and spam folder).' : '成功！請檢查您的電子郵件（包括垃圾郵件文件夾）。';
-                        formMessage.style.color = 'green';
-                        pdfRequestForm.reset(); // Clear the form
-                    } else {
-                        console.error('Submission error:', result.error);
-                        formMessage.textContent = currentLang === 'en' ? 'Error sending email. Please try again later.' : '發送郵件時出錯。請稍後再試。';
-                        formMessage.style.color = 'var(--error-color)';
-                        submitPdfRequestBtn.disabled = false; // Re-enable button on error
-                    }
-                } catch (error) {
-                    console.error('Network or fetch error:', error);
-                    formMessage.textContent = currentLang === 'en' ? 'Network error. Please check connection and try again.' : '網絡錯誤。請檢查連接並重試。';
-                    formMessage.style.color = 'var(--error-color)';
-                    submitPdfRequestBtn.disabled = false; // Re-enable button on error
-                }
-            });
+              const result = await response.json();
+
+              if (response.ok && result.success) {
+                formMessage.textContent =
+                  currentLang === "en"
+                    ? "Success! Please check your email (and spam folder)."
+                    : "成功！請檢查您的電子郵件（包括垃圾郵件文件夾）。";
+                formMessage.style.color = "green";
+                pdfRequestForm.reset();
+              } else {
+                console.error("Submission error:", result.error);
+                formMessage.textContent =
+                  currentLang === "en"
+                    ? "Error sending email. Please try again later."
+                    : "發送郵件時出錯。請稍後再試。";
+                formMessage.style.color = "var(--error-color)";
+                submitPdfRequestBtn.disabled = false;
+              }
+            } catch (error) {
+              console.error("Network or fetch error:", error);
+              formMessage.textContent =
+                currentLang === "en"
+                  ? "Network error. Please check connection and try again."
+                  : "網絡錯誤。請檢查連接並重試。";
+              formMessage.style.color = "var(--error-color)";
+              submitPdfRequestBtn.disabled = false;
+            }
+          });
         }
-
-    });
+      });
     </script>
-</body>
+  </body>
 </html>
