@@ -2569,22 +2569,24 @@
                 formMessage.style.color = "green";
                 pdfRequestForm.reset();
               } else {
-                console.error("Submission error:", result.error);
+                // Handle cases where Vercel responds but indicates failure (e.g., MailerSend failed)
+                console.error("Submission error reported by server:", result.error);
                 formMessage.textContent =
                   currentLang === "en"
-                    ? "Error sending email. Please try again later."
-                    : "發送郵件時出錯。請稍後再試。";
+                    ? "Submission failed. Please try again later."
+                    : "提交失敗。請稍後再試。";
                 formMessage.style.color = "var(--error-color)";
                 submitPdfRequestBtn.disabled = false;
               }
             } catch (error) {
-              console.error("Network or fetch error:", error);
+              // This CATCH block is now important - it likely catches the Vercel 504 timeout
+              console.error("Network or fetch error (potentially Vercel timeout):", error);
               formMessage.textContent =
                 currentLang === "en"
-                  ? "Network error. Please check connection and try again."
-                  : "網絡錯誤。請檢查連接並重試。";
-              formMessage.style.color = "var(--error-color)";
-              submitPdfRequestBtn.disabled = false;
+                  ? "Submission attempt finished. Check your email/sheet (may be delayed)." // Changed message
+                  : "已嘗試提交。請檢查您的電郵/表格（可能會有延遲）。"; // Changed message
+              formMessage.style.color = "var(--error-color)"; // Keep it red to indicate an issue
+              submitPdfRequestBtn.disabled = false; // <-- RE-ENABLE ON FETCH/NETWORK FAILURE
             }
           });
         }
