@@ -878,7 +878,7 @@
           | <button class="lang-btn" id="langZhBtnWelcome">繁體中文</button>
         </div>
         <div lang="en">
-          <h2>Welcome!</h2>
+          <h2>Welcome to the Chinese Medicine Body Constitution Test!</h2>
           <p>
             This self-assessment helps identify your body constitution — an
             important foundation for holistic health in TCM.
@@ -892,7 +892,7 @@
           </button>
         </div>
         <div lang="zh-Hant">
-          <h2>歡迎！</h2>
+          <h2>歡迎來到中醫體質測試！</h2>
           <p>
             這份自我評估問卷可幫助您了解自己的體質，這是中醫養生保健的重要基礎。
           </p>
@@ -2541,13 +2541,34 @@
             const nameInput = document.getElementById("user-name");
             const emailInput = document.getElementById("user-email");
 
+            // --- MODIFICATION START: Get results data ---
+            let primaryTypeName = 'N/A';
+            let primaryScore = 'N/A';
+
+            if (currentResults && currentResults.data && currentResults.data.length > 0) {
+              const primaryResultData = currentResults.data[0];
+              const typeKey = primaryResultData.type; // e.g., "qi_deficiency", "balanced"
+              // Get the user-friendly name based on current language
+              const nameKey = currentLang === 'en' ? 'n_en' : 'n_zh';
+              if (constitutionTypes[typeKey] && constitutionTypes[typeKey][nameKey]) {
+                primaryTypeName = constitutionTypes[typeKey][nameKey];
+              } else {
+                primaryTypeName = typeKey; // Fallback to key if name not found
+              }
+              primaryScore = primaryResultData.score.toFixed(1);
+            }
+            // --- MODIFICATION END ---
+
             const formData = {
               name: nameInput.value,
               email: emailInput.value,
-
-              age: preQuizAnswers.age || "Not provided",
-              gender: preQuizAnswers.gender || "Not provided",
-              location: preQuizAnswers.location || "Not provided",
+              age: preQuizAnswers.age || 'Not provided',
+              gender: preQuizAnswers.gender || 'Not provided',
+              location: preQuizAnswers.location || 'Not provided',
+              // --- MODIFICATION START: Add results to payload ---
+              primaryType: primaryTypeName,
+              primaryScore: primaryScore
+              // --- MODIFICATION END ---
             };
 
             try {
