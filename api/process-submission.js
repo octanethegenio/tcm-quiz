@@ -54,14 +54,11 @@ export default async function handler(req, res) {
     const sentFrom = new Sender(fromEmailAddress, fromName);
     const recipients = [new Recipient(email, name)];
 
-    const unsubscribeText = "\n\nTo unsubscribe, click [{$unsubscribe}].";
-    const unsubscribeHtml = `<p style="font-size: 0.8em; color: #555; margin-top: 20px;">To unsubscribe, click [<a href="{$unsubscribe}" target="_blank">here</a>].</p>`;
-
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
       .setSubject('Your TCM Body Type Report Is Here!')
-      .setText(`Hello there,\n\nThanks for filling out the Traditional Chinese Medicine (TCM) body type questionnaire.\n\nYour full report is available via the links below. It covers all nine body types – just find yours and have a read.\n\nBoth English and Chinese versions are included for your convenience:\n\nEnglish Guide: ${pdfLinkEn}\n中文小手冊： ${pdfLinkZh}\n\nIf you know someone who'd like to discover their body type too, feel free to share this link: elizabethyau.com/bodytype\n\nWishing you good health, happiness, and a radiant glow from the inside out!\n\nWarmest wishes,\n\nElizabeth Yau\nRegistered Traditional Chinese Medicine Practitioner\nBased in Hong Kong` + unsubscribeText)
+      .setText(`Hello there,\n\nThanks for filling out the Traditional Chinese Medicine (TCM) body type questionnaire.\n\nYour full report is available via the links below. It covers all nine body types – just find yours and have a read.\n\nBoth English and Chinese versions are included for your convenience:\n\nEnglish Guide: ${pdfLinkEn}\n中文小手冊： ${pdfLinkZh}\n\nIf you know someone who'd like to discover their body type too, feel free to share this link: elizabethyau.com/bodytype\n\nWishing you good health, happiness, and a radiant glow from the inside out!\n\nWarmest wishes,\n\nElizabeth Yau\nRegistered Traditional Chinese Medicine Practitioner\nBased in Hong Kong`)
       
       .setHtml(`<p>Hello there,</p>
         <p>Thanks for filling out the Traditional Chinese Medicine (TCM) body type questionnaire.</p>
@@ -75,7 +72,7 @@ export default async function handler(req, res) {
         <p>If you know someone who'd like to discover their body type too, feel free to share this link: <a href="http://elizabethyau.com/bodytype">elizabethyau.com/bodytype</a></p>
         <p>Wishing you good health, happiness, and a radiant glow from the inside out!</p>
         <p>Warmest wishes,</p>
-        <p><strong>Elizabeth Yau</strong><br>Registered Traditional Chinese Medicine Practitioner<br>Based in Hong Kong</p>` + unsubscribeHtml);
+        <p><strong>Elizabeth Yau</strong><br>Registered Traditional Chinese Medicine Practitioner<br>Based in Hong Kong</p>`);
 
     await mailerSend.email.send(emailParams);
 
