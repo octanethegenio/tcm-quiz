@@ -19,35 +19,22 @@ export default async function handler(req, res) {
 
     // --- Store Stats Data in Google Sheet ---
     if (process.env.SHEET_WEBHOOK_URL) {
-      console.log('Attempting to send data to Google Sheet webhook:', process.env.SHEET_WEBHOOK_URL);
-      const sheetData = {
-        name,
-        email,
-        age,
-        gender,
-        location
-      };
+      console.log('Attempting to send data to Google Sheet webhook (async):', process.env.SHEET_WEBHOOK_URL);
+      const sheetData = { name, email, age, gender, location };
       console.log('Sheet Data Payload:', JSON.stringify(sheetData));
 
-      try {
-        const response = await fetch(process.env.SHEET_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(sheetData)
-        });
+      // Fire-and-forget: We don't wait for Google Sheets to respond
+      fetch(process.env.SHEET_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sheetData)
+      }).catch((err) => {
+        // Log errors related to *initiating* the request only
+        console.error('!!! ERROR initiating fetch call to Google Sheet:', err);
+      });
+      // No await, no response checking here
 
-        console.log('Google Sheet fetch response status:', response.status);
-
-        if (!response.ok) {
-          const errorBody = await response.text();
-          console.error('Google Sheet fetch failed:', response.status, response.statusText, errorBody);
-        } else {
-          console.log('Successfully sent data to Google Sheet webhook.');
-        }
-
-      } catch (err) {
-        console.error('!!! CRITICAL: Error during fetch call to Google Sheet:', err);
-      }
+      console.log('Sent request to Google Sheet webhook; Vercel function proceeding.');
 
     } else {
       console.log('SHEET_WEBHOOK_URL environment variable is not set. Skipping Google Sheet logging.');
