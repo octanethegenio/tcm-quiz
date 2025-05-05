@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TCM Body Constitution Test</title>
+    <title>TCM Body Constitution Quiz</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -878,15 +878,13 @@
           | <button class="lang-btn" id="langZhBtnWelcome">繁體中文</button>
         </div>
         <div lang="en">
-          <h2>Welcome to the Chinese Medicine Body Constitution Test!</h2>
+          <h2>Welcome to the Chinese Medicine Body Constitution Quiz!</h2>
           <p>
-            This self-assessment helps identify your body constitution — an
-            important foundation for holistic health in TCM.
+            Traditional Chinese Medicine (TCM) recognizes nine body constitution types.
+            Understanding your unique constitution can help you make better choices in lifestyle, diet, and self-care
+            — all of which contribute to your long-term health and well-being.
           </p>
-          <ul>
-            <li>Takes 5-10 minutes to complete</li>
-            <li>Simply choose what best describes you!</li>
-          </ul>
+          <p>• Simply choose the options that best describe you!</p>
           <button class="welcome-modal-start-btn" id="startQuizBtnEn">
             Start Quiz
           </button>
@@ -894,12 +892,11 @@
         <div lang="zh-Hant">
           <h2>歡迎來到中醫體質測試！</h2>
           <p>
-            這份自我評估問卷可幫助您了解自己的體質，這是中醫養生保健的重要基礎。
+            中醫理論將⼈體體質分為九種類型。
+            了解⾃⼰的體質，有助於在⽣活⽅式、飲食和⾃我保健⽅⾯做出更明智的選擇，
+            從⽽促進長期的健康與⾝⼼平衡。
           </p>
-          <ul>
-            <li>需時約5-10分鐘完成</li>
-            <li>只需選擇最符合您狀況的描述！</li>
-          </ul>
+          <p>• 只需選擇最符合您狀況的描述！</p>
           <button class="welcome-modal-start-btn" id="startQuizBtnZh">
             開始測試
           </button>
@@ -918,57 +915,63 @@
         </p>
         <form id="preQuizForm">
           <div class="question-item">
-            <label class="question-text" for="pq-age"
-              ><span lang="en">1. Age</span
-              ><span lang="zh-Hant">1. 年齡</span></label
-            ><input
-              type="number"
-              id="pq-age"
-              name="pq-age"
-              required
-              min="1"
-              placeholder="e.g., 35"
-            />
+            <span class="question-text"
+              ><b><span lang="en">1. Age</span><span lang="zh-Hant">1. 年齡</span></b></span
+            >
+             <select id="pq-age-select" name="pq-age" required data-dynamic-lang="true" style="width: 100%; max-width: 250px; padding: 8px 10px; border: 1px solid var(--input-border); border-radius: 4px; font-size: 0.95em;">
+                <option value="" disabled selected data-lang-en="Please select" data-lang-zh="請選擇">Please select</option>
+                <option value="Under 12" data-lang-en="Under 12" data-lang-zh="12 歲以下">Under 12</option>
+                <option value="12-17" data-lang-en="12 - 17" data-lang-zh="12 - 17 歲">12 - 17</option>
+                <option value="18-24" data-lang-en="18 - 24" data-lang-zh="18 - 24 歲">18 - 24</option>
+                <option value="25-34" data-lang-en="25 - 34" data-lang-zh="25 - 34 歲">25 - 34</option>
+                <option value="35-44" data-lang-en="35 - 44" data-lang-zh="35 - 44 歲">35 - 44</option>
+                <option value="45-54" data-lang-en="45 - 54" data-lang-zh="45 - 54 歲">45 - 54</option>
+                <option value="55-64" data-lang-en="55 - 64" data-lang-zh="55 - 64 歲">55 - 64</option>
+                <option value="65-74" data-lang-en="65 - 74" data-lang-zh="65 - 74 歲">65 - 74</option>
+                <option value="75+" data-lang-en="75 or above" data-lang-zh="75 歲以上">75 or above</option>
+              </select>
           </div>
           <div class="question-item">
             <span class="question-text"
-              >2. <span lang="en">Gender</span
-              ><span lang="zh-Hant">2. 性別</span></span
+              ><b><span lang="en">2. Gender</span><span lang="zh-Hant">性別</span></b></span
             >
-            <div class="options">
-              <label
-                ><input
-                  type="radio"
-                  name="pq-gender"
-                  value="Male"
-                  required
-                /><span lang="en">Male</span
-                ><span lang="zh-Hant">男性</span></label
-              ><label
-                ><input type="radio" name="pq-gender" value="Female" /><span
-                  lang="en"
-                  >Female</span
-                ><span lang="zh-Hant">女性</span></label
-              ><label
-                ><input
-                  type="radio"
-                  name="pq-gender"
-                  value="Prefer not to say"
-                /><span lang="en">Prefer not to say</span
-                ><span lang="zh-Hant">不願透露</span></label
-              >
+            <div class="options gender-options">
+              <label><input type="radio" name="pq-gender" value="Male" required /><span lang="en">Male</span><span lang="zh-Hant">男性</span></label>
+              <label><input type="radio" name="pq-gender" value="Female" /><span lang="en">Female</span><span lang="zh-Hant">女性</span></label>
+              <label><input type="radio" name="pq-gender" value="Prefer not to say" /><span lang="en">Prefer not to say</span><span lang="zh-Hant">不願透露</span></label>
+              <label style="display: flex; align-items: center; gap: 5px;">
+                <input type="radio" name="pq-gender" value="Other" />
+                <span lang="en">Other</span><span lang="zh-Hant">其他</span>
+                <input type="text" id="pq-gender-other-text" name="pq-gender-other" data-placeholder-en="(please specify)" data-placeholder-zh="(請註明)" placeholder="(please specify)" style="display: none; font-size: 0.9em; padding: 4px 6px; border: 1px solid var(--input-border); border-radius: 3px; max-width: 150px; margin-left: 3px;" />
+              </label>
             </div>
           </div>
           <div class="question-item">
-            <label class="question-text" for="pq-location"
-              >3. <span lang="en">Location (City/Country)</span
-              ><span lang="zh-Hant">3. 地區 (城市/國家)</span></label
+             <span class="question-text"
+              ><b><span lang="en">3. Location</span><span lang="zh-Hant">所在地</span></b></span
             >
-            <div id="location-container"></div>
+            <div id="location-container" style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
+              <select id="pq-location-select" name="pq-location-select" required data-dynamic-lang="true" style="width: 100%; max-width: 250px; padding: 8px 10px; border: 1px solid var(--input-border); border-radius: 4px; font-size: 0.95em;">
+                 <option value="" disabled selected data-lang-en="Please select" data-lang-zh="請選擇">Please select</option>
+                 <option value="Hong Kong" data-lang-en="Hong Kong" data-lang-zh="香港">Hong Kong</option>
+                 <option value="Australia" data-lang-en="Australia" data-lang-zh="澳洲">Australia</option>
+                 <option value="Canada" data-lang-en="Canada" data-lang-zh="加拿大">Canada</option>
+                 <option value="China" data-lang-en="China" data-lang-zh="中國">China</option>
+                 <option value="India" data-lang-en="India" data-lang-zh="印度">India</option>
+                 <option value="Japan" data-lang-en="Japan" data-lang-zh="日本">Japan</option>
+                 <option value="Singapore" data-lang-en="Singapore" data-lang-zh="新加坡">Singapore</option>
+                 <option value="United Arab Emirates" data-lang-en="United Arab Emirates" data-lang-zh="阿拉伯聯合酋長國">United Arab Emirates</option>
+                 <option value="United Kingdom" data-lang-en="United Kingdom" data-lang-zh="英國">United Kingdom</option>
+                 <option value="United States" data-lang-en="United States" data-lang-zh="美國">United States</option>
+                 <option value="Other" data-lang-en="Other" data-lang-zh="其他">Other</option>
+              </select>
+              <input type="text" id="pq-location-other" name="pq-location-other" data-placeholder-en="(please specify)" data-placeholder-zh="請註明" placeholder="(please specify)" style="display: none; font-size: 0.9em; padding: 4px 6px; border: 1px solid var(--input-border); border-radius: 3px; max-width: 240px;" />
+              <input type="hidden" id="pq-location-combined" name="pq-location-combined" required> <!-- Hidden input for validation -->
+            </div>
           </div>
           <p style="font-size: 0.85em; color: var(--muted-color); margin-top: 15px; text-align: center;">
             <span lang="en">Privacy Notice: Your responses will be kept confidential and used only for research/analysis purposes. No personally identifiable information will be shared.</span>
-            <span lang="zh-Hant">隱私聲明：您的回覆將被保密，僅用於研究或分析用途。問卷不會分享任何可識別個人身份的資訊。</span>
+            <span lang="zh-Hant">隱私聲明：您的回覆將被保密，僅用於研究或分析用途。<br />問卷不會分享任何可識別個人身份的資訊。</span>
           </p>
           <div class="pre-quiz-error-message" id="preQuizErrorMsg">
             <span lang="en">Please fill in all fields.</span
@@ -987,7 +990,7 @@
     <div class="quiz-container" id="quizContainer">
       <div class="quiz-header">
         <h1>
-          <span lang="en">TCM Body Constitution Test</span
+          <span lang="en">TCM Body Constitution Quiz</span
           ><span lang="zh-Hant">中醫體質測試</span>
         </h1>
       </div>
@@ -1000,12 +1003,10 @@
         </div>
         <p class="instructions">
           <span lang="en"
-            >This is a self-assessment based on your past 12 months.<br />There
-            are no right or wrong answers. If unsure, select the option closest
-            to your situation.<br />Please answer each question carefully in
-            order to see your final result.</span
+            >This is a self-assessment based on your experiences over the past 12 months.<br />There are no right or wrong answers — simply choose the option that best matches your
+            situation.<br />Take your time and answer each question thoughtfully to receive your result.</span
           ><span lang="zh-Hant"
-            >此為根據您過去12個月情況的自我評估。<br />答案沒有對錯之分。如不確定，請選擇最接近您情況的選項。<br />請仔細回答每個問題，以便查看您的最終結果。</span
+            >本體質測試以⾃我觀察為基礎，根據您過去 12 個⽉的感受與經驗進⾏評估。<br />本測驗沒有對錯之分，請選擇最符合您⾃⾝情況的選項即可。<br />請仔細回答每個問題，以獲得您的測試結果。</span
           >
         </p>
       </div>
@@ -1229,14 +1230,13 @@
     <div class="results-container" id="resultsContainer">
       <div class="results-header">
         <h2>
-          <span lang="en">Your Health Analysis Results</span
-          ><span lang="zh-Hant">您的健康分析結果</span>
+          <span lang="en">Your TCM Body Constitution Results</span
+          ><span lang="zh-Hant">您的中醫體質分析結果</span>
         </h2>
         <p>
           <span lang="en"
-            >Based on your assessment, we've identified the following
-            patterns</span
-          ><span lang="zh-Hant">根據您的評估，我們識別出以下模式</span>
+            >Based on your responses, we’ve identified the following body constitution pattern(s):</span
+          ><span lang="zh-Hant">根據您的回答，我們識別出以下主要體質類型：</span>
         </p>
       </div>
       <div id="resultsContent"></div>
@@ -1426,8 +1426,8 @@
           },
           {
             id: "q4",
-            en: "Are you less tolerant of cold (e.g., winter cold, air conditioning, or fans in summer) than most people?",
-            zh: "您比一般人耐受不了寒冷（冬天的寒冷，夏天的冷空調、電扇等）嗎？",
+            en: "Do you often feel uncomfortable in cold environments, such as during winter or in air conditioning?",
+            zh: "您是否經常在寒冷環境中感到不適，例如冬天或空調環境？",
             type: "balanced",
             rev: !0,
           },
@@ -1441,7 +1441,7 @@
           {
             id: "q6",
             en: "Do you easily forget things?",
-            zh: "您容易忘事（健忘）嗎？",
+            zh: "您是否經常健忘，容易忘記事情？",
             type: "balanced",
             rev: !0,
           },
@@ -1454,8 +1454,8 @@
           },
           {
             id: "q8",
-            en: "Can you adapt to changes in the natural and social environment?",
-            zh: "您能適應外界自然和社會環境的變化嗎？",
+            en: "Can you adapt well to changes in your natural or social environment?",
+            zh: "您能適應⾃然環境或社會環境的變化嗎？",
             type: "balanced",
             rev: !1,
           },
@@ -1489,8 +1489,8 @@
           },
           {
             id: "q13",
-            en: "Do you catch colds more easily than others?",
-            zh: "您比別人容易患感冒嗎？",
+            en: "Do you tend to catch colds frequently or easily?",
+            zh: "您是否容易或經常感冒？",
             type: "qi_deficiency",
             rev: !1,
           },
@@ -1510,15 +1510,15 @@
           },
           {
             id: "q16",
-            en: "Do you easily sweat with slight physical activity?",
-            zh: "您活動量稍大就容易出虛汗嗎？",
+            en: "Do you sweat easily with slight physical activity?",
+            zh: "您是不是稍微活動⼀下就會出汗？",
             type: "qi_deficiency",
             rev: !1,
           },
           {
             id: "q17",
-            en: "Do your hands and feet feel cold?",
-            zh: "您手腳發涼嗎？",
+            en: "Do your hands and feet often feel cold?",
+            zh: "您經常覺得⼿腳冰冷嗎？",
             type: "yang_deficiency",
             rev: !1,
           },
@@ -1553,14 +1553,14 @@
           {
             id: "q22",
             en: "Do you feel uncomfortable or avoid eating/drinking cold things?",
-            zh: "您吃（喝）涼的東西會感到不舒服或者怕吃（喝）涼東西嗎？",
+            zh: "您是否吃喝冷的東⻄會不舒服或不喜歡？",
             type: "yang_deficiency",
             rev: !1,
           },
           {
             id: "q23",
-            en: "Do you easily get diarrhea after catching a cold or eating/drinking cold things?",
-            zh: "您受涼或吃（喝）涼的東西後，容易腹瀉（拉肚子）嗎？",
+            en: "Do you get diarrhea after catching a cold or consuming cold food or drinks?",
+            zh: "您著涼或吃喝冷的東⻄後，容易拉肚⼦嗎？",
             type: "yang_deficiency",
             rev: !1,
           },
@@ -1580,15 +1580,15 @@
           },
           {
             id: "q26",
-            en: "Is your skin or lips dry?",
-            zh: "您皮膚或口唇乾嗎？",
+            en: "Is your skin or are your lips dry?",
+            zh: "您⽪膚或嘴唇乾燥嗎？",
             type: "yin_deficiency",
             rev: !1,
           },
           {
             id: "q27",
-            en: "Are your lips redder than most people's?",
-            zh: "您口唇的顏色比一般人紅嗎？",
+            en: "Do your lips usually appear noticeably red or dark in color?",
+            zh: "您的嘴唇平時是否顏⾊偏紅或暗紅？",
             type: "yin_deficiency",
             rev: !1,
           },
@@ -1636,8 +1636,8 @@
           },
           {
             id: "q34",
-            en: "Are you sentimental or emotionally fragile?",
-            zh: "您多愁善感、感情脆弱嗎？",
+            en: "Are you sentimental or emotionally sensitive?",
+            zh: "您多愁善感或情緒敏感嗎？",
             type: "qi_stagnation",
             rev: !1,
           },
@@ -1692,15 +1692,15 @@
           },
           {
             id: "q42",
-            en: "Do you have excessive oil secretion on your forehead?",
-            zh: "您有額部油脂分泌多的現象嗎？",
+            en: "Do you have excessive oil on your forehead?",
+            zh: "您的額頭容易出油嗎？",
             type: "phlegm_dampness",
             rev: !1,
           },
           {
             id: "q43",
-            en: "Are your upper eyelids more swollen than others'?",
-            zh: "您上眼瞼比別人腫（上眼瞼有輕微隆起現象）嗎？",
+            en: "Do your upper eyelids often appear slightly swollen or puffy?",
+            zh: "您的上眼瞼是否經常輕微腫脹或浮腫？",
             type: "phlegm_dampness",
             rev: !1,
           },
@@ -1720,8 +1720,8 @@
           },
           {
             id: "q46",
-            en: "Do you have a thick or greasy tongue coating?",
-            zh: "您舌苔厚膩或者有舌苔厚厚的感覺嗎？",
+            en: "Do you have a thick or greasy coating on your tongue?",
+            zh: "您的舌苔是否偏厚或偏膩？",
             type: "phlegm_dampness",
             rev: !1,
           },
@@ -1741,8 +1741,8 @@
           },
           {
             id: "q49",
-            en: "Do you feel a bitter taste or bad breath?",
-            zh: "您感到口苦或嘴裡有異味嗎？",
+            en: "Do you experience a bitter taste or bad breath?",
+            zh: "您覺得⼝苦或有⼝臭嗎？",
             type: "damp_heat",
             rev: !1,
           },
@@ -1755,15 +1755,15 @@
           },
           {
             id: "q51",
-            en: "Do you feel a burning sensation during urination or have dark urine?",
-            zh: "您小便時尿道有發熱感、尿色濃（深）嗎？",
+            en: "Do you feel a burning sensation during urination or have dark-colored urine?",
+            zh: "您⼩便時是否有灼熱感，或尿⾊偏深？",
             type: "damp_heat",
             rev: !1,
           },
           {
             id: "q52",
-            en: "For males: Is your scrotum area damp? For females: Do you have yellow vaginal discharge?",
-            zh: "男生：您的陰囊部位潮濕嗎？ 女生：您帶下色黃（白帶顏色發黃）嗎？",
+            en: "Men: Do you experience scrotal dampness?\nWomen: Do you have yellowish vaginal discharge?",
+            zh: "男性：是否有陰囊潮濕？女性：是否有黃⾊陰道分泌物？",
             type: "damp_heat",
             rev: !1,
           },
@@ -1776,8 +1776,8 @@
           },
           {
             id: "q54",
-            en: "Do you have fine red lines on your cheeks?",
-            zh: "您兩顴部有細微紅絲嗎？",
+            en: "Do you notice tiny red lines or visible capillaries on your cheeks?",
+            zh: "您的兩頰是否可⾒細⼩紅絲或微⾎管擴張？",
             type: "blood_stasis",
             rev: !1,
           },
@@ -1866,6 +1866,13 @@
             rev: !1,
           },
         ];
+
+        // Define IDs of duplicate questions to remove from display
+        const duplicateQuestionIds = ["q9", "q15", "q20", "q21", "q32", "q58"];
+
+        // Create a filtered list of questions for display
+        const displayQuestions = questions.filter(q => !duplicateQuestionIds.includes(q.id));
+
         const constitutionTypes = {
           balanced: {
             n_en: "Balanced",
@@ -1885,24 +1892,6 @@
             max: 40,
             d_en: "Tendency towards fatigue, shortness of breath, weak voice, and sweating easily.",
             d_zh: "易疲乏、氣短、聲音低弱、易出汗。",
-            details: {
-              symptoms_en: [
-                "Pale complexion",
-                "Soft or weak voice",
-                "Difficulty concentrating",
-                "Shortness of breath",
-                "Poor digestion",
-                "Weak immunity",
-              ],
-              symptoms_zh: [
-                "面色蒼白",
-                "聲音低弱",
-                "注意力不集中",
-                "氣短",
-                "消化不良",
-                "免疫力弱",
-              ],
-            },
           },
           yang_deficiency: {
             n_en: "Yang Deficiency",
@@ -1912,24 +1901,6 @@
             max: 35,
             d_en: "Aversion to cold, cold limbs, preference for warmth, lack of energy.",
             d_zh: "怕冷、手腳冰涼、喜溫暖、精神不振。",
-            details: {
-              symptoms_en: [
-                "Aversion to cold",
-                "Cold limbs",
-                "Preference for warmth",
-                "Lack of energy",
-                "Loose stools",
-                "Pale tongue",
-              ],
-              symptoms_zh: [
-                "怕冷",
-                "手腳冰涼",
-                "喜溫暖",
-                "精神不振",
-                "大便稀溏",
-                "舌淡",
-              ],
-            },
           },
           yin_deficiency: {
             n_en: "Yin Deficiency",
@@ -1939,24 +1910,6 @@
             max: 40,
             d_en: "Feeling of heat, dry mouth/throat/skin, night sweats, hot palms/soles.",
             d_zh: "感到發熱、口乾咽燥、皮膚乾燥、手足心熱、易盜汗。",
-            details: {
-              symptoms_en: [
-                "Feeling of heat in the afternoon/evening",
-                "Dry mouth and throat",
-                "Dry skin",
-                "Night sweats",
-                "Hot palms and soles",
-                "Red tongue with little coating",
-              ],
-              symptoms_zh: [
-                "午後或傍晚發熱感",
-                "口乾咽燥",
-                "皮膚乾燥",
-                "盜汗",
-                "手足心熱",
-                "舌紅少苔",
-              ],
-            },
           },
           phlegm_dampness: {
             n_en: "Phlegm-Dampness",
@@ -1966,24 +1919,6 @@
             max: 40,
             d_en: "Feeling of heaviness, chest tightness, sticky mouth, excessive phlegm, often overweight.",
             d_zh: "體型肥胖、腹部肥滿、胸悶、痰多、口黏膩。",
-            details: {
-              symptoms_en: [
-                "Feeling of body heaviness",
-                "Chest tightness",
-                "Sticky or sweet taste in mouth",
-                "Excessive phlegm",
-                "Often overweight",
-                "Greasy tongue coating",
-              ],
-              symptoms_zh: [
-                "身體沉重感",
-                "胸悶",
-                "口中黏膩或發甜",
-                "痰多",
-                "常超重",
-                "舌苔油膩",
-              ],
-            },
           },
           damp_heat: {
             n_en: "Damp-Heat",
@@ -1993,26 +1928,6 @@
             max: 30,
             d_en: "Oily face/skin, acne, bitter taste, bad breath, sticky stools, yellow urine.",
             d_zh: "面垢油光、易生痤瘡、口苦口臭、大便黏滯、小便黃赤。",
-            details: {
-              symptoms_en: [
-                "Oily face/skin",
-                "Acne or boils",
-                "Bitter taste in mouth",
-                "Bad breath",
-                "Sticky stools or incomplete bowel movement",
-                "Yellow, scanty urine",
-                "Yellow greasy tongue coating",
-              ],
-              symptoms_zh: [
-                "面部或皮膚油膩",
-                "易生痤瘡或癤子",
-                "口苦",
-                "口臭",
-                "大便黏滯不爽",
-                "小便黃短",
-                "舌苔黃膩",
-              ],
-            },
           },
           blood_stasis: {
             n_en: "Blood Stasis",
@@ -2022,26 +1937,6 @@
             max: 35,
             d_en: "Dull/dark complexion, dark spots, dark lips, easy bruising, body pain.",
             d_zh: "面色晦黯、易生褐斑、口唇色黯、易瘀青、身體疼痛。",
-            details: {
-              symptoms_en: [
-                "Dull or dark complexion",
-                "Dark spots on skin",
-                "Dark or purplish lips",
-                "Easy bruising",
-                "Fixed, stabbing pain",
-                "Dark circles under eyes",
-                "Purple tongue or spots on tongue",
-              ],
-              symptoms_zh: [
-                "面色晦暗",
-                "皮膚有色斑",
-                "口唇色暗或紫",
-                "易瘀青",
-                "固定刺痛",
-                "黑眼圈",
-                "舌質紫暗或有瘀點",
-              ],
-            },
           },
           qi_stagnation: {
             n_en: "Qi Stagnation",
@@ -2051,24 +1946,6 @@
             max: 35,
             d_en: "Emotional fluctuations, depression, anxiety, sighing, feeling of blockage.",
             d_zh: "情緒波動、憂鬱、焦慮、常嘆氣、有異物感。",
-            details: {
-              symptoms_en: [
-                "Emotional fluctuations (depression, anxiety)",
-                "Frequent sighing",
-                "Feeling of blockage in chest or throat",
-                "Distending pain in chest or ribs",
-                "Irregular menstruation (females)",
-                "Thin white tongue coating",
-              ],
-              symptoms_zh: [
-                "情緒波動（憂鬱、焦慮）",
-                "經常嘆氣",
-                "胸部或喉嚨有堵塞感",
-                "胸脅脹痛",
-                "月經不調（女性）",
-                "舌苔薄白",
-              ],
-            },
           },
           special: {
             n_en: "Inherited Special",
@@ -2078,64 +1955,65 @@
             max: 35,
             d_en: "Prone to allergies (pollen, food, drugs), sneezing, runny nose, asthma, hives.",
             d_zh: "易過敏（花粉、食物、藥物等）、打噴嚏、流鼻涕、哮喘、蕁麻疹。",
-            details: {
-              symptoms_en: [
-                "Allergic reactions (pollen, food, drugs)",
-                "Frequent sneezing",
-                "Runny or stuffy nose",
-                "Asthma or wheezing",
-                "Hives (urticaria)",
-                "Allergic rhinitis or dermatitis",
-              ],
-              symptoms_zh: [
-                "過敏反應（花粉、食物、藥物）",
-                "經常打噴嚏",
-                "流鼻涕或鼻塞",
-                "哮喘",
-                "蕁麻疹",
-                "過敏性鼻炎或皮炎",
-              ],
-            },
           },
         };
-        const QUESTIONS_PER_PAGE = 11;
-        const TOTAL_PAGES = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
-        const locationContainer = document.getElementById("location-container");
-        const locationSelect = document.createElement("select");
-        locationSelect.id = "pq-location";
-        locationSelect.name = "pq-location";
-        locationSelect.required = true;
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Select Country...";
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        locationSelect.appendChild(defaultOption);
-        const countries = [
-          "Hong Kong",
-          "United States",
-          "Canada",
-          "United Kingdom",
-          "Australia",
-          "Singapore",
-          "Other",
-        ];
-        countries.forEach((country) => {
-          const option = document.createElement("option");
-          option.value = country;
-          option.textContent = country;
-          locationSelect.appendChild(option);
-        });
-        locationSelect.style.width = "100%";
-        locationSelect.style.padding = "8px 10px";
-        locationSelect.style.border = "1px solid var(--input-border)";
-        locationSelect.style.borderRadius = "4px";
-        locationSelect.style.fontSize = "0.95em";
-        locationSelect.style.boxSizing = "border-box";
-        locationSelect.style.maxWidth = "200px";
-        if (locationContainer) {
-          locationContainer.appendChild(locationSelect);
+        const QUESTIONS_PER_PAGE = 10; // Updated to 10 questions per page
+        const TOTAL_PAGES = Math.ceil(displayQuestions.length / QUESTIONS_PER_PAGE); // Use filtered questions length
+        // --- Location Dropdown Logic ---
+        // --- Age Dropdown Logic (No specific JS needed unless for complex validation) ---
+        const ageSelect = document.getElementById('pq-age-select');
+
+        // --- Gender Other Input Logic ---
+        const genderRadios = preQuizForm.querySelectorAll('input[name="pq-gender"]');
+        const genderOtherText = document.getElementById('pq-gender-other-text');
+
+        function updateGenderOtherState() {
+            const selectedGender = preQuizForm.querySelector('input[name="pq-gender"]:checked');
+            if (selectedGender && selectedGender.value === 'Other') {
+                genderOtherText.style.display = 'block';
+                genderOtherText.required = true; // Make text input required only if Other is selected
+                genderOtherText.setCustomValidity(genderOtherText.value.trim() ? '' : 'Please specify your gender.');
+            } else {
+                genderOtherText.style.display = 'none';
+                genderOtherText.required = false;
+                genderOtherText.value = ''; // Clear text if other option selected
+                genderOtherText.setCustomValidity(''); // Clear validation message
+            }
         }
+        genderRadios.forEach(radio => radio.addEventListener('change', updateGenderOtherState));
+        genderOtherText.addEventListener('input', updateGenderOtherState); // Validate as user types in 'Other' field
+        // Initial check
+        updateGenderOtherState();
+        // --- End Gender Other Input Logic ---
+
+
+        // --- Location Dropdown Logic ---
+        const locationSelect = document.getElementById('pq-location-select');
+        const locationOtherInput = document.getElementById('pq-location-other');
+        const hiddenLocationCombined = document.getElementById('pq-location-combined');
+
+        function updateLocationState() {
+            const selectedValue = locationSelect.value;
+            if (selectedValue === 'Other') {
+                locationOtherInput.style.display = 'block';
+                locationOtherInput.required = true; // Make text input required only if Other is selected
+                const otherText = locationOtherInput.value.trim();
+                hiddenLocationCombined.value = otherText ? `Other: ${otherText}` : ''; // Update hidden field
+                hiddenLocationCombined.setCustomValidity(otherText ? '' : 'Please specify the location.');
+            } else {
+                locationOtherInput.style.display = 'none';
+                locationOtherInput.required = false;
+                locationOtherInput.value = ''; // Clear other text if different option selected
+                hiddenLocationCombined.value = selectedValue; // Update hidden field
+                hiddenLocationCombined.setCustomValidity(selectedValue ? '' : 'Please select a location.');
+            }
+        }
+
+        locationSelect.addEventListener('change', updateLocationState);
+        locationOtherInput.addEventListener('input', updateLocationState);
+        // Initial check in case of pre-filled values or page reload
+        updateLocationState();
+        // --- End Location Dropdown Logic ---
         function closeWelcomeModal() {
           welcomeModalOverlay.classList.remove("visible");
         }
@@ -2153,7 +2031,7 @@
           currentLang = lang;
           docElement.lang = lang === "zh" ? "zh-Hant" : "en";
           document.title =
-            lang === "en" ? "TCM Body Constitution Test" : "中醫體質測試";
+            lang === "en" ? "TCM Body Constitution Quiz" : "中醫體質測試";
           const activePage = document.getElementById(`page${currentPage}`);
           if (activePage && activePage.classList.contains("active"))
             renderPage(currentPage);
@@ -2170,6 +2048,73 @@
             welcomeLangEn.classList.toggle("active", currentLang === "en");
             welcomeLangZh.classList.toggle("active", currentLang === "zh");
           }
+
+          // Update dynamic language content based on currentLang
+          const updateLanguageContent = () => {
+              // Update dropdown options by rebuilding them
+              document.querySelectorAll('select[data-dynamic-lang="true"]').forEach(selectElement => {
+                  const currentValue = selectElement.value; // Store current value
+                  // Map existing options to a data structure
+                  const optionsData = Array.from(selectElement.options).map(opt => ({
+                      value: opt.value,
+                      disabled: opt.disabled,
+                      selected: opt.selected,
+                      langEn: opt.getAttribute('data-lang-en'),
+                      langZh: opt.getAttribute('data-lang-zh'),
+                      // Store original text as a fallback if needed
+                      originalText: opt.textContent
+                  }));
+
+                  selectElement.innerHTML = ''; // Clear existing options
+
+                  // Rebuild options from the stored data
+                  optionsData.forEach(data => {
+                      const opt = document.createElement('option');
+                      opt.value = data.value;
+                      opt.disabled = data.disabled;
+                      // Determine text based on current language
+                      const langKey = currentLang === 'en' ? 'langEn' : 'langZh';
+                      const text = data[langKey] || data.originalText; // Use lang text, fallback to original
+                      opt.textContent = text;
+                      // Re-apply data attributes for future switches
+                      if (data.langEn) opt.setAttribute('data-lang-en', data.langEn);
+                      if (data.langZh) opt.setAttribute('data-lang-zh', data.langZh);
+
+                      selectElement.appendChild(opt);
+                  });
+
+                  // Try to restore the previously selected value
+                  selectElement.value = currentValue;
+                  // If the exact value isn't found (e.g., it was the placeholder), re-select the placeholder
+                  if (selectElement.value !== currentValue) {
+                      const placeholderOption = Array.from(selectElement.options).find(opt => opt.disabled && opt.value === "");
+                      if (placeholderOption) {
+                          placeholderOption.selected = true;
+                      } else if (selectElement.options.length > 0) {
+                          // Fallback if placeholder is somehow gone
+                          selectElement.selectedIndex = 0;
+                      }
+                  }
+              });
+
+              // Update input placeholders (existing logic seems okay)
+              document.querySelectorAll('input[data-placeholder-en], input[data-placeholder-zh]').forEach(input => {
+                  const placeholderKey = currentLang === 'en' ? 'data-placeholder-en' : 'data-placeholder-zh';
+                   if (input.hasAttribute(placeholderKey)) {
+                       input.placeholder = input.getAttribute(placeholderKey);
+                   }
+              });
+          };
+
+          // Add marker attribute to the selects that need dynamic language updates
+          // Ensure these elements exist before trying to set dataset property
+          const ageSelectEl = document.getElementById('pq-age-select');
+          const locationSelectEl = document.getElementById('pq-location-select');
+          if (ageSelectEl) ageSelectEl.dataset.dynamicLang = 'true';
+          if (locationSelectEl) locationSelectEl.dataset.dynamicLang = 'true';
+
+          // Call immediately and whenever language changes
+          updateLanguageContent();
         }
         function renderPage(pageNumber) {
           quizPages.forEach((page) => page.classList.remove("active"));
@@ -2181,11 +2126,14 @@
           const startIndex = (pageNumber - 1) * QUESTIONS_PER_PAGE;
           const endIndex = Math.min(
             startIndex + QUESTIONS_PER_PAGE,
-            questions.length
+            displayQuestions.length // Use filtered questions length
           );
           let questionsHtml = "";
-          for (let i = startIndex; i < endIndex; i++) {
-            questionsHtml += generateQuestionHtml(questions[i], i);
+          for (let i = startIndex; i < endIndex; i++) { // 'i' is the index within displayQuestions (0 to 59) relative to the start of the page
+            // Use displayQuestions array and its index 'i' for rendering
+            // Calculate the sequential number (1-based) based on the overall index in the filtered list
+            const sequentialIndex = startIndex + (i - startIndex); // This is the 0-based index in displayQuestions
+            questionsHtml += generateQuestionHtml(displayQuestions[i], sequentialIndex); // Pass the 0-based sequential index
           }
           tableBody.innerHTML = questionsHtml;
           const endMessage = pageElement.querySelector(".end-message");
@@ -2314,12 +2262,41 @@
           Object.keys(constitutionTypes).forEach((type) => {
             rawScores[type] = 0;
           });
+          // Iterate through ALL original questions for scoring, using the submitted answers
           questions.forEach((q) => {
-            const answer = formAnswers[q.id];
+            const answer = formAnswers[q.id]; // Get answer using the question's ID
             if (answer && scoreMap[answer]) {
               const score = q.rev ? 6 - scoreMap[answer] : scoreMap[answer];
-              rawScores[q.type] += score;
+
+              // Add score to the primary type
+              if (rawScores.hasOwnProperty(q.type)) {
+                 rawScores[q.type] += score;
+              }
+
+              // Add score to secondary types for specific duplicate-source questions
+              switch (q.id) {
+                case "q1": // Also contributes to Qi Deficiency (like q9)
+                  rawScores.qi_deficiency += score;
+                  break;
+                case "q2": // Also contributes to Qi Deficiency (like q15)
+                  rawScores.qi_deficiency += score;
+                  break;
+                case "q3": // Also contributes to Qi Stagnation (like q32)
+                  rawScores.qi_stagnation += score;
+                  break;
+                case "q4": // Also contributes to Yang Deficiency (like q20)
+                  rawScores.yang_deficiency += score;
+                  break;
+                case "q6": // Also contributes to Blood Stasis (like q58)
+                  rawScores.blood_stasis += score;
+                  break;
+                case "q13": // Also contributes to Yang Deficiency (like q21)
+                  rawScores.yang_deficiency += score;
+                  break;
+                // No default needed, other questions only contribute to their primary type above
+              }
             } else {
+              // Handle unanswered questions if necessary (currently does nothing)
             }
           });
           Object.keys(constitutionTypes).forEach((type) => {
@@ -2421,7 +2398,7 @@
               const severityTag = primarySeverity
                 ? `<span class="severity-label ${primarySeverity.class}"><span lang="en">${primarySeverity.label_en}</span><span lang="zh-Hant">${primarySeverity.label_zh}</span></span>`
                 : "";
-              resultsHtml += `<div class="primary-pattern-card"><div class="primary-pattern-header"><div class="pattern-info"><span class="label"><span lang="en">Primary Pattern</span><span lang="zh-Hant">主要模式</span></span><h3 class="pattern-name">${
+              resultsHtml += `<div class="primary-pattern-card"><div class="primary-pattern-header"><div class="pattern-info"><span class="label"><span lang="en">Primary Constitution Type</span><span lang="zh-Hant">主要體質類型</span></span><h3 class="pattern-name">${
                 primaryInfo[nameKey]
               }</h3></div> ${severityTag}</div><div class="score-section"><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${primary.score.toFixed(
                 1
@@ -2431,18 +2408,12 @@
                 primaryImageUrl
                   ? `<img src="${primaryImageUrl}" alt="${primaryInfo[nameKey]}" class="type-image" />`
                   : ""
-              }</div><div class="key-symptoms"><h4><span lang="en">Key Symptoms</span><span lang="zh-Hant">關鍵症狀</span></h4> ${
-                primaryDetails && primaryDetails[`symptoms${symptomKey}`]
-                  ? `<ul>${primaryDetails[`symptoms${symptomKey}`]
-                      .map((s) => `<li>${s}</li>`)
-                      .join("")}</ul>`
-                  : `<p style="font-size:0.9em; color:var(--muted-color);"><span lang="en">Detailed symptoms list not available for this type yet.</span><span lang="zh-Hant">此體質類型的詳細症狀列表尚不可用。</span></p>`
-              }</div></div></div>`;
+              }</div><div class="key-symptoms"><h4><span lang="en">Remember</span><span lang="zh-Hant">請記住</span></h4><p style="margin-top: 10px;"><span lang="en">This body constitution test is self-reflective — based on your own feelings and observations.<br>Treat the results as a helpful reference rather than a diagnosis.</span><span lang="zh-Hant">本體質測試以⾃我觀察為基礎，根據您⾃⾝的感受與觀察進⾏評估。<br>請將測試結果視為有⽤的參考，⽽非醫學診斷。</span></p><p><span lang="en">For a more accurate and personalised assessment,<br>it’s always best to consult a professional TCM practitioner.</span><span lang="zh-Hant">若您希望獲得更準確、個⼈化的體質評估，<br>建議親⾃諮詢專業的中醫師。</span></p><p><span lang="en">It’s normal not to match every symptom — most people are a mix of types.<br>Every body is unique.</span><span lang="zh-Hant">請別擔⼼⾃⼰不符合所有特徵<br>—— ⼤多數⼈都是多種體質的混合，<br>每個⼈的⾝體都是獨⼀無⼆的。</span></p></div></div></div>`;
               const secondaryPatterns = patterns
                 .slice(1)
                 .filter((p) => p.score >= 30);
               if (secondaryPatterns.length > 0) {
-                resultsHtml += `<div class="other-patterns-section"><h3><span lang="en">Other Potential Patterns</span><span lang="zh-Hant">其他潛在模式</span></h3><p><span lang="en">These secondary patterns may also be influencing your health.</span><span lang="zh-Hant">這些次要模式也可能影響您的健康。</span></p>`;
+                resultsHtml += `<div class="other-patterns-section"><h3><span lang="en">Other Supporting Patterns</span><span lang="zh-Hant">其他相關體質類型</span></h3><p><span lang="en">These secondary constitution types may also play a role in shaping your current health status.</span><span lang="zh-Hant">這些次要體質類型也可能對您⽬前的健康狀況有所影響。</span></p>`;
                 for (
                   let i = 0;
                   i < Math.min(secondaryPatterns.length, 2);
@@ -2487,11 +2458,28 @@
         continueToMainQuizBtn.addEventListener("click", () => {
           preQuizErrorMsg.style.display = "none";
           const preQuizData = new FormData(preQuizForm);
-          const age = preQuizData.get("pq-age");
+          const age = preQuizData.get("pq-age"); // Now gets value from select dropdown
           const gender = preQuizData.get("pq-gender");
-          const location = preQuizData.get("pq-location");
-          if (age && gender && location) {
-            preQuizAnswers = { age: age, gender: gender, location: location };
+          const locationCombined = preQuizData.get("pq-location-combined"); // Use the hidden input value
+          const genderOther = preQuizData.get("pq-gender-other")?.trim();
+          // Location other text is already incorporated into locationCombined if 'Other' was selected
+
+          let finalGender = gender;
+          if (gender === 'Other' && genderOther) {
+              finalGender = `Other: ${genderOther}`;
+          } else if (gender === 'Other' && !genderOther) {
+              // Handle case where 'Other' is selected but text is empty - invalid state
+               preQuizErrorMsg.style.display = "block";
+               setTimeout(() => { preQuizErrorMsg.style.display = "none"; }, 3000);
+               return; // Stop processing
+          }
+
+
+          // Validate locationCombined - it should have a value if the form is valid
+          const isLocationValid = locationCombined && locationCombined.trim() !== '';
+
+          if (age && gender && isLocationValid) { // Check combined location field validity
+            preQuizAnswers = { age: age, gender: finalGender, location: locationCombined };
             hidePreQuizModal();
             startMainQuiz();
           } else {
@@ -2564,7 +2552,7 @@
               email: emailInput.value,
               age: preQuizAnswers.age || 'Not provided',
               gender: preQuizAnswers.gender || 'Not provided',
-              location: preQuizAnswers.location || 'Not provided',
+              location: preQuizAnswers.location || 'Not provided', // This now contains the combined string from dropdown/other input
               // --- MODIFICATION START: Add results to payload ---
               primaryType: primaryTypeName,
               primaryScore: primaryScore
