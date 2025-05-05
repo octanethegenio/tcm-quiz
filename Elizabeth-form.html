@@ -1998,7 +1998,7 @@
                 locationOtherInput.style.display = 'block';
                 locationOtherInput.required = true; // Make text input required only if Other is selected
                 const otherText = locationOtherInput.value.trim();
-                hiddenLocationCombined.value = otherText ? `Other: ${otherText}` : ''; // Update hidden field
+                hiddenLocationCombined.value = otherText; // Update hidden field (Removed "Other: " prefix)
                 hiddenLocationCombined.setCustomValidity(otherText ? '' : 'Please specify the location.');
             } else {
                 locationOtherInput.style.display = 'none';
@@ -2466,7 +2466,7 @@
 
           let finalGender = gender;
           if (gender === 'Other' && genderOther) {
-              finalGender = `Other: ${genderOther}`;
+              finalGender = genderOther; // Removed "Other: " prefix
           } else if (gender === 'Other' && !genderOther) {
               // Handle case where 'Other' is selected but text is empty - invalid state
                preQuizErrorMsg.style.display = "block";
