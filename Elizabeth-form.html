@@ -882,9 +882,8 @@
           <p>
             Traditional Chinese Medicine (TCM) recognizes nine body constitution types.
             Understanding your unique constitution can help you make better choices in lifestyle, diet, and self-care
-            — all of which contribute to your long-term health and well-being.
-          </p>
-          <p>• Simply choose the options that best describe you!</p>
+            — all of which contribute to your long-term health and well-being.</p>
+          <p>• Take 5-10 minutes to complete. <br> • Simply choose the options that best describe you!</p>
           <button class="welcome-modal-start-btn" id="startQuizBtnEn">
             Start Quiz
           </button>
@@ -896,7 +895,8 @@
             了解⾃⼰的體質，有助於在⽣活⽅式、飲食和⾃我保健⽅⾯做出更明智的選擇，
             從⽽促進長期的健康與⾝⼼平衡。
           </p>
-          <p>• 只需選擇最符合您狀況的描述！</p>
+          <p>• ⼤約需時 5 ⾄ 10 分鐘完成<br>
+            • 只需選擇最符合您狀況的描述！</p>
           <button class="welcome-modal-start-btn" id="startQuizBtnZh">
             開始測試
           </button>
@@ -1023,7 +1023,7 @@
                   <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
                 </th>
                 <th>
-                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                  <span lang="en">Rarely</span><span lang="zh-Hant">很少</span>
                 </th>
                 <th>
                   <span lang="en">Sometimes</span
@@ -1056,7 +1056,7 @@
                   <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
                 </th>
                 <th>
-                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                  <span lang="en">Rarely</span><span lang="zh-Hant">很少</span>
                 </th>
                 <th>
                   <span lang="en">Sometimes</span
@@ -1089,7 +1089,7 @@
                   <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
                 </th>
                 <th>
-                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                  <span lang="en">Rarely</span><span lang="zh-Hant">很少</span>
                 </th>
                 <th>
                   <span lang="en">Sometimes</span
@@ -1122,7 +1122,7 @@
                   <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
                 </th>
                 <th>
-                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                  <span lang="en">Rarely</span><span lang="zh-Hant">很少</span>
                 </th>
                 <th>
                   <span lang="en">Sometimes</span
@@ -1155,7 +1155,7 @@
                   <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
                 </th>
                 <th>
-                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                  <span lang="en">Rarely</span><span lang="zh-Hant">很少</span>
                 </th>
                 <th>
                   <span lang="en">Sometimes</span
@@ -1188,7 +1188,7 @@
                   <span lang="en">Never</span><span lang="zh-Hant">沒有</span>
                 </th>
                 <th>
-                  <span lang="en">Seldom</span><span lang="zh-Hant">很少</span>
+                  <span lang="en">Rarely</span><span lang="zh-Hant">很少</span>
                 </th>
                 <th>
                   <span lang="en">Sometimes</span
@@ -1359,7 +1359,7 @@
           currentResults = null;
         const scoreMap = {
           Never: 1,
-          Seldom: 2,
+          Rarely: 2,
           Sometimes: 3,
           Often: 4,
           Always: 5,
@@ -1749,7 +1749,7 @@
           {
             id: "q50",
             en: "Do you have sticky stools or a feeling of incomplete bowel movements?",
-            zh: "您大便黏滯不爽、有解不盡的感覺嗎？",
+            zh: "您排便時會覺得黏黏的或排不乾淨嗎？",
             type: "damp_heat",
             rev: !1,
           },
@@ -1840,7 +1840,7 @@
           {
             id: "q63",
             en: "Are you prone to allergies (to drugs, food, smells, pollen, or during seasonal changes)?",
-            zh: "您容易過敏（對藥物、食物、氣味、花粉或在季節交替、氣候變化時）嗎？",
+            zh: "您容易對藥物、食物、氣味、花粉或天氣變化 過敏嗎？",
             type: "special",
             rev: !1,
           },
@@ -1875,86 +1875,68 @@
 
         const constitutionTypes = {
           balanced: {
-            n_en: "Balanced",
-            n_zh: "平和質",
+            n_en: "Natural",
+            n_zh: "平和型",
             qs: 8,
             min: 8,
             max: 40,
-            d_en: "Generally healthy and well-adapted.",
-            d_zh: "體態適中、面色紅潤、精力充沛，是健康的體質。",
             details: null,
           },
           qi_deficiency: {
             n_en: "Qi Deficiency",
-            n_zh: "氣虛質",
+            n_zh: "氣虛型",
             qs: 8,
             min: 8,
             max: 40,
-            d_en: "Tendency towards fatigue, shortness of breath, weak voice, and sweating easily.",
-            d_zh: "易疲乏、氣短、聲音低弱、易出汗。",
           },
           yang_deficiency: {
             n_en: "Yang Deficiency",
-            n_zh: "陽虛質",
+            n_zh: "陽虛型",
             qs: 7,
             min: 7,
             max: 35,
-            d_en: "Aversion to cold, cold limbs, preference for warmth, lack of energy.",
-            d_zh: "怕冷、手腳冰涼、喜溫暖、精神不振。",
           },
           yin_deficiency: {
             n_en: "Yin Deficiency",
-            n_zh: "陰虛質",
+            n_zh: "陰虛型",
             qs: 8,
             min: 8,
             max: 40,
-            d_en: "Feeling of heat, dry mouth/throat/skin, night sweats, hot palms/soles.",
-            d_zh: "感到發熱、口乾咽燥、皮膚乾燥、手足心熱、易盜汗。",
           },
           phlegm_dampness: {
             n_en: "Phlegm-Dampness",
-            n_zh: "痰濕質",
+            n_zh: "痰濕型",
             qs: 8,
             min: 8,
             max: 40,
-            d_en: "Feeling of heaviness, chest tightness, sticky mouth, excessive phlegm, often overweight.",
-            d_zh: "體型肥胖、腹部肥滿、胸悶、痰多、口黏膩。",
           },
           damp_heat: {
             n_en: "Damp-Heat",
-            n_zh: "濕熱質",
+            n_zh: "濕熱型",
             qs: 6,
             min: 6,
             max: 30,
-            d_en: "Oily face/skin, acne, bitter taste, bad breath, sticky stools, yellow urine.",
-            d_zh: "面垢油光、易生痤瘡、口苦口臭、大便黏滯、小便黃赤。",
           },
           blood_stasis: {
-            n_en: "Blood Stasis",
-            n_zh: "血瘀質",
+            n_en: "Blood Stagnation",
+            n_zh: "血瘀型",
             qs: 7,
             min: 7,
             max: 35,
-            d_en: "Dull/dark complexion, dark spots, dark lips, easy bruising, body pain.",
-            d_zh: "面色晦黯、易生褐斑、口唇色黯、易瘀青、身體疼痛。",
           },
           qi_stagnation: {
             n_en: "Qi Stagnation",
-            n_zh: "氣鬱質",
+            n_zh: "氣鬱型",
             qs: 7,
             min: 7,
             max: 35,
-            d_en: "Emotional fluctuations, depression, anxiety, sighing, feeling of blockage.",
-            d_zh: "情緒波動、憂鬱、焦慮、常嘆氣、有異物感。",
           },
           special: {
-            n_en: "Inherited Special",
-            n_zh: "特稟質",
+            n_en: "Special Constitution",
+            n_zh: "特禀型",
             qs: 7,
             min: 7,
             max: 35,
-            d_en: "Prone to allergies (pollen, food, drugs), sneezing, runny nose, asthma, hives.",
-            d_zh: "易過敏（花粉、食物、藥物等）、打噴嚏、流鼻涕、哮喘、蕁麻疹。",
           },
         };
         const QUESTIONS_PER_PAGE = 10; // Updated to 10 questions per page
@@ -2157,9 +2139,9 @@
             checkedValue === "Never" ? "checked" : ""
           } /><span class="mobile-label" lang="en">Never</span><span class="mobile-label" lang="zh-Hant">沒有</span></td><td><input type="radio" name="${
             question.id
-          }" value="Seldom" ${
-            checkedValue === "Seldom" ? "checked" : ""
-          } /><span class="mobile-label" lang="en">Seldom</span><span class="mobile-label" lang="zh-Hant">很少</span></td><td><input type="radio" name="${
+          }" value="Rarely" ${
+            checkedValue === "Rarely" ? "checked" : ""
+          } /><span class="mobile-label" lang="en">Rarely</span><span class="mobile-label" lang="zh-Hant">很少</span></td><td><input type="radio" name="${
             question.id
           }" value="Sometimes" ${
             checkedValue === "Sometimes" ? "checked" : ""
@@ -2335,12 +2317,21 @@
           } else {
             isBalanced = false;
           }
-          if (isBalanced)
+          if (isBalanced) {
+            // If truly balanced, "balanced" is primary.
+            // "imbalancedPatterns" at this stage only contains types with scores >= 30 and < 40,
+            // because any type scoring >= 40 would have set isBalanced to false earlier.
+            // We want to include these as secondary patterns.
+            const resultData = [{ type: "balanced", score: balancedScore }];
+            imbalancedPatterns.sort((a, b) => b.score - a.score); // Sort for consistent order
+            resultData.push(...imbalancedPatterns);
             return {
-              resType: "balanced",
-              data: [{ type: "balanced", score: balancedScore }],
+              resType: "balanced", // Keep resType as "balanced" to signify primary is balanced
+              data: resultData,
             };
-          else {
+          } else {
+            // If not truly balanced, sort all collected imbalanced patterns (those >= 30)
+            // The first one will be the primary imbalanced type.
             imbalancedPatterns.sort((a, b) => b.score - a.score);
             return { resType: "imbalanced", data: imbalancedPatterns };
           }
@@ -2367,76 +2358,110 @@
           resultsContent.innerHTML = "";
           const lang = currentLang;
           const nameKey = lang === "en" ? "n_en" : "n_zh";
-          const descKey = lang === "en" ? "d_en" : "d_zh";
-          const symptomKey = lang === "en" ? "_en" : "_zh";
-          if (results.resType === "balanced") {
-            const typeInfo = constitutionTypes.balanced;
-            const score = results.data[0].score;
-            const imageUrl = imageUrls.balanced[lang] || "";
-            const imgTag = imageUrl
-              ? `<img src="${imageUrl}" alt="${typeInfo[nameKey]}" class="type-image" />`
-              : "";
-            resultsContent.innerHTML = `<div class="bal-res"><div class="image-placeholder" style="width: 50%; margin: 0 auto 15px auto;">${imgTag}</div><p><strong style="font-size:1.3em;">${
-              typeInfo[nameKey]
-            }</strong><br>(<span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${score.toFixed(
-              1
-            )})</p><p class="res-desc">${
-              typeInfo[descKey]
-            }</p><p><span lang="en">Generally balanced and healthy.</span><span lang="zh-Hant">您的體質總體上是平衡和健康的。</span></p></div>`;
+          // const descKey = lang === "en" ? "d_en" : "d_zh"; // Removed: d_en/d_zh no longer used for display
+          // const symptomKey = lang === "en" ? "_en" : "_zh"; // Removed: Not used
+
+          // This block now handles all result types consistently.
+          const patterns = results.data;
+          if (patterns.length === 0) {
+            resultsContent.innerHTML = `<p style="text-align:center;"><span lang="en">No dominant pattern identified (all scores below 40). You seem relatively balanced.</span><span lang="zh-Hant">未識別出顯著體質模式（所有分數均低於40）。您似乎相對平衡。</span></p>`;
           } else {
-            const patterns = results.data;
-            if (patterns.length === 0) {
-              resultsContent.innerHTML = `<p style="text-align:center;"><span lang="en">No dominant pattern identified (all scores below 40). You seem relatively balanced.</span><span lang="zh-Hant">未識別出顯著體質模式（所有分數均低於40）。您似乎相對平衡。</span></p>`;
-            } else {
-              let resultsHtml = "";
-              const primary = patterns[0];
-              const primaryInfo = constitutionTypes[primary.type];
-              const primaryDetails = primaryInfo.details;
-              const primaryImageUrl =
-                (imageUrls[primary.type] || {})[lang] || "";
-              const primarySeverity = getSeverity(primary.score);
-              const severityTag = primarySeverity
-                ? `<span class="severity-label ${primarySeverity.class}"><span lang="en">${primarySeverity.label_en}</span><span lang="zh-Hant">${primarySeverity.label_zh}</span></span>`
-                : "";
-              resultsHtml += `<div class="primary-pattern-card"><div class="primary-pattern-header"><div class="pattern-info"><span class="label"><span lang="en">Primary Constitution Type</span><span lang="zh-Hant">主要體質類型</span></span><h3 class="pattern-name">${
-                primaryInfo[nameKey]
-              }</h3></div> ${severityTag}</div><div class="score-section"><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${primary.score.toFixed(
-                1
-              )}</div><div class="score-bar-container"><div class="score-bar-fill" style="width: ${primary.score.toFixed(
-                1
-              )}%;"></div></div></div><div class="primary-pattern-content"><div class="image-placeholder">${
-                primaryImageUrl
-                  ? `<img src="${primaryImageUrl}" alt="${primaryInfo[nameKey]}" class="type-image" />`
-                  : ""
-              }</div><div class="key-symptoms"><h4><span lang="en">Remember</span><span lang="zh-Hant">請記住</span></h4><p style="margin-top: 10px;"><span lang="en">This body constitution test is self-reflective — based on your own feelings and observations.<br>Treat the results as a helpful reference rather than a diagnosis.</span><span lang="zh-Hant">本體質測試以⾃我觀察為基礎，根據您⾃⾝的感受與觀察進⾏評估。<br>請將測試結果視為有⽤的參考，⽽非醫學診斷。</span></p><p><span lang="en">For a more accurate and personalised assessment,<br>it’s always best to consult a professional TCM practitioner.</span><span lang="zh-Hant">若您希望獲得更準確、個⼈化的體質評估，<br>建議親⾃諮詢專業的中醫師。</span></p><p><span lang="en">It’s normal not to match every symptom — most people are a mix of types.<br>Every body is unique.</span><span lang="zh-Hant">請別擔⼼⾃⼰不符合所有特徵<br>—— ⼤多數⼈都是多種體質的混合，<br>每個⼈的⾝體都是獨⼀無⼆的。</span></p></div></div></div>`;
-              const secondaryPatterns = patterns
-                .slice(1)
-                .filter((p) => p.score >= 30);
-              if (secondaryPatterns.length > 0) {
-                resultsHtml += `<div class="other-patterns-section"><h3><span lang="en">Other Supporting Patterns</span><span lang="zh-Hant">其他相關體質類型</span></h3><p><span lang="en">These secondary constitution types may also play a role in shaping your current health status.</span><span lang="zh-Hant">這些次要體質類型也可能對您⽬前的健康狀況有所影響。</span></p>`;
-                for (
-                  let i = 0;
-                  i < Math.min(secondaryPatterns.length, 2);
-                  i++
-                ) {
-                  const secondary = secondaryPatterns[i];
-                  const secondaryInfo = constitutionTypes[secondary.type];
-                  const secondarySeverity = getSeverity(secondary.score);
-                  const secondarySeverityTag = secondarySeverity
-                    ? `<span class="severity-label ${secondarySeverity.class}"><span lang="en">${secondarySeverity.label_en}</span><span lang="zh-Hant">${secondarySeverity.label_zh}</span></span>`
-                    : "";
-                  resultsHtml += `<div class="secondary-pattern-card"><div class="secondary-pattern-info"><h4 class="pattern-name">${
-                    secondaryInfo[nameKey]
-                  }</h4><div class="secondary-score-section"><div class="score-bar-container"><div class="score-bar-fill" style="width: ${secondary.score.toFixed(
-                    1
-                  )}%;"></div></div><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${secondary.score.toFixed(
-                    1
-                  )}</div></div></div> ${secondarySeverityTag}</div>`;
-                }
-                resultsHtml += `</div>`;
+            let resultsHtml = "";
+            const primary = patterns[0];
+            const primaryInfo = constitutionTypes[primary.type];
+            // const primaryDetails = primaryInfo.details; // 'details' was not used in the card.
+            const primaryImageUrl =
+              (imageUrls[primary.type] || {})[lang] || "";
+            const primarySeverity = getSeverity(primary.score);
+            const severityTag = primarySeverity
+              ? `<span class="severity-label ${primarySeverity.class}"><span lang="en">${primarySeverity.label_en}</span><span lang="zh-Hant">${primarySeverity.label_zh}</span></span>`
+              : "";
+            resultsHtml += `<div class="primary-pattern-card"><div class="primary-pattern-header"><div class="pattern-info"><span class="label"><span lang="en">Primary Constitution Type</span><span lang="zh-Hant">主要體質類型</span></span><h3 class="pattern-name">${
+              primaryInfo[nameKey]
+            }</h3></div> ${severityTag}</div><div class="score-section"><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${primary.score.toFixed(
+              1
+            )}</div><div class="score-bar-container"><div class="score-bar-fill" style="width: ${primary.score.toFixed(
+              1
+            )}%;"></div></div></div><div class="primary-pattern-content"><div class="image-placeholder">${
+              primaryImageUrl
+                ? `<img src="${primaryImageUrl}" alt="${primaryInfo[nameKey]}" class="type-image"/>`
+                : ""
+            }</div><div class="key-symptoms">
+              <h4><span lang="en">Remember</span><span lang="zh-Hant"><b style="font-weight: 900;">請記住</b></span></h4>
+              <p style="margin-top: 10px;">
+                <span lang="en">
+                  This body constitution test is self-reflective<br/>
+                  — based on your own feelings and observations.
+                </span>
+                <span lang="zh-Hant">
+                  本體質測試以⾃我觀察為基礎，<br />
+                  根據您⾃⾝的感受與觀察進⾏評估。
+                </span>
+              </p>
+              <p>
+                <span lang="en">
+                  Treat the results as a helpful reference, not a diagnosis.
+                </span>
+                <span lang="zh-Hant">
+                  請將測試結果視為有⽤的參考，⽽非醫學診斷。
+                </span>
+              </p>
+              <p>
+                <span lang="en">
+                  For a more accurate and personalised assessment,<br/>
+                  it’s always best to consult a professional TCM practitioner.
+                </span>
+                <span lang="zh-Hant">
+                  若您希望獲得更準確、個⼈化的體質評估，<br />
+                  建議親⾃諮詢專業的中醫師。
+                </span>
+              </p>
+              <p>
+                <span lang="en">
+                  It’s normal not to match every symptom<br/>
+                  — most people are a mix of types.
+                </span>
+                <span lang="zh-Hant">
+                  請別擔⼼⾃⼰不符合所有特徵<br />
+                  —— ⼤多數⼈都是多種體質的混合，
+                </span>
+              </p>
+              <p>
+                <span lang="en">
+                  Every body is unique.
+                </span>
+                <span lang="zh-Hant">
+                  每個⼈的⾝體都是獨⼀無⼆的。
+                </span>
+              </p>
+            </div></div></div>`;
+            const secondaryPatterns = patterns
+              .slice(1)
+              .filter((p) => p.score >= 30);
+            if (secondaryPatterns.length > 0) {
+              resultsHtml += `<div class="other-patterns-section"><h3><span lang="en">Other Supporting Patterns</span><span lang="zh-Hant">其他相關體質類型</span></h3><p><span lang="en">These secondary constitution types may also play a role in shaping your current health status.</span><span lang="zh-Hant">這些次要體質類型也可能對您⽬前的健康狀況有所影響。</span></p>`;
+              for (
+                let i = 0;
+                i < Math.min(secondaryPatterns.length, 2);
+                i++
+              ) {
+                const secondary = secondaryPatterns[i];
+                const secondaryInfo = constitutionTypes[secondary.type];
+                const secondarySeverity = getSeverity(secondary.score);
+                const secondarySeverityTag = secondarySeverity
+                  ? `<span class="severity-label ${secondarySeverity.class}"><span lang="en">${secondarySeverity.label_en}</span><span lang="zh-Hant">${secondarySeverity.label_zh}</span></span>`
+                  : "";
+                resultsHtml += `<div class="secondary-pattern-card"><div class="secondary-pattern-info"><h4 class="pattern-name">${
+                  secondaryInfo[nameKey]
+                }</h4><div class="secondary-score-section"><div class="score-bar-container"><div class="score-bar-fill" style="width: ${secondary.score.toFixed(
+                  1
+                )}%;"></div></div><div class="score-value"><span lang="en">Score:</span><span lang="zh-Hant">分數：</span> ${secondary.score.toFixed(
+                  1
+                )}</div></div></div> ${secondarySeverityTag}</div>`;
               }
-              resultsContent.innerHTML = resultsHtml;
+              resultsHtml += `</div>`;
             }
+            resultsContent.innerHTML = resultsHtml;
           }
           quizContainer.style.display = "none";
           resultsContainer.style.display = "block";
@@ -2535,7 +2560,7 @@
 
             if (currentResults && currentResults.data && currentResults.data.length > 0) {
               const primaryResultData = currentResults.data[0];
-              const typeKey = primaryResultData.type; // e.g., "qi_deficiency", "balanced"
+              const typeKey = primaryResultData.type;
               // Get the user-friendly name based on current language
               const nameKey = currentLang === 'en' ? 'n_en' : 'n_zh';
               if (constitutionTypes[typeKey] && constitutionTypes[typeKey][nameKey]) {
