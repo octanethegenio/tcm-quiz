@@ -69,7 +69,7 @@ export default async function handler(req, res) {
           <li><strong>English Guide:</strong> <a href="${pdfLinkEn}">English_TCMBodyType_Elizabeth</a></li>
           <li><strong>中文小手冊：</strong> <a href="${pdfLinkZh}">Chinese_TCMBodyType_Elizabeth</a></li>
         </ul>
-        <p>If you know someone who might be interested in discovering their body type, feel free to share this link: <a href="https://elizabethyau.com/bodytype"><strong>elizabethyau.com/bodytype</strong></a></p>
+        <p>If you know someone who might be interested in discovering their body type, feel free to share this link: <a href="https://elizabethyau.com/body-type"><strong>elizabethyau.com/bodytype</strong></a></p>
         <p>Wishing you good health, happiness, and a radiant glow from the inside out!</p>
         <p>Warmest wishes,</p>
         <p><strong>Elizabeth Yau</strong><br>Registered Traditional Chinese Medicine Practitioner<br>Based in Hong Kong</p>`);
