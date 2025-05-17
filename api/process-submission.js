@@ -61,7 +61,7 @@ export default async function handler(req, res) {
       .setText(`Hello there,\n\nThank you for completing the Traditional Chinese Medicine (TCM) Body Constitution Quiz — I hope you enjoyed the journey of learning more about yourself!\n\nYour full report is now available via the links below.\nIt covers all nine body types—just find yours and take a look.\n\nSimply click the links to download the PDFs.\n\nBoth English and Chinese versions are included for your convenience:\nEnglish Guide: ${pdfLinkEn}\n中文小手冊： ${pdfLinkZh}\n\nIf you know someone who might be interested in discovering their body type, feel free to share this link: elizabethyau.com/bodytype\n\nWishing you good health, happiness, and a radiant glow from the inside out!\n\nWarmest wishes,\n\nElizabeth Yau\nRegistered Traditional Chinese Medicine Practitioner\nBased in Hong Kong`)
       
       .setHtml(`<p>Hello there,</p>
-        <p>Thank you for completing the Traditional Chinese Medicine (TCM) Body Constitution Quiz — I hope you enjoyed the journey of learning more about yourself!</p>
+        <p>Thank you for completing the Traditional Chinese Medicine (TCM) Body Constitution Quiz<br>— I hope you enjoyed the journey of learning more about yourself!</p>
         <p>Your full report is now available via the links below.<br>It covers all nine body types—just find yours and take a look.</p>
         <p>Simply click the links to download the PDFs.</p>
         <p>Both English and Chinese versions are included for your convenience:</p>
@@ -69,10 +69,10 @@ export default async function handler(req, res) {
           <li><strong>English Guide:</strong> <a href="${pdfLinkEn}">English_TCMBodyType_Elizabeth</a></li>
           <li><strong>中文小手冊：</strong> <a href="${pdfLinkZh}">Chinese_TCMBodyType_Elizabeth</a></li>
         </ul>
-        <p>If you know someone who might be interested in discovering their body type, feel free to share this link: <a href="https://elizabethyau.com/body-type"><strong>elizabethyau.com/body-type</strong></a></p>
+        <p>You might also receive occasional updates with TCM tips and resources to support your well-being.</p>
+        <p>If you know someone who might be interested in discovering their body type,<br>feel free to share this link: <a href="https://elizabethyau.com/body-type"><strong>elizabethyau.com/body-type</strong></a></p>
         <p>Wishing you good health, happiness, and a radiant glow from the inside out!</p>
-        <p>Warmest wishes,</p>
-        <p><strong>Elizabeth Yau</strong><br>Registered Traditional Chinese Medicine Practitioner<br>Based in Hong Kong</p>`);
+        <p>Warmest wishes,<br><strong>Elizabeth Yau</strong><br>Registered Traditional Chinese Medicine Practitioner<br>Based in Hong Kong</p>`);
 
     await mailerSend.email.send(emailParams);
 
